@@ -24,7 +24,7 @@ public class Converter {
             return name;
         }//getName
     }//Measurement
-    
+    //test
     public static int QUIT = 6;
     public static Scanner input = new Scanner(System.in);
     public static Map<Integer, Measurement> distanceUnits = new HashMap<Integer, Measurement>();
