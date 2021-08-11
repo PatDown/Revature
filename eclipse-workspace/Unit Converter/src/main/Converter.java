@@ -1,0 +1,510 @@
+package main;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+/**
+ *
+ * @author Pat Down
+ */
+public class Converter {
+
+    public static class Measurement{
+        public String abbr;
+        public String name;
+        public Measurement(String abbr, String name){
+            this.abbr = abbr;
+            this.name = name;
+        }//default constructor
+        public String getAbbr(){
+            return abbr;
+        }//getAbbr
+        public String getName(){
+            return name;
+        }//getName
+    }//Measurement
+    
+    public static int QUIT = 6;
+    public static Scanner input = new Scanner(System.in);
+    public static Map<Integer, Measurement> distanceUnits = new HashMap<Integer, Measurement>();
+    public static Map<Integer, Measurement> volumeUnits = new HashMap<Integer, Measurement>();
+    public static Map<Integer, Measurement> temperatureUnits = new HashMap<Integer, Measurement>();
+    public static Map<Integer, Measurement> weightUnits = new HashMap<Integer, Measurement>();
+    public static Map<Integer, Measurement> timeUnits = new HashMap<Integer, Measurement>();
+    public static float converted = 0;
+    public static void main(String[] args) {
+        int menuSelection = 0;
+        unitMapFiller();
+        while(menuSelection != QUIT){
+            converted = 0;
+            System.out.println("========================================");
+            System.out.println("Please select an option:\n"
+                             + "1. Distance\n"
+                             + "2. Volume\n"
+                             + "3. Temperature\n"
+                             + "4. Weight\n"
+                             + "5. Time\n"
+                             + "6. Quit");
+            menuSelection = input.nextInt();
+            switch(menuSelection){
+                case 1: //Distance
+                    distanceConverter();
+                    break;
+                case 2: //Volume
+                    volumeConverter();
+                    break;
+                case 3: //Temperature
+                    temperatureConverter();
+                    break;
+                case 4: //Weight
+                    weightConverter();
+                    break;
+                case 5: //Time
+                    timeConverter();
+                    break;
+                case 6: //Quit
+                    break;
+                default:
+                    System.out.println("Invalid input detected. Please enter a valid number from the list above.");
+                    break;
+            }//switch
+            
+        }//while
+    }//main
+    
+    public static void unitMapFiller(){
+        //Distance
+        distanceUnits.put(1, new Measurement("cm", "Centimeter"));
+        distanceUnits.put(2, new Measurement("ft", "Foot"));
+        distanceUnits.put(3, new Measurement("in", "Inch"));
+        distanceUnits.put(4, new Measurement("km", "Kilometer"));
+        distanceUnits.put(5, new Measurement("m", "Meter"));
+        distanceUnits.put(6, new Measurement("mi", "Mile"));
+        distanceUnits.put(7, new Measurement("mm", "Millimeter"));
+        distanceUnits.put(8, new Measurement("yd", "Yard"));
+        
+        //Volume
+        volumeUnits.put(1, new Measurement("cm3", "Cubic Centimeter"));
+        volumeUnits.put(2, new Measurement("ft3", "Cubic Foot"));
+        volumeUnits.put(3, new Measurement("in3", "Cubic Inch"));
+        volumeUnits.put(4, new Measurement("m3", "Cubic Meter"));
+        volumeUnits.put(5, new Measurement("c", "Cup"));
+        volumeUnits.put(6, new Measurement("gal", "Gallon(US)"));
+        volumeUnits.put(7, new Measurement("L", "Liter"));
+        volumeUnits.put(8, new Measurement("oz", "Ounce"));
+        volumeUnits.put(9, new Measurement("pt", "Pint(US)"));
+        volumeUnits.put(10, new Measurement("qt", "Quart"));
+        volumeUnits.put(11, new Measurement("tbsp", "Tablespoon"));
+        volumeUnits.put(12, new Measurement("tsp", "Teaspoon"));
+        
+        //Temperature
+        temperatureUnits.put(1, new Measurement("C", "Celcius"));
+        temperatureUnits.put(2, new Measurement("F", "Fahrenheit"));
+        temperatureUnits.put(3, new Measurement("K", "Kelvin"));
+        
+        //Weight
+        weightUnits.put(1, new Measurement("g", "Gram"));
+        weightUnits.put(2, new Measurement("kg", "Kilogram"));
+        weightUnits.put(3, new Measurement("mg", "Milligram"));
+        weightUnits.put(4, new Measurement("oz", "Ounce"));
+        weightUnits.put(5, new Measurement("lb", "Pound"));
+        weightUnits.put(5, new Measurement("st", "Stone"));
+        weightUnits.put(6, new Measurement("T", "Ton"));
+        
+        //Time
+        timeUnits.put(1, new Measurement("d", "Day"));
+        timeUnits.put(2, new Measurement("hr", "Hour"));
+        timeUnits.put(3, new Measurement("min", "Minute"));
+        timeUnits.put(4, new Measurement("mth", "Month (Average)"));
+        timeUnits.put(5, new Measurement("sec", "Second"));
+        timeUnits.put(6, new Measurement("wk", "Week"));
+        timeUnits.put(7, new Measurement("yr", "Year (Average)"));
+    }//unitMapFiller
+    
+    public static int[] unitSelection(Map<Integer, Measurement> units){
+        int[] selectedUnits = new int[2];
+        System.out.println("========================================");
+        System.out.println("Units");
+        units.entrySet().forEach(unit -> {
+            System.out.println(unit.getKey() + ". " + unit.getValue().getName());
+        }); //for
+        
+        System.out.println("Please select the first unit:");
+        selectedUnits[0] = input.nextInt();
+        while (selectedUnits[0] < 1 || selectedUnits[0] > units.size()){
+            System.out.println("Invalid input detected. Please enter a valid number from the list above.");
+            selectedUnits[0] = input.nextInt();
+        }//while
+        
+        System.out.println("Please select the second unit:");
+        selectedUnits[1] = input.nextInt();
+        while (selectedUnits[1] < 1 || selectedUnits[1] > units.size()){
+            System.out.println("Invalid input detected. Please enter a valid number from the list above.");
+            selectedUnits[1] = input.nextInt();
+        }//while
+        
+        return selectedUnits;
+    }//unitSelection
+    
+    public static void distanceConverter(){
+        int[] selectedUnits = unitSelection(distanceUnits);
+        String unit1 = distanceUnits.get(selectedUnits[0]).getAbbr(), 
+               unit2 = distanceUnits.get(selectedUnits[1]).getAbbr();
+        System.out.println("Enter the quantity: ");
+        float quantity = input.nextFloat();
+        if (selectedUnits[0] == selectedUnits[1])
+            System.out.println(quantity + unit1 + " = " + quantity + unit2);
+        else {
+            switch(unit1){
+                case "cm":
+                    switch(unit2){
+                        case "m":
+                            converted = quantity / 100;
+                            break;
+                        case "km":
+                            converted = quantity / 100000;
+                            break;
+                        case "mm":
+                            converted = quantity * 10;
+                            break;
+                        default:
+                            converted = (float) (quantity / 2.54);
+                            if (!unit2.equals("in")){
+                                converted /= 12;
+                                switch(unit2){
+                                    case "yd":
+                                        converted /= 3;
+                                        break;
+                                    case "mi":
+                                    	converted /= 5280;
+                                    	break;
+                                    default://Foot
+                                    	break;
+                                    
+                                }//switch
+                            }//if
+                            break;
+                    }//switch
+                    break;
+                case "ft":
+                    break;
+                case "in":
+                    break;
+                case "km":
+                    break;
+                case "m":
+                    break;
+                case "mi":
+                    break;
+                case "mm":
+                	converted = quantity * 10;
+                	if (!unit2.equals("cm")) {
+                		switch(unit2){
+                        case "m":
+                            converted /= 100;
+                            break;
+                        case "km":
+                            converted /= 100000;
+                            break;
+                        default:
+                            converted /= 2.54;
+                            if (!unit2.equals("in")){
+                                converted /= 12;
+                                switch(unit2){
+                                    case "yd":
+                                        converted /= 3;
+                                        break;
+                                    case "mi":
+                                    	converted /= 5280;
+                                    	break;
+                                    default://Foot
+                                    	break;
+                                }//switch
+                            }//if
+                            break;
+                    }//switch
+                	}//if
+                    break;
+                default://case "yd"
+                    break;
+            }//switch
+            displayConversion(quantity, unit1, converted, unit2);
+        }//else
+        System.out.println("Method under construction.");
+    }//distanceConverter
+    
+    public static void volumeConverter(){
+        int[] selectedUnits = unitSelection(volumeUnits);
+        String unit1 = volumeUnits.get(selectedUnits[0]).getAbbr(), 
+               unit2 = volumeUnits.get(selectedUnits[1]).getAbbr();
+        System.out.println("Enter the quantity: ");
+        float quantity = input.nextFloat();
+        if (selectedUnits[0] == selectedUnits[1])
+            System.out.println(quantity + unit1 + " = " + quantity + unit2);
+        else {
+            switch(unit1) {
+                case "cm3":
+                    break;
+                case "ft3":
+                    break;
+                case "in3":
+                    break;
+                case "m3":
+                    break;
+                case "c":
+                    break;
+                case "gal":
+                    break;
+                case "L":
+                    break;
+                case "oz":
+                    break;
+                case "pt":
+                    break;
+                case "qt":
+                    break;
+                case "tbsp":
+                    break;
+                default:// case "tsp"
+                    break;
+            }//switch
+            displayConversion(quantity, unit1, converted, unit2);
+        }//else
+        System.out.println("Method under construction.");
+    }//volumeConverter
+    
+    public static void temperatureConverter(){
+        int[] selectedUnits = unitSelection(temperatureUnits);
+        String unit1 = temperatureUnits.get(selectedUnits[0]).getAbbr(), 
+               unit2 = temperatureUnits.get(selectedUnits[1]).getAbbr();
+        System.out.println("Enter the quantity: ");
+        float quantity = input.nextFloat();
+        
+        if (unit1.equals(unit2))
+            System.out.println(quantity + unit1 + " = " + quantity + unit2);
+        else {
+            switch (unit1) {
+                case "F":
+                    converted = (quantity - 32) * 5 / 9;
+                    if (unit2.equals("K"))
+                        converted+=273.15;
+                    break;
+                case "C":
+                    if (unit2.equals("F"))
+                        converted = (quantity * 9 / 5) + 32;
+                    else
+                        converted = (float) (quantity + 273.15);
+                    break;                    
+                default://case "K"
+                    converted = (float) (quantity - 273.15);
+                    if (unit2.equals("F"))
+                        converted = (converted * 9 / 5) + 32;
+                    break;
+            }//switch
+            displayConversion(quantity, unit1, converted, unit2);
+        }//else
+    }//temperatureConverter
+    
+    public static void weightConverter(){
+        int[] selectedUnits = unitSelection(weightUnits);
+        String unit1 = weightUnits.get(selectedUnits[0]).getAbbr(), 
+               unit2 = weightUnits.get(selectedUnits[1]).getAbbr();
+        System.out.println("Enter the quantity: ");
+        float quantity = input.nextFloat();
+        if (selectedUnits[0] == selectedUnits[1])
+            System.out.println(quantity + unit1 + " = " + quantity + unit2);
+        else {
+            switch(unit1){
+                case "g":
+                    break;
+                case "kg":
+                    break;
+                case "mg":
+                    break;
+                case "oz":
+                    break;
+                case "lb":
+                    break;
+                case "st":
+                    break;
+                default://case "T"
+                    break;
+            }//switch
+            displayConversion(quantity, unit1, converted, unit2);
+        }//else
+        System.out.println("Method under construction.");
+    }//weightConverter
+    
+    public static void timeConverter(){
+        int[] selectedUnits = unitSelection(timeUnits);
+        String unit1 = timeUnits.get(selectedUnits[0]).getAbbr(), 
+               unit2 = timeUnits.get(selectedUnits[1]).getAbbr();
+        System.out.println("Enter the quantity:");
+        float quantity = input.nextFloat();
+        if (selectedUnits[0] == selectedUnits[1])
+            System.out.println(quantity + unit1 + " = " + quantity + unit2);
+        else {
+            switch(unit1){
+                case "d":
+                    switch(unit2){
+                        case "sec":
+                            converted = quantity * 86400;
+                            break;
+                        case "min":
+                            converted = quantity * 1440;
+                            break;
+                        case "hr":
+                            converted = quantity * 24;
+                            break;
+                        case "wk":
+                            converted = quantity / 7;
+                            break;
+                        case "mth":
+                            converted = quantity / 30;
+                            break;                            
+                        default://case "yr"
+                            converted = quantity / 365;
+                            break;
+                    }//switch
+                    break;
+                case "hr":
+                    switch(unit2) {
+                        case "sec":
+                            converted = quantity * 3600;
+                            break;
+                        case "min":
+                            converted = quantity * 60;
+                            break;
+                        default:
+                            converted = quantity / 24;
+                            switch(unit2) {
+                                case "wk":
+                                    converted /= 7;
+                                    break;
+                                case "mth":
+                                    converted /= 30;
+                                    break;
+                                case "yr":
+                                    converted /= 365;
+                                    break;
+                                default://Days
+                                    break;
+                            }//switch
+                            break;
+                    }//switch
+                    break;
+                case "min":
+                    if (unit2.equals("sec"))
+                        converted = quantity * 60;
+                    else {
+                        converted = quantity / 60;
+                        if(!unit2.equals("hr")){
+                            converted /= 24;
+                            switch (unit2) {
+                                case "wk":
+                                    converted /= 7;
+                                    break;
+                                case "mth":
+                                    converted /= 30;
+                                    break;
+                                case "yr":
+                                    converted /= 365;
+                                    break;
+                                default://Days
+                                    break;
+                            }//switch
+                        }//if
+                    }//else
+                    break;
+                case "mth":
+                    if (unit2.equals("yr"))
+                        converted = quantity / 12;
+                    else {
+                        converted = quantity * 4;
+                        if (!unit2.equals("wk")){
+                            converted *= 7;
+                            if (!unit2.equals("d")){
+                                converted *= 24;
+                                if (!unit2.equals("hr")){
+                                    converted *= 60;
+                                    if (!unit2.equals("min"))
+                                        converted *= 60;
+                                }//if
+                            }//if
+                        }//if
+                    }//else
+                    break;
+                case "sec":
+                    converted = quantity * 60;
+                    if (!unit2.equals("min")) {
+                        converted /= 60;
+                        if (!unit2.equals("hr")){
+                            converted /= 24;
+                            switch (unit2) {
+                                case "wk":
+                                    converted /= 7;
+                                    break;
+                                case "mth":
+                                    converted /= 30;
+                                    break;
+                                case "yr":
+                                    converted /= 365;
+                                    break;
+                                default://Days
+                                    break;
+                            }//switch
+                        }//if
+                    }//if
+                    break;
+                case "wk":
+                    switch(unit2){
+                        case "mth":
+                            converted = quantity / 4;
+                            break;
+                        case "yr":
+                            converted = quantity / 52;
+                            break;
+                        default:
+                            converted = quantity * 7;
+                            if (!unit2.equals("d")){
+                                converted *= 24;
+                                if (!unit2.equals("hr")){
+                                    converted *= 60;
+                                    if (!unit2.equals("min"))
+                                        converted *= 60;
+                                }//if
+                            }//if
+                            break;
+                    }//switch
+                    break;
+                default://case "yr"
+                    switch(unit2){
+                        case "mth":
+                            converted = quantity * 12;
+                            break;
+                        case "wk":
+                            converted = quantity * 52;
+                            break;
+                        default:
+                            converted = quantity * 365;
+                            if (!unit2.equals("d")) {
+                                converted *= 24;
+                                if (!unit2.equals("hr")){
+                                    converted *= 60;
+                                    if (!unit2.equals("min"))
+                                        converted *= 60;
+                                }//if
+                            }//if
+                            break;
+                    }//switch
+                    break;
+            }//switch
+            displayConversion(quantity, unit1, converted, unit2);
+        }//else
+    }//timeConverter
+    
+    public static void displayConversion(float quantity1, String unit1, float quantity2, String unit2){
+        System.out.println(quantity1 + unit1 + " = " + quantity2 + unit2);
+    }//displayConversion
+}//Converter
