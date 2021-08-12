@@ -153,7 +153,7 @@ public class Converter {
 		String unit1 = distanceUnits.get(selectedUnits[0]).getAbbr(),
 				unit2 = distanceUnits.get(selectedUnits[1]).getAbbr();
 		System.out.println("Enter the quantity: ");
-		float quantity = input.nextFloat(), converted = 0;
+		float quantity = input.nextFloat(), converted;
 		if (selectedUnits[0] == selectedUnits[1])
 			System.out.println(quantity + unit1 + " = " + quantity + unit2);
 		else {
@@ -188,30 +188,35 @@ public class Converter {
 				}// switch
 				break;
 			case "ft":
-				if(unit2.equals("yd"))
-					converted = quantity / 3;
-				else if (unit2.equals("mi"))
-					converted = quantity / 5280;
-				else {
-					converted = quantity * 12;
-					if (!unit2.equals("in")) {
-						converted *= (float) 2.54;
-						switch (unit2) {
-						case "mm":
-							converted *= 19;
-							break;
-						case "m":
-							converted /= 100;
-							break;
-						case "km":
-							converted /= 100000;
-							break;
-						default://unit2 = "cm"
-							break;
-						}//switch
-					}//if
-				}//else
+                            switch (unit2) {
+                                case "yd":
+                                    converted = quantity / 3;
+                                    break;
+                                case "mi":
+                                    converted = quantity / 5280;
+                                    break;
+                                default:
+                                    converted = quantity * 12;
+                                    if (!unit2.equals("in")) {
+                                        converted *= (float) 2.54;
+                                        switch (unit2) {
+                                            case "mm":
+                                                converted *= 19;
+                                                break;
+                                            case "m":
+                                                converted /= 100;
+                                                break;
+                                            case "km":
+                                                converted /= 100000;
+                                                break;
+                                            default://unit2 = "cm"
+                                                break;
+                                        }//switch
+                                    }//if
+                                    break; //else
+                            }
 				break;
+
 			case "in":
 				if (unit2.equals("ft")||unit2.equals("mi")||unit2.equals("yd")) {
 					converted = quantity / 12;
@@ -350,31 +355,36 @@ public class Converter {
 					}// switch
 				} // if
 				break;
-			default:// unit1 = "yd"
-				if (unit2.equals("mi"))
-					converted = quantity / 1760;
-				else if (unit2.equals("ft"))
-					converted = quantity * 3;
-				else {
-					converted = quantity * 36;
-					if (!unit2.equals("in")) {
-						converted *= (float) 2.54;
-						switch (unit2) {
-						case "mm":
-							converted *= 10;
-							break;
-						case "m":
-							converted /= 1000;
-							break;
-						case "km":
-							converted /= 100000;
-							break;
-						default://unit2 = "cm"
-							break;
-						}//switch
-					}//if
-				}//else
-				break;
+			default: // unit1 = "yd"
+                            switch (unit2) {
+                                case "mi":
+                                    converted = quantity / 1760;
+                                    break;
+                                case "ft":
+                                    converted = quantity * 3;
+                                    break;
+                                default:
+                                    converted = quantity * 36;
+                                    if (!unit2.equals("in")) {
+                                        converted *= (float) 2.54;
+                                        switch (unit2) {
+                                            case "mm":
+                                                converted *= 10;
+                                                break;
+                                            case "m":
+                                                converted /= 1000;
+                                                break;
+                                            case "km":
+                                                converted /= 100000;
+                                                break;
+                                            default://unit2 = "cm"
+                                                break;
+                                        }//switch
+                                    }//if
+                                    break;
+                            }
+                            break;
+
 			}// switch
 			displayConversion(quantity, unit1, converted, unit2);
 		} // else
