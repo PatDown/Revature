@@ -46,19 +46,19 @@ public class Converter {
             menuSelection = input.nextInt();
             switch (menuSelection) {
                 case 1: // Distance
-                    distanceConverter();
+                    distanceConverter(unitSelection(distanceUnits));
                     break;
                 case 2: // Volume
-                    volumeConverter();
+                    volumeConverter(unitSelection(volumeUnits));
                     break;
                 case 3: // Temperature
-                    temperatureConverter();
+                    temperatureConverter(unitSelection(temperatureUnits));
                     break;
                 case 4: // Weight
-                    weightConverter();
+                    weightConverter(unitSelection(weightUnits));
                     break;
                 case 5: // Time
-                    timeConverter();
+                    timeConverter(unitSelection(timeUnits));
                     break;
                 case 6: // Quit
                     break;
@@ -144,12 +144,11 @@ public class Converter {
             System.out.println("Invalid input detected. Please enter a valid number from the list above.");
             selectedUnits[1] = input.nextInt();
         } // while
-
+        
         return selectedUnits;
     }// unitSelection
 
-    public static void distanceConverter() {
-        int[] selectedUnits = unitSelection(distanceUnits);
+    public static void distanceConverter(int[] selectedUnits) {
         String unit1 = distanceUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = distanceUnits.get(selectedUnits[1]).getAbbr();
         System.out.println("Enter the quantity: ");
@@ -390,8 +389,7 @@ public class Converter {
         } // else
     }// distanceConverter
 
-    public static void volumeConverter() {
-        int[] selectedUnits = unitSelection(volumeUnits);
+    public static void volumeConverter(int[] selectedUnits) {
         String unit1 = volumeUnits.get(selectedUnits[0]).getAbbr(), unit2 = volumeUnits.get(selectedUnits[1]).getAbbr();
         System.out.println("Enter the quantity: ");
         float quantity = input.nextFloat(), converted = 0;
@@ -429,8 +427,7 @@ public class Converter {
         System.out.println("Method under construction.");
     }// volumeConverter
 
-    public static void temperatureConverter() {
-        int[] selectedUnits = unitSelection(temperatureUnits);
+    public static void temperatureConverter(int[] selectedUnits) {
         String unit1 = temperatureUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = temperatureUnits.get(selectedUnits[1]).getAbbr();
         System.out.println("Enter the quantity: ");
@@ -464,8 +461,7 @@ public class Converter {
         } // else
     }// temperatureConverter
 
-    public static void weightConverter() {
-        int[] selectedUnits = unitSelection(weightUnits);
+    public static void weightConverter(int[] selectedUnits) {
         String unit1 = weightUnits.get(selectedUnits[0]).getAbbr(), unit2 = weightUnits.get(selectedUnits[1]).getAbbr();
         System.out.println("Enter the quantity: ");
         float quantity = input.nextFloat(), converted = 0;
@@ -474,10 +470,75 @@ public class Converter {
         } else {
             switch (unit1) {
                 case "g":
+                    if (unit2.equals("mg"))
+                        converted = quantity * 1000;
+                    else {
+                        converted = quantity / 1000;
+                        if (!unit2.equals("kg")) {
+                            converted *= (float) 35.274;
+                            switch (unit2){
+                                case "lb":
+                                    converted /= 16;
+                                    break;
+                                case "st":
+                                    converted /= 224;
+                                    break;
+                                case "T":
+                                    converted /= 32000;
+                                    break;
+                                default://unit2 = "oz"
+                                    break;
+                            }//switch
+                        }//if
+                    }//else
                     break;
                 case "kg":
+                    switch(unit2) {
+                        case "g":
+                            converted = quantity * 1000;
+                            break;
+                        case "mg":
+                            converted = quantity * 1000000;
+                            break;
+                        default:
+                            converted = (float) (quantity * 35.274);
+                            switch (unit2){
+                                case "lb":
+                                    converted /= 16;
+                                    break;
+                                case "st":
+                                    converted /= 224;
+                                    break;
+                                case "T":
+                                    converted /= 32000;
+                                    break;
+                                default://unit2 = "oz"
+                                    break;
+                            }//switch
+                            break;
+                    }//switch
                     break;
                 case "mg":
+                    converted = quantity / 1000;
+                    if (!unit2.equals("g")){
+                        converted /= 1000;
+                        if (!unit2.equals("kg")) {
+                            converted *= (float) 35.274;
+                            switch (unit2){
+                                case "lb":
+                                    converted /= 16;
+                                    break;
+                                case "st":
+                                    converted /= 224;
+                                    break;
+                                case "T":
+                                    converted /= 32000;
+                                    break;
+                                default://unit2 = "oz"
+                                    break;
+                            }//switch
+                        }//if
+                    }//if
                     break;
                 case "oz":
                     break;
@@ -493,8 +554,7 @@ public class Converter {
         System.out.println("Method under construction.");
     }// weightConverter
 
-    public static void timeConverter() {
-        int[] selectedUnits = unitSelection(timeUnits);
+    public static void timeConverter(int[] selectedUnits) {
         String unit1 = timeUnits.get(selectedUnits[0]).getAbbr(), unit2 = timeUnits.get(selectedUnits[1]).getAbbr();
         System.out.println("Enter the quantity:");
         float quantity = input.nextFloat(), converted;
