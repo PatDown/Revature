@@ -44,28 +44,29 @@ public class Converter {
             System.out.println("Please select an option:\n" + "1. Distance\n" + "2. Volume\n" + "3. Temperature\n"
                     + "4. Weight\n" + "5. Time\n" + "6. Quit");
             menuSelection = input.nextInt();
-            switch (menuSelection) {
+            converterTest(menuSelection);
+            /*switch (menuSelection) {
                 case 1: // Distance
-                    distanceConverter();
+                    distanceConverter(unitSelection(distanceUnits));
                     break;
                 case 2: // Volume
-                    volumeConverter();
+                    volumeConverter(unitSelection(volumeUnits));
                     break;
                 case 3: // Temperature
-                    temperatureConverter();
+                    temperatureConverter(unitSelection(temperatureUnits));
                     break;
                 case 4: // Weight
-                    weightConverter();
+                    weightConverter(unitSelection(weightUnits));
                     break;
                 case 5: // Time
-                    timeConverter();
+                    timeConverter(unitSelection(timeUnits));
                     break;
                 case 6: // Quit
                     break;
                 default:
                     System.out.println("Invalid input detected. Please enter a valid number from the list above.");
                     break;
-            }// switch
+            }// switch*/
         } // while
     }// main
 
@@ -144,18 +145,17 @@ public class Converter {
             System.out.println("Invalid input detected. Please enter a valid number from the list above.");
             selectedUnits[1] = input.nextInt();
         } // while
-
+        
         return selectedUnits;
     }// unitSelection
 
-    public static void distanceConverter() {
-        int[] selectedUnits = unitSelection(distanceUnits);
+    public static void distanceConverter(int[] selectedUnits, float quantity) {
         String unit1 = distanceUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = distanceUnits.get(selectedUnits[1]).getAbbr();
-        System.out.println("Enter the quantity: ");
-        float quantity = input.nextFloat(), converted;
+        //System.out.println("Enter the quantity: ");
+        float /*quantity = input.nextFloat(),*/ converted;
         if (selectedUnits[0] == selectedUnits[1]) {
-            System.out.println(quantity + unit1 + " = " + quantity + unit2);
+            converted = quantity;
         } else {
             switch (unit1) {
                 case "cm":
@@ -386,17 +386,16 @@ public class Converter {
                     }//switch
                     break;
             }// switch
-            displayConversion(quantity, unit1, converted, unit2);
         } // else
+        displayConversion(quantity, unit1, converted, unit2);
     }// distanceConverter
 
-    public static void volumeConverter() {
-        int[] selectedUnits = unitSelection(volumeUnits);
+    public static void volumeConverter(int[] selectedUnits, float quantity) {
         String unit1 = volumeUnits.get(selectedUnits[0]).getAbbr(), unit2 = volumeUnits.get(selectedUnits[1]).getAbbr();
-        System.out.println("Enter the quantity: ");
-        float quantity = input.nextFloat(), converted = 0;
+        //System.out.println("Enter the quantity: ");
+        float /*quantity = input.nextFloat(),*/ converted = 0;
         if (selectedUnits[0] == selectedUnits[1]) {
-            System.out.println(quantity + unit1 + " = " + quantity + unit2);
+            converted = quantity;
         } else {
             switch (unit1) {
                 case "cm3":
@@ -424,20 +423,19 @@ public class Converter {
                 default:// case "tsp"
                     break;
             }// switch
-            displayConversion(quantity, unit1, converted, unit2);
         } // else
+        //displayConversion(quantity, unit1, converted, unit2);
         System.out.println("Method under construction.");
     }// volumeConverter
 
-    public static void temperatureConverter() {
-        int[] selectedUnits = unitSelection(temperatureUnits);
+    public static void temperatureConverter(int[] selectedUnits, float quantity) {
         String unit1 = temperatureUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = temperatureUnits.get(selectedUnits[1]).getAbbr();
-        System.out.println("Enter the quantity: ");
-        float quantity = input.nextFloat(), converted;
+        //System.out.println("Enter the quantity: ");
+        float /*quantity = input.nextFloat(),*/ converted;
 
         if (unit1.equals(unit2)) {
-            System.out.println(quantity + unit1 + " = " + quantity + unit2);
+            converted = quantity;
         } else {
             switch (unit1) {
                 case "F":
@@ -460,46 +458,173 @@ public class Converter {
                     }
                     break;
             }// switch
-            displayConversion(quantity, unit1, converted, unit2);
         } // else
+        displayConversion(quantity, unit1, converted, unit2);
     }// temperatureConverter
 
-    public static void weightConverter() {
-        int[] selectedUnits = unitSelection(weightUnits);
+    public static void weightConverter(int[] selectedUnits, float quantity) {
         String unit1 = weightUnits.get(selectedUnits[0]).getAbbr(), unit2 = weightUnits.get(selectedUnits[1]).getAbbr();
-        System.out.println("Enter the quantity: ");
-        float quantity = input.nextFloat(), converted = 0;
+        //System.out.println("Enter the quantity: ");
+        float /*quantity = input.nextFloat(),*/ converted = 0;
         if (selectedUnits[0] == selectedUnits[1]) {
-            System.out.println(quantity + unit1 + " = " + quantity + unit2);
+            converted = quantity;
         } else {
             switch (unit1) {
                 case "g":
+                    if (unit2.equals("mg"))
+                        converted = quantity * 1000;
+                    else {
+                        converted = quantity / 1000;
+                        if (!unit2.equals("kg")) {
+                            converted *= (float) 35.274;
+                            switch (unit2){
+                                case "lb":
+                                    converted /= 16;
+                                    break;
+                                case "st":
+                                    converted /= 224;
+                                    break;
+                                case "T":
+                                    converted /= 32000;
+                                    break;
+                                default://unit2 = "oz"
+                                    break;
+                            }//switch
+                        }//if
+                    }//else
                     break;
                 case "kg":
+                    switch(unit2) {
+                        case "g":
+                            converted = quantity * 1000;
+                            break;
+                        case "mg":
+                            converted = quantity * 1000000;
+                            break;
+                        default:
+                            converted = (float) (quantity * 35.274);
+                            switch (unit2){
+                                case "lb":
+                                    converted /= 16;
+                                    break;
+                                case "st":
+                                    converted /= 224;
+                                    break;
+                                case "T":
+                                    converted /= 32000;
+                                    break;
+                                default://unit2 = "oz"
+                                    break;
+                            }//switch
+                            break;
+                    }//switch
                     break;
                 case "mg":
+                    converted = quantity / 1000;
+                    if (!unit2.equals("g")){
+                        converted /= 1000;
+                        if (!unit2.equals("kg")) {
+                            converted *= (float) 35.274;
+                            switch (unit2){
+                                case "lb":
+                                    converted /= 16;
+                                    break;
+                                case "st":
+                                    converted /= 224;
+                                    break;
+                                case "T":
+                                    converted /= 32000;
+                                    break;
+                                default://unit2 = "oz"
+                                    break;
+                            }//switch
+                        }//if
+                    }//if
                     break;
                 case "oz":
+                    switch(unit2){
+                        case "lb":
+                            converted = quantity / 16;
+                            break;
+                        case "st":
+                            converted = quantity / 224;
+                            break;
+                        case "T":
+                            converted = quantity / 32000;
+                            break;
+                        default:
+                            converted = (float)(quantity / 35.274);
+                            if (!unit2.equals("kg")){
+                                converted *= 1000;
+                                if (!unit2.equals("g"))
+                                    converted *= 1000;
+                            }//if
+                            break;
+                    }//switch
                     break;
                 case "lb":
+                    switch (unit2){
+                        case "st":
+                            converted = quantity / 14;
+                            break;
+                        case "T":
+                            converted = quantity / 2000;
+                            break;
+                        default:
+                            converted = quantity * 16;
+                            if (!unit2.equals("oz")){
+                                converted /= (float)35.274;
+                                if (!unit2.equals("kg")){
+                                    converted *= 1000;
+                                    if (!unit2.equals("g"))
+                                        converted *= 1000;
+                                }//if
+                            }//if
+                            break;
+                    }//switch
                     break;
                 case "st":
+                    if (unit2.equals("lb") || unit2.equals("T")){
+                        converted = quantity * 14;
+                        if (unit2.equals("T"))
+                            converted /= 2000;
+                    }else{
+                        converted *= 224;
+                        if (!unit2.equals("oz")){
+                            converted /= (float) 35.274;
+                            if (unit2.equals("g"))
+                                converted *= 1000;
+                            if (unit2.equals("mg"))
+                                converted *= 1000000;
+                        }//if
+                    }//else
                     break;
                 default:// case "T"
+                    converted = quantity * 2000;
+                    if (unit2.equals("st"))
+                        converted /= 14;
+                    if (!unit2.equals("st") && !unit2.equals("lb")) {
+                        converted *= 16;
+                        if (!unit2.equals("oz")){
+                            converted /= (float) 35.274;
+                            if (unit2.equals("g"))
+                                converted *= 1000;
+                            if (unit2.equals("mg"))
+                                converted *= 1000000;
+                        }//if
+                    }//if
                     break;
             }// switch
-            displayConversion(quantity, unit1, converted, unit2);
         } // else
-        System.out.println("Method under construction.");
+        displayConversion(quantity, unit1, converted, unit2);
     }// weightConverter
 
-    public static void timeConverter() {
-        int[] selectedUnits = unitSelection(timeUnits);
+    public static void timeConverter(int[] selectedUnits, float quantity) {
         String unit1 = timeUnits.get(selectedUnits[0]).getAbbr(), unit2 = timeUnits.get(selectedUnits[1]).getAbbr();
-        System.out.println("Enter the quantity:");
-        float quantity = input.nextFloat(), converted;
+        //System.out.println("Enter the quantity:");
+        float /*quantity = input.nextFloat(),*/ converted;
         if (selectedUnits[0] == selectedUnits[1]) {
-            System.out.println(quantity + unit1 + " = " + quantity + unit2);
+            converted = quantity;
         } else {
             switch (unit1) {
                 case "d":
@@ -659,15 +784,87 @@ public class Converter {
                     }// switch
                     break;
             }// switch
-            displayConversion(quantity, unit1, converted, unit2);
         } // else
+        displayConversion(quantity, unit1, converted, unit2);
     }// timeConverter
 
     public static void displayConversion(float quantity1, String unit1, float quantity2, String unit2) {
-        System.out.println(quantity1 + unit1 + " = " + quantity2 + unit2);
+        System.out.printf("%f%s  =  %f%s", quantity1, unit1, quantity2, unit2);
     }// displayConversion
 
-    public static void converterTest(Map<Integer, Measurement> units) {
-
+    public static void converterTest(int menuSelection) {
+        
+        switch (menuSelection) {
+                case 1: // Distance
+                    for(int i = 1; i <= distanceUnits.size(); i++, System.out.print("\n")){
+                        System.out.println(distanceUnits.get(i).getName());
+                        for(int j = 1; j <= distanceUnits.size(); j++){
+                            int[] selectedUnits = {i, j};
+                            distanceConverter(selectedUnits, 1);
+                            if (j % 2 == 0)
+                                System.out.print("\n");
+                            else
+                                System.out.print("\t\t");
+                        }//for
+                    }//for
+                    break;
+                case 2: // Volume
+                    for(int i = 1; i <= volumeUnits.size(); i++, System.out.print("\n")){
+                        System.out.println(volumeUnits.get(i).getName());
+                        for(int j = 1; j <= volumeUnits.size(); j++){
+                            int[] selectedUnits = {i, j};
+                            volumeConverter(selectedUnits, 1);
+                            if (j % 2 == 0)
+                                System.out.print("\n");
+                            else
+                                System.out.print("\t\t");
+                        }//for
+                    }//for
+                    break;
+                case 3: // Temperature
+                    for(int i = 1; i <= temperatureUnits.size(); i++, System.out.print("\n")){
+                        System.out.println(temperatureUnits.get(i).getName());
+                        for(int j = 1; j <= temperatureUnits.size(); j++){
+                            int[] selectedUnits = {i, j};
+                            temperatureConverter(selectedUnits, 0);
+                            if (j % 2 == 0)
+                                System.out.print("\n");
+                            else
+                                System.out.print("\t\t");
+                        }//for
+                    }//for
+                    break;
+                case 4: // Weight
+                    for(int i = 1; i <= weightUnits.size(); i++, System.out.print("\n")){
+                        System.out.println(weightUnits.get(i).getName());
+                        for(int j = 1; j <= weightUnits.size(); j++){
+                            int[] selectedUnits = {i, j};
+                            weightConverter(selectedUnits, 1);
+                            if (j % 2 == 0)
+                                System.out.print("\n");
+                            else
+                                System.out.print("\t\t");
+                        }//for
+                    }//for
+                    break;
+                case 5: // Time
+                    for(int i = 1; i <= timeUnits.size(); i++, System.out.print("\n")){
+                        System.out.println(timeUnits.get(i).getName());
+                        for(int j = 1; j <= timeUnits.size(); j++){
+                            int[] selectedUnits = {i, j};
+                            timeConverter(selectedUnits, 1);
+                            if (j % 2 == 0)
+                                System.out.print("\n");
+                            else
+                                System.out.print("\t\t");
+                        }//for
+                    }//for
+                    break;
+                case 6: // Quit
+                    break;
+                default:
+                    System.out.println("Invalid input detected. Please enter a valid number from the list above.");
+                    break;
+            }// switch
     }//converterTest
 }// Converter
