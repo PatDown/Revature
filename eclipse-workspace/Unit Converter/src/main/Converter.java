@@ -34,13 +34,11 @@ public class Converter {
 	public static Map<Integer, Measurement> temperatureUnits = new HashMap<Integer, Measurement>();
 	public static Map<Integer, Measurement> weightUnits = new HashMap<Integer, Measurement>();
 	public static Map<Integer, Measurement> timeUnits = new HashMap<Integer, Measurement>();
-	public static float converted = 0;
 
 	public static void main(String[] args) {
 		int menuSelection = 0;
 		unitMapFiller();
 		while (menuSelection != QUIT) {
-			converted = 0;
 			System.out.println("========================================");
 			System.out.println("Please select an option:\n" + "1. Distance\n" + "2. Volume\n" + "3. Temperature\n"
 					+ "4. Weight\n" + "5. Time\n" + "6. Quit");
@@ -155,7 +153,7 @@ public class Converter {
 		String unit1 = distanceUnits.get(selectedUnits[0]).getAbbr(),
 				unit2 = distanceUnits.get(selectedUnits[1]).getAbbr();
 		System.out.println("Enter the quantity: ");
-		float quantity = input.nextFloat();
+		float quantity = input.nextFloat(), converted = 0;
 		if (selectedUnits[0] == selectedUnits[1])
 			System.out.println(quantity + unit1 + " = " + quantity + unit2);
 		else {
@@ -182,7 +180,7 @@ public class Converter {
 						case "mi":
 							converted /= 5280;
 							break;
-						default:// Foot
+						default://unit2 = "ft"
 							break;
 						}// switch
 					} // if
@@ -190,14 +188,138 @@ public class Converter {
 				}// switch
 				break;
 			case "ft":
+				if(unit2.equals("yd"))
+					converted = quantity / 3;
+				else if (unit2.equals("mi"))
+					converted = quantity / 5280;
+				else {
+					converted = quantity * 12;
+					if (!unit2.equals("in")) {
+						converted *= (float) 2.54;
+						switch (unit2) {
+						case "mm":
+							converted *= 19;
+							break;
+						case "m":
+							converted /= 100;
+							break;
+						case "km":
+							converted /= 100000;
+							break;
+						default://unit2 = "cm"
+							break;
+						}//switch
+					}//if
+				}//else
 				break;
 			case "in":
+				if (unit2.equals("ft")||unit2.equals("mi")||unit2.equals("yd")) {
+					converted = quantity / 12;
+					if (unit2.equals("yd"))
+						converted /= 3;
+					if (unit2.equals("mi"))
+						converted /= 5280;
+				}//if
+				else {
+					converted = quantity * (float) 2.54;
+					switch (unit2) {
+					case "mm":
+						converted *= 10;
+						break;
+					case "m":
+						converted /= 1000;
+						break;
+					case "km":
+						converted /= 100000;
+						break;
+					default://unit2 = "cm"
+						break;
+					}//switch
+				}//else
 				break;
 			case "km":
+				converted = quantity * 1000;
+				if (!unit2.equals("m")) {
+					if (unit2.equals("mm"))
+						converted *= 1000;
+					else {
+						converted *= 100;
+						if (!unit2.equals("cm")) {
+							converted /= (float) 2.54;
+							if (!unit2.equals("in")) {
+								converted /= 12;
+								switch (unit2) {
+								case "yd":
+									converted /= 3;
+									break;
+								case "mi":
+									converted /= 5280;
+									break;
+								default:// unit2 = "ft"
+									break;
+								}// switch
+							} // if 
+						}
+					}//else
+				}//if
 				break;
 			case "m":
+				switch(unit2) {
+				case "km":
+					converted = quantity / 1000;
+					break;
+				case "mm":
+					converted = quantity * 1000;
+					break;
+				default:
+					converted = quantity * 100;
+					if (!unit2.equals("cm")) {
+						converted /= (float) 2.54;
+						if (!unit2.equals("in")) {
+							converted /= 12;
+							switch (unit2) {
+							case "yd":
+								converted /= 3;
+								break;
+							case "mi":
+								converted /= 5280;
+								break;
+							default://unit2 = "ft"
+								break;
+							}// switch
+						} // if 
+					}//if
+					break;
+				}//switch
 				break;
 			case "mi":
+				switch(unit2) {
+				case "yd":
+					converted = quantity * 1760;
+					break;
+				case "ft":
+					converted = quantity * 5280;
+					break;
+				default:
+					converted = quantity * 63360;
+					if (!unit2.equals("in")) {
+						converted *= (float) 2.54;
+						switch (unit2) {
+						case "mm":
+							converted *= 10;
+							break;
+						case "m":
+							converted /= 1000;
+							break;
+						case "km":
+							converted /= 100000;
+							break;
+						default://unit2 = "cm"
+							break;
+						}//switch
+					}//if
+					break;
+				}//switch
 				break;
 			case "mm":
 				converted = quantity * 10;
@@ -210,7 +332,7 @@ public class Converter {
 						converted /= 100000;
 						break;
 					default:
-						converted /= 2.54;
+						converted /= (float) 2.54;
 						if (!unit2.equals("in")) {
 							converted /= 12;
 							switch (unit2) {
@@ -220,7 +342,7 @@ public class Converter {
 							case "mi":
 								converted /= 5280;
 								break;
-							default:// Foot
+							default:// unit2 = "ft"
 								break;
 							}// switch
 						} // if
@@ -228,19 +350,41 @@ public class Converter {
 					}// switch
 				} // if
 				break;
-			default:// case "yd"
+			default:// unit1 = "yd"
+				if (unit2.equals("mi"))
+					converted = quantity / 1760;
+				else if (unit2.equals("ft"))
+					converted = quantity * 3;
+				else {
+					converted = quantity * 36;
+					if (!unit2.equals("in")) {
+						converted *= (float) 2.54;
+						switch (unit2) {
+						case "mm":
+							converted *= 10;
+							break;
+						case "m":
+							converted /= 1000;
+							break;
+						case "km":
+							converted /= 100000;
+							break;
+						default://unit2 = "cm"
+							break;
+						}//switch
+					}//if
+				}//else
 				break;
 			}// switch
 			displayConversion(quantity, unit1, converted, unit2);
 		} // else
-		System.out.println("Method under construction.");
 	}// distanceConverter
 
 	public static void volumeConverter() {
 		int[] selectedUnits = unitSelection(volumeUnits);
 		String unit1 = volumeUnits.get(selectedUnits[0]).getAbbr(), unit2 = volumeUnits.get(selectedUnits[1]).getAbbr();
 		System.out.println("Enter the quantity: ");
-		float quantity = input.nextFloat();
+		float quantity = input.nextFloat(), converted = 0;
 		if (selectedUnits[0] == selectedUnits[1])
 			System.out.println(quantity + unit1 + " = " + quantity + unit2);
 		else {
@@ -280,7 +424,7 @@ public class Converter {
 		String unit1 = temperatureUnits.get(selectedUnits[0]).getAbbr(),
 				unit2 = temperatureUnits.get(selectedUnits[1]).getAbbr();
 		System.out.println("Enter the quantity: ");
-		float quantity = input.nextFloat();
+		float quantity = input.nextFloat(), converted;
 
 		if (unit1.equals(unit2))
 			System.out.println(quantity + unit1 + " = " + quantity + unit2);
@@ -311,7 +455,7 @@ public class Converter {
 		int[] selectedUnits = unitSelection(weightUnits);
 		String unit1 = weightUnits.get(selectedUnits[0]).getAbbr(), unit2 = weightUnits.get(selectedUnits[1]).getAbbr();
 		System.out.println("Enter the quantity: ");
-		float quantity = input.nextFloat();
+		float quantity = input.nextFloat(), converted = 0;
 		if (selectedUnits[0] == selectedUnits[1])
 			System.out.println(quantity + unit1 + " = " + quantity + unit2);
 		else {
@@ -340,7 +484,7 @@ public class Converter {
 		int[] selectedUnits = unitSelection(timeUnits);
 		String unit1 = timeUnits.get(selectedUnits[0]).getAbbr(), unit2 = timeUnits.get(selectedUnits[1]).getAbbr();
 		System.out.println("Enter the quantity:");
-		float quantity = input.nextFloat();
+		float quantity = input.nextFloat(), converted;
 		if (selectedUnits[0] == selectedUnits[1])
 			System.out.println(quantity + unit1 + " = " + quantity + unit2);
 		else {
@@ -506,4 +650,8 @@ public class Converter {
 	public static void displayConversion(float quantity1, String unit1, float quantity2, String unit2) {
 		System.out.println(quantity1 + unit1 + " = " + quantity2 + unit2);
 	}// displayConversion
+	
+	public static void converterTest(Map<Integer, Measurement> units) {
+		
+	}//converterTest
 }// Converter
