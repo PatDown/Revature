@@ -9,25 +9,6 @@ import java.util.Scanner;
  * @author Pat Down
  */
 public class Converter {
-
-    public static class Measurement {
-
-        public String abbr;
-        public String name;
-
-        public Measurement(String abbr, String name) {
-            this.abbr = abbr;
-            this.name = name;
-        }// default constructor
-
-        public String getAbbr() {
-            return abbr;
-        }// getAbbr
-
-        public String getName() {
-            return name;
-        }// getName
-    }// Measurement
     public static int QUIT = 6;
     public static Scanner input = new Scanner(System.in);
     public static Map<Integer, Measurement> distanceUnits = new HashMap<Integer, Measurement>();
@@ -68,6 +49,7 @@ public class Converter {
                     break;
             }// switch*/
         } // while
+        input.close();
     }// main
 
     public static void unitMapFiller() {
@@ -84,18 +66,18 @@ public class Converter {
 
         // Volume
         unitCounter = 1;
-        volumeUnits.put(unitCounter++, new Measurement("cm3", "Cubic Centimeter"));
         volumeUnits.put(unitCounter++, new Measurement("ft3", "Cubic Foot"));
         volumeUnits.put(unitCounter++, new Measurement("in3", "Cubic Inch"));
         volumeUnits.put(unitCounter++, new Measurement("m3", "Cubic Meter"));
-        volumeUnits.put(unitCounter++, new Measurement("c", "Cup"));
+        volumeUnits.put(unitCounter++, new Measurement("c", "Cup (US)"));
+        volumeUnits.put(unitCounter++, new Measurement("fl oz", "Fluid Ounce (US)"));
         volumeUnits.put(unitCounter++, new Measurement("gal", "Gallon(US)"));
         volumeUnits.put(unitCounter++, new Measurement("L", "Liter"));
-        volumeUnits.put(unitCounter++, new Measurement("fl oz US", "Fluid Ounce (US)"));
-        volumeUnits.put(unitCounter++, new Measurement("pt US", "Pint(US)"));
-        volumeUnits.put(unitCounter++, new Measurement("qt US", "Quart (US)"));
-        volumeUnits.put(unitCounter++, new Measurement("tbsp US", "Tablespoon (US)"));
-        volumeUnits.put(unitCounter++, new Measurement("tsp US", "Teaspoon (US)"));
+        volumeUnits.put(unitCounter++, new Measurement("mL", "Milliliter"));
+        volumeUnits.put(unitCounter++, new Measurement("pt", "Pint(US)"));
+        volumeUnits.put(unitCounter++, new Measurement("qt", "Quart (US)"));
+        volumeUnits.put(unitCounter++, new Measurement("tbsp", "Tablespoon (US)"));
+        volumeUnits.put(unitCounter++, new Measurement("tsp", "Teaspoon (US)"));
 
         // Temperature
         unitCounter = 1;
@@ -148,17 +130,17 @@ public class Converter {
         
         return selectedUnits;
     }// unitSelection
-
-    public static void distanceConverter(int[] selectedUnits, float quantity) {
+    
+    public static void distanceConverter(int[] selectedUnits, double quantity) {
         String unit1 = distanceUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = distanceUnits.get(selectedUnits[1]).getAbbr();
         //System.out.println("Enter the quantity: ");
-        float /*quantity = input.nextFloat(),*/ converted;
+        double /*quantity = input.nextFloat(),*/ converted;
         if (selectedUnits[0] == selectedUnits[1]) {
             converted = quantity;
         } else {
             switch (unit1) {
-                case "cm":
+                case "cm"://direct conversions: km, m
                     switch (unit2) {
                         case "m":
                             converted = quantity / 100;
@@ -170,7 +152,7 @@ public class Converter {
                             converted = quantity * 10;
                             break;
                         default:
-                            converted = (float) (quantity / 2.54);
+                            converted = quantity / 2.54;
                             if (!unit2.equals("in")) {
                                 converted /= 12;
                                 switch (unit2) {
@@ -198,7 +180,7 @@ public class Converter {
                         default:
                             converted = quantity * 12;
                             if (!unit2.equals("in")) {
-                                converted *= (float) 2.54;
+                                converted *= 2.54;
                                 switch (unit2) {
                                     case "mm":
                                         converted *= 19;
@@ -227,7 +209,7 @@ public class Converter {
                         }
                     }//if
                     else {
-                        converted = quantity * (float) 2.54;
+                        converted = quantity * 2.54;
                         switch (unit2) {
                             case "mm":
                                 converted *= 10;
@@ -251,7 +233,7 @@ public class Converter {
                         } else {
                             converted *= 100;
                             if (!unit2.equals("cm")) {
-                                converted /= (float) 2.54;
+                                converted /= 2.54;
                                 if (!unit2.equals("in")) {
                                     converted /= 12;
                                     switch (unit2) {
@@ -280,7 +262,7 @@ public class Converter {
                         default:
                             converted = quantity * 100;
                             if (!unit2.equals("cm")) {
-                                converted /= (float) 2.54;
+                                converted /= 2.54;
                                 if (!unit2.equals("in")) {
                                     converted /= 12;
                                     switch (unit2) {
@@ -309,7 +291,7 @@ public class Converter {
                         default:
                             converted = quantity * 63360;
                             if (!unit2.equals("in")) {
-                                converted *= (float) 2.54;
+                                converted *= 2.54;
                                 switch (unit2) {
                                     case "mm":
                                         converted *= 10;
@@ -338,7 +320,7 @@ public class Converter {
                                 converted /= 100000;
                                 break;
                             default:
-                                converted /= (float) 2.54;
+                                converted /= 2.54;
                                 if (!unit2.equals("in")) {
                                     converted /= 12;
                                     switch (unit2) {
@@ -367,7 +349,7 @@ public class Converter {
                         default:
                             converted = quantity * 36;
                             if (!unit2.equals("in")) {
-                                converted *= (float) 2.54;
+                                converted *= 2.54;
                                 switch (unit2) {
                                     case "mm":
                                         converted *= 10;
@@ -390,49 +372,427 @@ public class Converter {
         displayConversion(quantity, unit1, converted, unit2);
     }// distanceConverter
 
-    public static void volumeConverter(int[] selectedUnits, float quantity) {
+    public static void volumeConverter(int[] selectedUnits, double quantity) {
         String unit1 = volumeUnits.get(selectedUnits[0]).getAbbr(), unit2 = volumeUnits.get(selectedUnits[1]).getAbbr();
         //System.out.println("Enter the quantity: ");
-        float /*quantity = input.nextFloat(),*/ converted = 0;
+        double /*quantity = input.nextFloat(),*/ converted = 0;
+        String tempUnit;
         if (selectedUnits[0] == selectedUnits[1]) {
             converted = quantity;
         } else {
             switch (unit1) {
-                case "cm3":
+                case "ft3"://direct conversions: qt, in3
+                    if (unit2.equals("in3"))
+                        converted = quantity * Conversion.FT3_IN3.getFactor();
+                    else{
+                        converted = quantity * Conversion.FT3_QT.getFactor();
+                        if (!unit2.equals("qt")){
+                            switch(unit2){
+                                case "gal":
+                                    converted /= Conversion.GAL_QT.getFactor();
+                                    break;
+                                case "pt":
+                                    converted = quantity * Conversion.QT_PT.getFactor();
+                                    break;
+                                case "tbsp":
+                                    converted = quantity * Conversion.QT_TBSP.getFactor();
+                                    break;
+                                case "tsp":
+                                    converted = quantity * Conversion.QT_TSP.getFactor();
+                                    break;
+                                default:
+                                    converted = quantity * Conversion.QT_FLOZ.getFactor();
+                                    if (!unit2.equals("fl oz")){
+                                        converted /= Conversion.L_FLOZ.getFactor();
+                                        if (!unit2.equals("L")){
+                                            if (unit2.equals("m3"))
+                                                converted = convert(converted, unit1, unit2);
+                                            else{
+                                                converted *= Conversion.L_ML.getFactor();
+                                                if (unit2.equals("c"))
+                                                    converted /= Conversion.C_ML.getFactor();
+                                            }//else
+                                        }//if
+                                    }//if
+                                    break;
+                            }//switch
+                        }//if
+                    }//else
                     break;
-                case "ft3":
+                    
+                case "in3"://direct conversions: ft3, gal, qt, pt, mL
+                    switch(unit2){
+                        case "ft3":
+                            converted = quantity / Conversion.FT3_IN3.getFactor();
+                            break;
+                        case "gal":
+                            converted = quantity / Conversion.GAL_IN3.getFactor();
+                            break;
+                        case "pt":
+                            converted = quantity / Conversion.PT_IN3.getFactor();
+                            break;
+                        default:
+                            if (unit2.equals("mL") || unit2.equals("c")){
+                                converted = quantity * Conversion.IN3_ML.getFactor();
+                                if (unit2.equals("c"))
+                                    converted /= Conversion.C_ML.getFactor();
+                            }//if
+                            else {
+                                converted = quantity / Conversion.QT_IN3.getFactor();
+                                if (!unit2.equals("qt")){
+                                    switch(unit2){
+                                        case "tbsp":
+                                            converted *= Conversion.QT_TBSP.getFactor();
+                                            break;
+                                        case "tsp":
+                                            converted *= Conversion.QT_TSP.getFactor();
+                                            break;
+                                        default:
+                                            converted = quantity * Conversion.QT_FLOZ.getFactor();
+                                            if (!unit2.equals("fl oz")){
+                                                converted /= Conversion.L_FLOZ.getFactor();
+                                                if (!unit2.equals("L"))
+                                                    if (unit2.equals("m3"))
+                                                        converted /= Conversion.M3_L.getFactor();
+                                            }//if
+                                            break;
+                                    }//switch
+                                }//if
+                            }//else
+                            break;
+                    }//switch
                     break;
-                case "in3":
+                    
+                case "m3"://direct conversions: L, mL
+                    if (unit2.equals("mL") || unit2.equals("c")){
+                        converted = convert(quantity, unit1, "mL");
+                        unit1 = "mL";
+                        if (unit2.equals("c"))
+                            converted = convert(converted, unit1, unit2);
+                    } else {
+                        converted = convert(quantity, unit1, "L");
+                        unit1 = "L";
+                        if (unit2.equals("m3") || unit2.equals("tbsp"))
+                            converted = convert(converted, unit1, unit2);
+                        else{
+                            converted = convert(converted, unit1, "fl oz");
+                            unit1 = "fl oz";
+                            if (!unit2.equals("fl oz")){
+                                if (unit2.equals("gal") || unit2.equals("pt") || unit2.equals("tsp"))
+                                    converted = convert(converted, unit1, unit2);
+                                else {
+                                    converted = convert(converted, unit1, "qt");
+                                    unit1 = "qt";
+                                    if (!unit2.equals("qt"))
+                                        converted = convert(converted, unit1, unit2);
+                                }//else
+                            }//if    
+                        }//else
+                    }//else
                     break;
-                case "m3":
+                    
+                case "c"://direct conversions: mL
+                    converted = convert(quantity, unit1, "mL");
+                    unit1 = "mL";
+                    if (!unit2.equals("mL")) {
+                        if (unit2.equals("m3") || unit2.equals("in3") || unit2.equals("tsp"))
+                            converted = convert(quantity, unit1, unit2);
+                        else {
+                            converted = convert(quantity, unit1, "L");
+                            unit1 = "L";
+                            if (unit2.equals("tbsp")) {
+                                converted = convert(converted, unit1, unit2);
+                            } else {
+                                converted = convert(converted, unit1, "fl oz");
+                                unit1 = "fl oz";
+                                if (!unit2.equals("fl oz")) {
+                                    if (unit2.equals("gal") || unit2.equals("pt")) {
+                                        converted = convert(converted, unit1, unit2);
+                                    } else {
+                                        converted = convert(converted, unit1, "qt");
+                                        unit1 = "qt";
+                                        if (!unit2.equals("qt")) {
+                                            converted = convert(converted, unit1, unit2);
+                                        }
+                                    }//else
+                                }//if    
+                            }//else
+                        }//else
+                    }//if
                     break;
-                case "c":
+                    
+                case "fl oz": //direct conversions: gal, L, qt, pt, tbsp, tsp
+                    switch (unit2) {
+                        case "gal":
+                        case "pt":
+                        case "tbsp":
+                        case "tsp":
+                            converted = convert(quantity, unit1, unit2);
+                            break;
+                        case "qt":
+                        case "ft3":
+                        case "in3":
+                            converted = convert(quantity, unit1, "qt");
+                            unit1 = "qt";
+                            if (!unit2.equals("qt"))
+                                converted = convert(converted, unit1, unit2);
+                            break;
+                        default:
+                            converted = convert(quantity, unit1, "L");
+                            unit1 = "L";
+                            if (!unit2.equals("L")){
+                                if (unit2.equals("m3"))
+                                    converted = convert(converted, unit1, unit2);
+                                else {
+                                    converted = convert(converted, unit1, "mL");
+                                    unit1 = "mL";
+                                    if (unit2.equals("c"))
+                                        converted = convert(converted, unit1, unit2);
+                                }//else
+                            }//if
+                            break;
+                    }//switch
                     break;
-                case "gal":
+                    
+                case "gal": //direct conversions: qt, pt, fl oz, tbsp, in3
+                    switch (unit2) {
+                        case "pt":
+                        case "tbsp":
+                        case "in3":
+                            converted = convert(quantity, unit1, unit2);
+                            break;
+                        case "qt":
+                        case "ft3":
+                            converted = convert(quantity, unit1, "qt");
+                            unit1 = "qt";
+                            if (!unit2.equals("qt"))
+                                converted = convert(converted, unit1, unit2);
+                            break;
+                        default:
+                            converted = convert(quantity, unit1, "fl oz");
+                            unit1 = "fl oz";
+                            if (unit2.equals("tsp"))
+                                converted = convert(converted, unit1, unit2);
+                            else {
+                                converted = convert(converted, unit1, "L");
+                                unit1 = "L";
+                                if (!unit2.equals("L")) {
+                                    if (unit2.equals("m3"))
+                                        converted = convert(converted, unit1, unit2);
+                                    else {
+                                        converted = convert(converted, unit1, "mL");
+                                        unit1 = "mL";
+                                        if (unit2.equals("c"))
+                                            converted = convert(converted, unit1, unit2);
+                                    }//else
+                                }//if
+                            }//else
+                            break; //else
+                    }//switch
                     break;
-                case "L":
+                    
+                case "L": //direct conversions: m3, fl oz, mL, tbsp
+                    switch (unit2) {
+                        case "m3":
+                        case "tbsp":
+                            converted = convert(quantity, unit1, unit2);
+                            break;
+                        case "mL":
+                        case "c":
+                            converted = convert(quantity, unit1, "mL");
+                            unit1 = "mL";
+                            if (unit2.equals("c"))
+                                converted = convert(converted, unit1, unit2);
+                            break;
+                        default:
+                            converted = convert(quantity, unit1, "fl oz");
+                            unit1 = "fl oz";
+                            if (!unit2.equals("fl oz")){
+                                if (unit2.equals("gal") || unit2.equals("pt") || unit2.equals("tsp"))
+                                    converted = convert(converted, unit1, unit2);
+                                else {
+                                    converted = convert(converted, unit1, "qt");
+                                    unit1 = "qt";
+                                    if (!unit2.equals("qt"))
+                                        converted = convert(converted, unit1, unit2);
+                                }//else
+                            }//if
+                            break; //else
+                    }//switch
                     break;
-                case "oz":
+
+                case "mL"://direct conversions: m3, L, c, in3, tsp
+                    if (unit2.equals("m3") || unit2.equals("c") || unit2.equals("in3") || unit2.equals("tsp"))
+                        converted = convert(quantity, unit1, unit2);
+                    else {
+                        converted = convert(quantity, unit1, "L");
+                        unit1 = "L";
+                        if (unit2.equals("tbsp"))
+                            converted = convert(converted, unit1, unit2);
+                        else {
+                            converted = convert(converted, unit1, "fl oz");
+                            unit1 = "fl oz";
+                            if (!unit2.equals("fl oz")){
+                                if (unit2.equals("gal") || unit2.equals("pt"))
+                                    converted = convert(converted, unit1, unit2);
+                                else {
+                                    converted = convert(converted, unit1, "qt");
+                                    unit1 = "qt";
+                                    if (!unit2.equals("qt"))
+                                        converted = convert(converted, unit1, unit2);
+                                }//else
+                            }//if    
+                        }//else
+                    }//else
                     break;
-                case "pt":
+                case "pt"://direct conversions: gal, qt, fl oz, tbsp, tsp, in3
+                    switch(unit2) {
+                        case "gal":
+                        case "tbsp":
+                        case "tsp":
+                        case "in3":
+                            converted = convert(quantity, unit1, unit2);
+                            break;
+                        case "qt":
+                        case "ft3":
+                            converted = convert(quantity, unit1, "qt");
+                            unit1 = "qt";
+                            if (unit2.equals("ft3"))
+                                converted = convert(converted, unit1, unit2);
+                            break;
+                        case "fl oz":
+                        case "L":
+                        case "mL":
+                        case "c":
+                        case "m3":
+                            converted = convert(quantity, unit1, "fl oz");
+                            unit1 = "fl oz";
+                            if (!unit2.equals("fl oz")){
+                                converted = convert(quantity, unit1, "L");
+                                unit1 = "L";
+                                if (!unit2.equals("L")){
+                                    if (unit2.equals("m3"))
+                                        converted = convert(converted, unit1, unit2);
+                                    else {
+                                        converted = convert(converted, unit1, "mL");
+                                        unit1 = "mL";
+                                        if (unit2.equals("c"))
+                                            converted = convert(converted, unit1, unit2);
+                                    }//else
+                                }//if
+                            }//if
+                            break;
+                        default:
+                            System.out.println("Invalid units");
+                            break;
+                    }//switch
                     break;
-                case "qt":
+                case "qt"://direct conversions: ft3, gal, pt, fl oz, tbsp, tsp, in3
+                    switch(unit2){
+                        case "ft3":
+                        case "gal":
+                        case "pt":
+                        case "tbsp":
+                        case "tsp":
+                        case "in3":
+                            converted = convert(quantity, unit1, unit2);
+                            break;
+                        default:
+                            converted = convert(quantity, unit1, "fl oz");
+                            unit1 = "fl oz";
+                            if (!unit2.equals("fl oz")){
+                                converted = convert(converted, unit1, "L");
+                                unit1 = "L";
+                                if (!unit2.equals("L")){
+                                    if (unit2.equals("m3"))
+                                        converted /= Conversion.M3_L.getFactor();
+                                    else{
+                                        converted *= Conversion.L_ML.getFactor();
+                                        if (unit2.equals("c"))
+                                            converted /= Conversion.C_ML.getFactor();
+                                    }//else
+                                }//if
+                            }//if
+                            break;
+                    }//switch
                     break;
-                case "tbsp":
+                case "tbsp"://direct conversions: gal, L, qt, pt, fl oz, tsp
+                    switch (unit2){
+                        case "gal":
+                        case "pt":
+                        case "fl oz":
+                        case "tsp":
+                            converted = convert(quantity, unit1, unit2);
+                            break;
+                        case "L":
+                        case "mL":
+                        case "m3":
+                        case "c":
+                            converted = convert(quantity, unit1, "L");
+                            unit1 = "L";
+                            if (!unit2.equals("L")){
+                                if (unit2.equals("mL")){
+                                    converted = convert(converted, unit1, "mL");
+                                    unit1 = "mL";
+                                    if (unit2.equals("c"))
+                                        converted = convert(converted, unit1, unit2);
+                                } else
+                                    converted = convert(converted, unit1, unit2);
+                            }//if
+                            break;
+                        case "qt":
+                        case "in3":
+                        case "ft3":
+                            converted = convert(quantity, unit1, "qt");
+                            unit1 = "qt";
+                            if (!unit2.equals("qt"))
+                                converted = convert(converted, unit1, unit2);
+                        default:
+                            
+                            break;
+                    }//switch
                     break;
-                default:// case "tsp"
+                case "tsp"://direct conversions: qt, pt, fl oz, tbsp, mL
+                    switch (unit2){
+                        case "pt":
+                        case "fl oz":
+                        case "tbsp":
+                            converted = convert(quantity, unit1, unit2);
+                            break;
+                        case "mL":
+                        case "L":
+                        case "c":
+                        case "m3":
+                        case "in3":
+                            converted = convert(quantity, unit1, "mL");
+                            unit1 = "mL";
+                            if (!unit2.equals("mL"))
+                                converted = convert(converted, unit1, unit2);
+                            break;
+                        case "qt":
+                        case "ft3":
+                        case "gal":
+                            converted = convert(quantity, unit1, "qt");
+                            unit1 = "qt";
+                            if (!unit2.equals("qt"))
+                                converted = convert(converted, unit1, unit2);
+                            break;
+                        default:
+                            break;
+                    }//switch
+                    break;
+                default:
                     break;
             }// switch
         } // else
-        //displayConversion(quantity, unit1, converted, unit2);
-        System.out.println("Method under construction.");
+        displayConversion(quantity, unit1, converted, unit2);
     }// volumeConverter
 
-    public static void temperatureConverter(int[] selectedUnits, float quantity) {
+    public static void temperatureConverter(int[] selectedUnits, double quantity) {
         String unit1 = temperatureUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = temperatureUnits.get(selectedUnits[1]).getAbbr();
         //System.out.println("Enter the quantity: ");
-        float /*quantity = input.nextFloat(),*/ converted;
+        double /*quantity = input.nextFloat(),*/ converted;
 
         if (unit1.equals(unit2)) {
             converted = quantity;
@@ -448,11 +808,11 @@ public class Converter {
                     if (unit2.equals("F")) {
                         converted = (quantity * 9 / 5) + 32;
                     } else {
-                        converted = (float) (quantity + 273.15);
+                        converted = quantity + 273.15;
                     }
                     break;
                 default:// case "K"
-                    converted = (float) (quantity - 273.15);
+                    converted = quantity - 273.15;
                     if (unit2.equals("F")) {
                         converted = (converted * 9 / 5) + 32;
                     }
@@ -462,10 +822,10 @@ public class Converter {
         displayConversion(quantity, unit1, converted, unit2);
     }// temperatureConverter
 
-    public static void weightConverter(int[] selectedUnits, float quantity) {
+    public static void weightConverter(int[] selectedUnits, double quantity) {
         String unit1 = weightUnits.get(selectedUnits[0]).getAbbr(), unit2 = weightUnits.get(selectedUnits[1]).getAbbr();
         //System.out.println("Enter the quantity: ");
-        float /*quantity = input.nextFloat(),*/ converted = 0;
+        double /*quantity = input.nextFloat(),*/ converted = 0;
         if (selectedUnits[0] == selectedUnits[1]) {
             converted = quantity;
         } else {
@@ -476,7 +836,7 @@ public class Converter {
                     else {
                         converted = quantity / 1000;
                         if (!unit2.equals("kg")) {
-                            converted *= (float) 35.274;
+                            converted *= 35.274;
                             switch (unit2){
                                 case "lb":
                                     converted /= 16;
@@ -502,7 +862,7 @@ public class Converter {
                             converted = quantity * 1000000;
                             break;
                         default:
-                            converted = (float) (quantity * 35.274);
+                            converted = quantity * 35.274;
                             switch (unit2){
                                 case "lb":
                                     converted /= 16;
@@ -524,7 +884,7 @@ public class Converter {
                     if (!unit2.equals("g")){
                         converted /= 1000;
                         if (!unit2.equals("kg")) {
-                            converted *= (float) 35.274;
+                            converted *= 35.274;
                             switch (unit2){
                                 case "lb":
                                     converted /= 16;
@@ -553,7 +913,7 @@ public class Converter {
                             converted = quantity / 32000;
                             break;
                         default:
-                            converted = (float)(quantity / 35.274);
+                            converted = quantity / 35.274;
                             if (!unit2.equals("kg")){
                                 converted *= 1000;
                                 if (!unit2.equals("g"))
@@ -573,7 +933,7 @@ public class Converter {
                         default:
                             converted = quantity * 16;
                             if (!unit2.equals("oz")){
-                                converted /= (float)35.274;
+                                converted /= 35.274;
                                 if (!unit2.equals("kg")){
                                     converted *= 1000;
                                     if (!unit2.equals("g"))
@@ -591,7 +951,7 @@ public class Converter {
                     }else{
                         converted *= 224;
                         if (!unit2.equals("oz")){
-                            converted /= (float) 35.274;
+                            converted /= 35.274;
                             if (unit2.equals("g"))
                                 converted *= 1000;
                             if (unit2.equals("mg"))
@@ -606,7 +966,7 @@ public class Converter {
                     if (!unit2.equals("st") && !unit2.equals("lb")) {
                         converted *= 16;
                         if (!unit2.equals("oz")){
-                            converted /= (float) 35.274;
+                            converted /= 35.274;
                             if (unit2.equals("g"))
                                 converted *= 1000;
                             if (unit2.equals("mg"))
@@ -619,10 +979,10 @@ public class Converter {
         displayConversion(quantity, unit1, converted, unit2);
     }// weightConverter
 
-    public static void timeConverter(int[] selectedUnits, float quantity) {
+    public static void timeConverter(int[] selectedUnits, double quantity) {
         String unit1 = timeUnits.get(selectedUnits[0]).getAbbr(), unit2 = timeUnits.get(selectedUnits[1]).getAbbr();
         //System.out.println("Enter the quantity:");
-        float /*quantity = input.nextFloat(),*/ converted;
+        double /*quantity = input.nextFloat(),*/ converted;
         if (selectedUnits[0] == selectedUnits[1]) {
             converted = quantity;
         } else {
@@ -788,12 +1148,23 @@ public class Converter {
         displayConversion(quantity, unit1, converted, unit2);
     }// timeConverter
 
-    public static void displayConversion(float quantity1, String unit1, float quantity2, String unit2) {
+    public static void displayConversion(double quantity1, String unit1, double quantity2, String unit2) {
         System.out.printf("%f%s  =  %f%s", quantity1, unit1, quantity2, unit2);
     }// displayConversion
+    
+    public static double convert(double quantity, String unit1, String unit2){
+        double converted = 0;
+        for (var f : Conversion.values()){
+            if (unit1.equals(f.getUnit1()) && unit2.equals(f.getUnit2()))
+                converted = quantity * f.getFactor();
+            else if (unit1.equals(f.getUnit2()) && unit2.equals(f.getUnit1()))
+                converted = quantity / f.getFactor();
 
+        }//for
+        return converted;
+    }//convert
+    
     public static void converterTest(int menuSelection) {
-        
         switch (menuSelection) {
                 case 1: // Distance
                     for(int i = 1; i <= distanceUnits.size(); i++, System.out.print("\n")){
