@@ -763,159 +763,176 @@ public class Converter {
             mid = quantity;
         } else {
             switch (unit1) {
-                case "g"://direct
-                    if (unit2.equals("mg"))
-                        converted = quantity * 1000;
-                    else {
-                        converted = quantity / 1000;
-                        if (!unit2.equals("kg")) {
-                            converted *= 35.274;
-                            switch (unit2){
-                                case "lb":
-                                    converted /= 16;
-                                    break;
-                                case "st":
-                                    converted /= 224;
-                                    break;
-                                case "T":
-                                    converted /= 32000;
-                                    break;
-                                default://unit2 = "oz"
-                                    break;
-                            }//switch
-                        }//if
-                    }//else
+                case "g"://direct conversions: kg, mg
+                    switch (unit2) {
+                        case "kg":
+                        case "mg":
+                            mid = quantity;
+                            break;
+                        case "lb":
+                        case "oz":
+                        case "T":
+                        case "st":
+                            mid = convert(quantity, temp, "kg");
+                            temp = "kg";
+                            if (!unit2.equals("oz")){
+                                mid = convert(mid, temp, "oz");
+                                temp = "oz";
+                            }//if
+                            break;
+                        default:
+                            System.out.println("Something went wrong.");
+                            mid = -1;
+                            break;
+                    }//switch
                     break;
-                case "kg":
+                case "kg"://direct conversions: g, mg, oz
                     switch(unit2) {
                         case "g":
-                            converted = quantity * 1000;
-                            break;
                         case "mg":
-                            converted = quantity * 1000000;
+                        case "oz":
+                            mid = quantity;
+                            break;
+                        case "lb":
+                        case "T":
+                        case "st":
+                            mid = convert(quantity, temp, "oz");
+                            temp = "oz";
                             break;
                         default:
-                            converted = quantity * 35.274;
-                            switch (unit2){
-                                case "lb":
-                                    converted /= 16;
-                                    break;
-                                case "st":
-                                    converted /= 224;
-                                    break;
-                                case "T":
-                                    converted /= 32000;
-                                    break;
-                                default://unit2 = "oz"
-                                    break;
-                            }//switch
+                            System.out.println("Something went wrong.");
+                            mid = -1;
                             break;
                     }//switch
                     break;
-                case "mg":
-                    converted = quantity / 1000;
-                    if (!unit2.equals("g")){
-                        converted /= 1000;
-                        if (!unit2.equals("kg")) {
-                            converted *= 35.274;
-                            switch (unit2){
-                                case "lb":
-                                    converted /= 16;
-                                    break;
-                                case "st":
-                                    converted /= 224;
-                                    break;
-                                case "T":
-                                    converted /= 32000;
-                                    break;
-                                default://unit2 = "oz"
-                                    break;
-                            }//switch
-                        }//if
-                    }//if
+                case "mg"://direct conversions: kg, g
+                    switch (unit2) {
+                        case "kg":
+                        case "g":
+                            mid = quantity;
+                            break;
+                        case "oz":
+                        case "lb":
+                        case "st":
+                        case "T":
+                            mid = convert(quantity, temp, "kg");
+                            if (!unit2.equals("oz")){
+                                mid = convert(mid, temp, "oz");
+                                temp = "oz";
+                            }//id
+                            break;
+                        default:
+                            System.out.println("Something went wrong.");
+                            mid = -1;
+                            break;
+                    }//switch
                     break;
-                case "oz":
+                case "oz"://direct conversions: T, st, kg, lb
                     switch(unit2){
                         case "lb":
-                            converted = quantity / 16;
-                            break;
                         case "st":
-                            converted = quantity / 224;
-                            break;
                         case "T":
-                            converted = quantity / 32000;
+                        case "kg":
+                            mid = quantity;
+                            break;
+                        case "mg":
+                        case "g":
+                            mid = convert(quantity, temp, "kg");
+                            temp = "kg";
                             break;
                         default:
-                            converted = quantity / 35.274;
-                            if (!unit2.equals("kg")){
-                                converted *= 1000;
-                                if (!unit2.equals("g"))
-                                    converted *= 1000;
-                            }//if
+                            System.out.println("Something went wrong.");
+                            mid = -1;
                             break;
                     }//switch
                     break;
-                case "lb":
+                case "lb"://direct conversions: T, st, oz
                     switch (unit2){
                         case "st":
-                            converted = quantity / 14;
-                            break;
                         case "T":
-                            converted = quantity / 2000;
+                        case "oz":
+                            mid = quantity;
+                            break;
+                        case "kg":
+                        case "g":
+                        case "mg":
+                            mid = convert(quantity, temp, "oz");
+                            temp = "oz";
+                            if (!unit2.equals("kg")){
+                                mid = convert(mid, temp, "kg");
+                                temp = "kg";
+                            }//if
                             break;
                         default:
-                            converted = quantity * 16;
-                            if (!unit2.equals("oz")){
-                                converted /= 35.274;
-                                if (!unit2.equals("kg")){
-                                    converted *= 1000;
-                                    if (!unit2.equals("g"))
-                                        converted *= 1000;
-                                }//if
-                            }//if
+                            System.out.println("Something went wrong.");
+                            mid = -1;
                             break;
                     }//switch
                     break;
-                case "st":
-                    if (unit2.equals("lb") || unit2.equals("T")){
-                        converted = quantity * 14;
-                        if (unit2.equals("T"))
-                            converted /= 2000;
-                    }else{
-                        converted *= 224;
-                        if (!unit2.equals("oz")){
-                            converted /= 35.274;
-                            if (unit2.equals("g"))
-                                converted *= 1000;
-                            if (unit2.equals("mg"))
-                                converted *= 1000000;
-                        }//if
-                    }//else
+                case "st"://direct conversions: lb, oz
+                    switch (unit2) {
+                        case "lb":
+                        case "oz":
+                            mid = quantity;
+                            break;
+                        case "T":
+                        case "kg":
+                        case "g":
+                        case "mg":
+                            mid = convert(quantity, temp, "oz");
+                            temp = "oz";
+                            if (unit2.equals("g") || unit2.equals("mg")){
+                                mid = convert(mid, temp, "kg");
+                                temp = "kg";
+                            }//if
+                            break;
+                        default:
+                            System.out.println("Something went wrong.");
+                            mid = -1;
+                            break;
+                    }//switch
                     break;
-                default:// case "T"
-                    converted = quantity * 2000;
-                    if (unit2.equals("st"))
-                        converted /= 14;
-                    if (!unit2.equals("st") && !unit2.equals("lb")) {
-                        converted *= 16;
-                        if (!unit2.equals("oz")){
-                            converted /= 35.274;
-                            if (unit2.equals("g"))
-                                converted *= 1000;
-                            if (unit2.equals("mg"))
-                                converted *= 1000000;
-                        }//if
-                    }//if
+                case "T"://direct conversions: lb, oz
+                    switch (unit2){
+                        case "lb":
+                        case "oz":
+                            mid = quantity;
+                            break;
+                        case "st":
+                        case "kg":
+                        case "g":
+                        case "mg":
+                            mid = convert(quantity, temp, "oz");
+                            temp = "oz";
+                            if (unit2.equals("g") || unit2.equals("mg")){
+                                mid = convert(mid, temp, "kg");
+                                temp = "kg";
+                            }//if
+                            break;
+                        default:
+                            System.out.println("Something went wrong.");
+                            mid = -1;
+                            break;
+                    }//switch
+                    break;
+                default:
+                    System.out.println("Something went wrong.");
+                    mid = -1;
                     break;
             }// switch
+            if (mid != -1)
+                mid = convert(mid, temp, unit2);
         } // else
+        converted = mid;
         displayConversion(quantity, unit1, converted, unit2);
     }// weightConverter
 
     public static void timeConverter(int[] selectedUnits, double quantity) {
-        String unit1 = timeUnits.get(selectedUnits[0]).getAbbr(), unit2 = timeUnits.get(selectedUnits[1]).getAbbr();
+        String unit1 = timeUnits.get(selectedUnits[0]).getAbbr(), 
+               unit2 = timeUnits.get(selectedUnits[1]).getAbbr(),
+               temp = unit1;
         //System.out.println("Enter the quantity:");
-        double /*quantity = input.nextFloat(),*/ converted;
+        double /*quantity = input.nextFloat(),*/ converted, mid;
         if (selectedUnits[0] == selectedUnits[1]) {
             converted = quantity;
         } else {
