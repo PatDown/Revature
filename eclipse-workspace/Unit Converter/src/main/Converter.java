@@ -9,6 +9,7 @@ import java.util.Scanner;
  * @author Pat Down
  */
 public class Converter {
+
     public static int QUIT = 6;
     public static Scanner input = new Scanner(System.in);
     public static Map<Integer, Measurement> distanceUnits = new HashMap<Integer, Measurement>();
@@ -127,10 +128,10 @@ public class Converter {
             System.out.println("Invalid input detected. Please enter a valid number from the list above.");
             selectedUnits[1] = input.nextInt();
         } // while
-        
+
         return selectedUnits;
     }// unitSelection
-    
+
     public static void distanceConverter(int[] selectedUnits, double quantity) {
         String unit1 = distanceUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = distanceUnits.get(selectedUnits[1]).getAbbr(),
@@ -182,7 +183,7 @@ public class Converter {
                     }//switch
                     break;
                 case "in"://direct conversions: mi, m, yd, ft, cm, mm
-                    switch (unit2){
+                    switch (unit2) {
                         case "mi":
                         case "yd":
                         case "ft":
@@ -202,7 +203,7 @@ public class Converter {
                     }//switch
                     break;
                 case "km"://direct conversions: m, cm, mm
-                    switch (unit2){
+                    switch (unit2) {
                         case "m":
                         case "mm":
                         case "cm":
@@ -214,7 +215,7 @@ public class Converter {
                         case "ft":
                             mid = convert(quantity, unit1, "cm");
                             temp = "cm";
-                            if (unit2.equals("mi")){
+                            if (unit2.equals("mi")) {
                                 mid = convert(mid, temp, "ft");
                                 temp = "ft";
                             }//if
@@ -258,7 +259,7 @@ public class Converter {
                         case "mm":
                             mid = convert(quantity, temp, "in");
                             temp = "in";
-                            if (unit2.equals("km")){
+                            if (unit2.equals("km")) {
                                 mid = convert(mid, temp, "cm");
                                 temp = "cm";
                             }//if
@@ -270,7 +271,7 @@ public class Converter {
                     }//switch
                     break;
                 case "mm"://direct conversions: km, m, in, cm
-                    switch (unit2){
+                    switch (unit2) {
                         case "km":
                         case "m":
                         case "in":
@@ -314,18 +315,19 @@ public class Converter {
                     mid = -1;
                     break;
             }// switch
-            if (mid != -1)
+            if (mid != -1) {
                 mid = convert(mid, temp, unit2);
+            }
         } // else
         converted = mid;
-        
+
         displayConversion(quantity, unit1, converted, unit2);
     }// distanceConverter
 
     public static void volumeConverter(int[] selectedUnits, double quantity) {
-        String unit1 = volumeUnits.get(selectedUnits[0]).getAbbr(), 
-               unit2 = volumeUnits.get(selectedUnits[1]).getAbbr(),
-               temp = unit1;
+        String unit1 = volumeUnits.get(selectedUnits[0]).getAbbr(),
+                unit2 = volumeUnits.get(selectedUnits[1]).getAbbr(),
+                temp = unit1;
         //System.out.println("Enter the quantity: ");
         double /*quantity = input.nextFloat(),*/ converted, mid;
         if (selectedUnits[0] == selectedUnits[1]) {
@@ -355,7 +357,7 @@ public class Converter {
                                 if (!unit2.equals("L")) {
                                     mid = convert(mid, temp, "L");
                                     temp = "L";
-                                    if (unit2.equals("c")){
+                                    if (unit2.equals("c")) {
                                         mid = convert(mid, temp, "mL");
                                         temp = "mL";
                                     }//if
@@ -368,9 +370,9 @@ public class Converter {
                             break;
                     }//switch
                     break;
-                    
+
                 case "in3"://direct conversions: ft3, gal, qt, pt, mL
-                    switch(unit2){
+                    switch (unit2) {
                         case "ft3":
                         case "gal":
                         case "qt":
@@ -396,7 +398,7 @@ public class Converter {
                             break;
                     }//switch
                     break;
-                    
+
                 case "m3"://direct conversions: L, mL
                     switch (unit2) {
                         case "L":
@@ -421,7 +423,7 @@ public class Converter {
                         case "ft3":
                             mid = convert(quantity, temp, "mL");
                             temp = "mL";
-                            if (unit2.equals("ft3")){
+                            if (unit2.equals("ft3")) {
                                 mid = convert(mid, temp, "in3");
                                 temp = "in3";
                             }//if
@@ -429,10 +431,10 @@ public class Converter {
                         default:
                             System.out.println("Something went wrong.");
                             mid = -1;
-                            break;        
+                            break;
                     }//switch
                     break;
-                    
+
                 case "c"://direct conversions: mL
                     switch (unit2) {
                         case "mL":
@@ -451,7 +453,7 @@ public class Converter {
                             mid = convert(quantity, temp, "mL");
                             temp = "mL";
                             if (!unit2.equals("m3") && !unit2.equals("L")
-                             && !unit2.equals("in3") && !unit2.equals("tsp")) {
+                                    && !unit2.equals("in3") && !unit2.equals("tsp")) {
                                 mid = convert(mid, temp, "in3");
                                 temp = "in3";
                                 if (unit2.equals("fl oz") || unit2.equals("tbsp")) {
@@ -466,7 +468,7 @@ public class Converter {
                             break;
                     }//switch
                     break;
-                    
+
                 case "fl oz": //direct conversions: gal, L, qt, pt, tbsp, tsp
                     switch (unit2) {
                         case "gal":
@@ -487,10 +489,10 @@ public class Converter {
                         case "c":
                             mid = convert(quantity, temp, "L");
                             unit1 = "L";
-                                if (unit2.equals("c")) {
-                                    mid = convert(mid, temp, "mL");
-                                    unit1 = "mL";
-                                }//if
+                            if (unit2.equals("c")) {
+                                mid = convert(mid, temp, "mL");
+                                unit1 = "mL";
+                            }//if
                             break;
                         default:
                             System.out.println("Something went wrong.");
@@ -498,7 +500,7 @@ public class Converter {
                             break;
                     }//switch
                     break;
-                    
+
                 case "gal": //direct conversions: qt, pt, fl oz, tbsp, in3
                     switch (unit2) {
                         case "pt":
@@ -519,7 +521,7 @@ public class Converter {
                         case "c":
                             mid = convert(quantity, temp, "in3");
                             temp = "in3";
-                            if (!unit2.equals("mL")){
+                            if (!unit2.equals("mL")) {
                                 mid = convert(mid, temp, "mL");
                                 temp = "mL";
                             }//if
@@ -530,7 +532,7 @@ public class Converter {
                             break;
                     }//switch
                     break;
-                    
+
                 case "L": //direct conversions: m3, fl oz, mL, tbsp
                     switch (unit2) {
                         case "m3":
@@ -545,7 +547,7 @@ public class Converter {
                         case "ft3":
                             mid = convert(quantity, temp, "mL");
                             temp = "mL";
-                            if (unit2.equals("ft3")){
+                            if (unit2.equals("ft3")) {
                                 mid = convert(mid, temp, "in3");
                                 temp = "in3";
                             }//if
@@ -591,7 +593,7 @@ public class Converter {
                     }//switch
                     break;
                 case "pt"://direct conversions: gal, qt, fl oz, tbsp, tsp, in3
-                    switch(unit2) {
+                    switch (unit2) {
                         case "gal":
                         case "tbsp":
                         case "tsp":
@@ -610,7 +612,7 @@ public class Converter {
                         case "m3":
                             mid = convert(quantity, temp, "fl oz");
                             temp = "fl oz";
-                            if (unit2.equals("c") || unit2.equals("m3")){
+                            if (unit2.equals("c") || unit2.equals("m3")) {
                                 mid = convert(mid, temp, "mL");
                                 temp = "mL";
                             }//if
@@ -622,7 +624,7 @@ public class Converter {
                     }//switch
                     break;
                 case "qt"://direct conversions: ft3, gal, pt, fl oz, tbsp, tsp, in3
-                    switch(unit2){
+                    switch (unit2) {
                         case "ft3":
                         case "gal":
                         case "pt":
@@ -638,7 +640,7 @@ public class Converter {
                         case "c":
                             mid = convert(quantity, temp, "in3");
                             temp = "in3";
-                            if (!unit2.equals("mL")){
+                            if (!unit2.equals("mL")) {
                                 mid = convert(mid, temp, "mL");
                                 temp = "mL";
                             }//if
@@ -650,7 +652,7 @@ public class Converter {
                     }//switch
                     break;
                 case "tbsp"://direct conversions: gal, L, qt, pt, fl oz, tsp
-                    switch (unit2){
+                    switch (unit2) {
                         case "gal":
                         case "pt":
                         case "fl oz":
@@ -664,7 +666,7 @@ public class Converter {
                         case "c":
                             mid = convert(quantity, temp, "L");
                             temp = "L";
-                            if (unit2.equals("c")){
+                            if (unit2.equals("c")) {
                                 mid = convert(mid, temp, "mL");
                                 temp = "mL";
                             }//if
@@ -681,7 +683,7 @@ public class Converter {
                     }//switch
                     break;
                 case "tsp"://direct conversions: qt, pt, fl oz, tbsp, mL
-                    switch (unit2){
+                    switch (unit2) {
                         case "pt":
                         case "fl oz":
                         case "tbsp":
@@ -712,8 +714,9 @@ public class Converter {
                     mid = -1;
                     break;
             }// switch
-            if (mid != -1)
+            if (mid != -1) {
                 mid = convert(mid, temp, unit2);
+            }
         } // else
         converted = mid;
         displayConversion(quantity, unit1, converted, unit2);
@@ -754,9 +757,9 @@ public class Converter {
     }// temperatureConverter
 
     public static void weightConverter(int[] selectedUnits, double quantity) {
-        String unit1 = weightUnits.get(selectedUnits[0]).getAbbr(), 
-               unit2 = weightUnits.get(selectedUnits[1]).getAbbr(),
-               temp = unit1;
+        String unit1 = weightUnits.get(selectedUnits[0]).getAbbr(),
+                unit2 = weightUnits.get(selectedUnits[1]).getAbbr(),
+                temp = unit1;
         //System.out.println("Enter the quantity: ");
         double /*quantity = input.nextFloat(),*/ converted, mid;
         if (selectedUnits[0] == selectedUnits[1]) {
@@ -775,7 +778,7 @@ public class Converter {
                         case "st":
                             mid = convert(quantity, temp, "kg");
                             temp = "kg";
-                            if (!unit2.equals("oz")){
+                            if (!unit2.equals("oz")) {
                                 mid = convert(mid, temp, "oz");
                                 temp = "oz";
                             }//if
@@ -787,7 +790,7 @@ public class Converter {
                     }//switch
                     break;
                 case "kg"://direct conversions: g, mg, oz
-                    switch(unit2) {
+                    switch (unit2) {
                         case "g":
                         case "mg":
                         case "oz":
@@ -816,7 +819,7 @@ public class Converter {
                         case "st":
                         case "T":
                             mid = convert(quantity, temp, "kg");
-                            if (!unit2.equals("oz")){
+                            if (!unit2.equals("oz")) {
                                 mid = convert(mid, temp, "oz");
                                 temp = "oz";
                             }//id
@@ -828,7 +831,7 @@ public class Converter {
                     }//switch
                     break;
                 case "oz"://direct conversions: T, st, kg, lb
-                    switch(unit2){
+                    switch (unit2) {
                         case "lb":
                         case "st":
                         case "T":
@@ -847,7 +850,7 @@ public class Converter {
                     }//switch
                     break;
                 case "lb"://direct conversions: T, st, oz
-                    switch (unit2){
+                    switch (unit2) {
                         case "st":
                         case "T":
                         case "oz":
@@ -858,7 +861,7 @@ public class Converter {
                         case "mg":
                             mid = convert(quantity, temp, "oz");
                             temp = "oz";
-                            if (!unit2.equals("kg")){
+                            if (!unit2.equals("kg")) {
                                 mid = convert(mid, temp, "kg");
                                 temp = "kg";
                             }//if
@@ -881,7 +884,7 @@ public class Converter {
                         case "mg":
                             mid = convert(quantity, temp, "oz");
                             temp = "oz";
-                            if (unit2.equals("g") || unit2.equals("mg")){
+                            if (unit2.equals("g") || unit2.equals("mg")) {
                                 mid = convert(mid, temp, "kg");
                                 temp = "kg";
                             }//if
@@ -893,7 +896,7 @@ public class Converter {
                     }//switch
                     break;
                 case "T"://direct conversions: lb, oz
-                    switch (unit2){
+                    switch (unit2) {
                         case "lb":
                         case "oz":
                             mid = quantity;
@@ -904,7 +907,7 @@ public class Converter {
                         case "mg":
                             mid = convert(quantity, temp, "oz");
                             temp = "oz";
-                            if (unit2.equals("g") || unit2.equals("mg")){
+                            if (unit2.equals("g") || unit2.equals("mg")) {
                                 mid = convert(mid, temp, "kg");
                                 temp = "kg";
                             }//if
@@ -920,272 +923,275 @@ public class Converter {
                     mid = -1;
                     break;
             }// switch
-            if (mid != -1)
+            if (mid != -1) {
                 mid = convert(mid, temp, unit2);
+            }
         } // else
         converted = mid;
         displayConversion(quantity, unit1, converted, unit2);
     }// weightConverter
 
     public static void timeConverter(int[] selectedUnits, double quantity) {
-        String unit1 = timeUnits.get(selectedUnits[0]).getAbbr(), 
-               unit2 = timeUnits.get(selectedUnits[1]).getAbbr(),
-               temp = unit1;
+        String unit1 = timeUnits.get(selectedUnits[0]).getAbbr(),
+                unit2 = timeUnits.get(selectedUnits[1]).getAbbr(),
+                temp = unit1;
         //System.out.println("Enter the quantity:");
         double /*quantity = input.nextFloat(),*/ converted, mid;
         if (selectedUnits[0] == selectedUnits[1]) {
-            converted = quantity;
+            mid = quantity;
         } else {
             switch (unit1) {
-                case "d":
+                case "d"://direct conversions: yr, wk, hr, min, sec
                     switch (unit2) {
                         case "sec":
-                            converted = quantity * 86400;
-                            break;
                         case "min":
-                            converted = quantity * 1440;
-                            break;
                         case "hr":
-                            converted = quantity * 24;
-                            break;
                         case "wk":
-                            converted = quantity / 7;
+                        case "yr":
+                            mid = quantity;
                             break;
                         case "mth":
-                            converted = quantity / 30;
-                            break;
-                        default:// case "yr"
-                            converted = quantity / 365;
-                            break;
-                    }// switch
-                    break;
-                case "hr":
-                    switch (unit2) {
-                        case "sec":
-                            converted = quantity * 3600;
-                            break;
-                        case "min":
-                            converted = quantity * 60;
+                            mid = convert(quantity, temp, "yr");
+                            temp = "yr";
                             break;
                         default:
-                            converted = quantity / 24;
-                            switch (unit2) {
-                                case "wk":
-                                    converted /= 7;
-                                    break;
-                                case "mth":
-                                    converted /= 30;
-                                    break;
-                                case "yr":
-                                    converted /= 365;
-                                    break;
-                                default:// Days
-                                    break;
-                            }// switch
+                            System.out.println("Something went wrong.");
+                            mid = -1;
                             break;
                     }// switch
                     break;
-                case "min":
-                    if (unit2.equals("sec")) {
-                        converted = quantity * 60;
-                    } else {
-                        converted = quantity / 60;
-                        if (!unit2.equals("hr")) {
-                            converted /= 24;
-                            switch (unit2) {
-                                case "wk":
-                                    converted /= 7;
-                                    break;
-                                case "mth":
-                                    converted /= 30;
-                                    break;
-                                case "yr":
-                                    converted /= 365;
-                                    break;
-                                default:// Days
-                                    break;
-                            }// switch
-                        } // if
-                    } // else
-                    break;
-                case "mth":
-                    if (unit2.equals("yr")) {
-                        converted = quantity / 12;
-                    } else {
-                        converted = quantity * 4;
-                        if (!unit2.equals("wk")) {
-                            converted *= 7;
-                            if (!unit2.equals("d")) {
-                                converted *= 24;
-                                if (!unit2.equals("hr")) {
-                                    converted *= 60;
-                                    if (!unit2.equals("min")) {
-                                        converted *= 60;
-                                    }
-                                } // if
-                            } // if
-                        } // if
-                    } // else
-                    break;
-                case "sec":
-                    converted = quantity * 60;
-                    if (!unit2.equals("min")) {
-                        converted /= 60;
-                        if (!unit2.equals("hr")) {
-                            converted /= 24;
-                            switch (unit2) {
-                                case "wk":
-                                    converted /= 7;
-                                    break;
-                                case "mth":
-                                    converted /= 30;
-                                    break;
-                                case "yr":
-                                    converted /= 365;
-                                    break;
-                                default:// Days
-                                    break;
-                            }// switch
-                        } // if
-                    } // if
-                    break;
-                case "wk":
+                case "hr"://direct conversions: yr, wk, d, min, sec
                     switch (unit2) {
+                        case "sec":
+                        case "min":
+                        case "d":
+                        case "wk":
+                        case "yr":
+                            mid = quantity;
+                            break;
                         case "mth":
-                            converted = quantity / 4;
+                            mid = convert(quantity, temp, "yr");
+                            temp = "yr";
+                            break;
+                        default:
+                            System.out.println("Something went wrong.");
+                            mid = -1;
+                            break;
+                    }// switch
+                    break;
+                case "min"://direct conversions: yr, wk, d, hr, sec
+                    switch (unit2) {
+                        case "yr":
+                        case "wk":
+                        case "d":
+                        case "hr":
+                        case "sec":
+                            mid = quantity;
+                            break;
+                        case "mth":
+                            mid = convert(quantity, temp, "yr");
+                            temp = "yr";
+                            break;
+                        default:
+                            System.out.println("Something went wrong.");
+                            mid = -1;
+                            break;
+                    }//switch
+                    break;
+                case "mth"://direct conversions: yr
+                    switch (unit2) {
+                        case "yr":
+                            mid = quantity;
+                            break;
+                        case "wk":
+                        case "d":
+                        case "min":
+                        case "sec":
+                        case "hr":
+                            mid = convert(quantity, temp, "yr");
+                            temp = "yr";
+                            if (unit2.equals("sec") || unit2.equals("wk")) {
+                                mid = convert(mid, temp, "d");
+                                temp = "d";
+                            }//if
+                            break;
+                        default:
+                            System.out.println("Something went wrong.");
+                            mid = -1;
+                            break;
+                    }//switch
+                    break;
+                case "sec"://direct conversions: wk, d, hr, min
+                    switch (unit2) {
+                        case "wk":
+                        case "d":
+                        case "hr":
+                        case "min":
+                            mid = quantity;
                             break;
                         case "yr":
-                            converted = quantity / 52;
+                        case "mth":
+                            mid = convert(quantity, temp, "d");
+                            temp = "d";
+                            if (unit2.equals("mth")) {
+                                mid = convert(quantity, temp, "yr");
+                                temp = "yr";
+                            }//if
                             break;
                         default:
-                            converted = quantity * 7;
-                            if (!unit2.equals("d")) {
-                                converted *= 24;
-                                if (!unit2.equals("hr")) {
-                                    converted *= 60;
-                                    if (!unit2.equals("min")) {
-                                        converted *= 60;
-                                    }
-                                } // if
-                            } // if
+                            System.out.println("Something went wrong.");
+                            mid = -1;
+                            break;
+                    }//switch
+                    break;
+                case "wk"://direct conversions: d, hr, min, sec
+                    switch (unit2) {
+                        case "d":
+                        case "hr":
+                        case "min":
+                        case "sec":
+                            mid = quantity;
+                            break;
+                        case "yr":
+                        case "mth":
+                            mid = convert(quantity, temp, "d");
+                            temp = "d";
+                            if (unit2.equals("mth")) {
+                                mid = convert(quantity, temp, "yr");
+                                temp = "yr";
+                            }//if
+                            break;
+                        default:
+                            System.out.println("Something went wrong.");
+                            mid = -1;
                             break;
                     }// switch
                     break;
-                default:// case "yr"
+                case "yr"://direct conversions: mth, d, hr, min
                     switch (unit2) {
                         case "mth":
-                            converted = quantity * 12;
+                        case "d":
+                        case "hr":
+                        case "min":
+                            mid = quantity;
                             break;
+                        case "sec":
                         case "wk":
-                            converted = quantity * 52;
+                            mid = convert(quantity, temp, "d");
+                            temp = "d";
                             break;
                         default:
-                            converted = quantity * 365;
-                            if (!unit2.equals("d")) {
-                                converted *= 24;
-                                if (!unit2.equals("hr")) {
-                                    converted *= 60;
-                                    if (!unit2.equals("min")) {
-                                        converted *= 60;
-                                    }
-                                } // if
-                            } // if
+                            System.out.println("Something went wrong.");
+                            mid = -1;
                             break;
-                    }// switch
+                    }//switch
+                    break;
+                default:
+                    System.out.println("Something went wrong.");
+                    mid = -1;
                     break;
             }// switch
+            if (mid != -1) {
+                mid = convert(mid, temp, unit2);
+            }
         } // else
+        converted = mid;
         displayConversion(quantity, unit1, converted, unit2);
     }// timeConverter
 
     public static void displayConversion(double quantity1, String unit1, double quantity2, String unit2) {
         System.out.printf("%f%s  =  %f%s", quantity1, unit1, quantity2, unit2);
     }// displayConversion
-    
-    public static double convert(double quantity, String unit1, String unit2){
-        double converted = 0;
-        for (var f : Conversion.values()){
-            if (unit1.equals(f.getUnit1()) && unit2.equals(f.getUnit2()))
-                converted = quantity * f.getFactor();
-            else if (unit1.equals(f.getUnit2()) && unit2.equals(f.getUnit1()))
-                converted = quantity / f.getFactor();
 
+    public static double convert(double quantity, String unit1, String unit2) {
+        double converted = 0;
+        for (var f : Conversion.values()) {
+            if (unit1.equals(f.getUnit1()) && unit2.equals(f.getUnit2())) {
+                converted = quantity * f.getFactor();
+            } else if (unit1.equals(f.getUnit2()) && unit2.equals(f.getUnit1())) {
+                converted = quantity / f.getFactor();
+            }
         }//for
         return converted;
     }//convert
-    
+
     public static void converterTest(int menuSelection) {
         switch (menuSelection) {
-                case 1: // Distance
-                    for(int i = 1; i <= distanceUnits.size(); i++, System.out.print("\n")){
-                        System.out.println(distanceUnits.get(i).getName());
-                        for(int j = 1; j <= distanceUnits.size(); j++){
-                            int[] selectedUnits = {i, j};
-                            distanceConverter(selectedUnits, 1);
-                            if (j % 2 == 0)
-                                System.out.print("\n");
-                            else
-                                System.out.print("\t\t");
-                        }//for
+            case 1: // Distance
+                for (int i = 1; i <= distanceUnits.size(); i++, System.out.print("\n")) {
+                    System.out.println(distanceUnits.get(i).getName());
+                    for (int j = 1; j <= distanceUnits.size(); j++) {
+                        int[] selectedUnits = {i, j};
+                        distanceConverter(selectedUnits, 1);
+                        if (j % 2 == 0) {
+                            System.out.print("\n");
+                        } else {
+                            System.out.print("\t\t");
+                        }
                     }//for
-                    break;
-                case 2: // Volume
-                    for(int i = 1; i <= volumeUnits.size(); i++, System.out.print("\n")){
-                        System.out.println(volumeUnits.get(i).getName());
-                        for(int j = 1; j <= volumeUnits.size(); j++){
-                            int[] selectedUnits = {i, j};
-                            volumeConverter(selectedUnits, 1);
-                            if (j % 2 == 0)
-                                System.out.print("\n");
-                            else
-                                System.out.print("\t\t");
-                        }//for
+                }//for
+                break;
+            case 2: // Volume
+                for (int i = 1; i <= volumeUnits.size(); i++, System.out.print("\n")) {
+                    System.out.println(volumeUnits.get(i).getName());
+                    for (int j = 1; j <= volumeUnits.size(); j++) {
+                        int[] selectedUnits = {i, j};
+                        volumeConverter(selectedUnits, 1);
+                        if (j % 2 == 0) {
+                            System.out.print("\n");
+                        } else {
+                            System.out.print("\t\t");
+                        }
                     }//for
-                    break;
-                case 3: // Temperature
-                    for(int i = 1; i <= temperatureUnits.size(); i++, System.out.print("\n")){
-                        System.out.println(temperatureUnits.get(i).getName());
-                        for(int j = 1; j <= temperatureUnits.size(); j++){
-                            int[] selectedUnits = {i, j};
-                            temperatureConverter(selectedUnits, 0);
-                            if (j % 2 == 0)
-                                System.out.print("\n");
-                            else
-                                System.out.print("\t\t");
-                        }//for
+                }//for
+                break;
+            case 3: // Temperature
+                for (int i = 1; i <= temperatureUnits.size(); i++, System.out.print("\n")) {
+                    System.out.println(temperatureUnits.get(i).getName());
+                    for (int j = 1; j <= temperatureUnits.size(); j++) {
+                        int[] selectedUnits = {i, j};
+                        temperatureConverter(selectedUnits, 0);
+                        if (j % 2 == 0) {
+                            System.out.print("\n");
+                        } else {
+                            System.out.print("\t\t");
+                        }
                     }//for
-                    break;
-                case 4: // Weight
-                    for(int i = 1; i <= weightUnits.size(); i++, System.out.print("\n")){
-                        System.out.println(weightUnits.get(i).getName());
-                        for(int j = 1; j <= weightUnits.size(); j++){
-                            int[] selectedUnits = {i, j};
-                            weightConverter(selectedUnits, 1);
-                            if (j % 2 == 0)
-                                System.out.print("\n");
-                            else
-                                System.out.print("\t\t");
-                        }//for
+                }//for
+                break;
+            case 4: // Weight
+                for (int i = 1; i <= weightUnits.size(); i++, System.out.print("\n")) {
+                    System.out.println(weightUnits.get(i).getName());
+                    for (int j = 1; j <= weightUnits.size(); j++) {
+                        int[] selectedUnits = {i, j};
+                        weightConverter(selectedUnits, 1);
+                        if (j % 2 == 0) {
+                            System.out.print("\n");
+                        } else {
+                            System.out.print("\t\t");
+                        }
                     }//for
-                    break;
-                case 5: // Time
-                    for(int i = 1; i <= timeUnits.size(); i++, System.out.print("\n")){
-                        System.out.println(timeUnits.get(i).getName());
-                        for(int j = 1; j <= timeUnits.size(); j++){
-                            int[] selectedUnits = {i, j};
-                            timeConverter(selectedUnits, 1);
-                            if (j % 2 == 0)
-                                System.out.print("\n");
-                            else
-                                System.out.print("\t\t");
-                        }//for
+                }//for
+                break;
+            case 5: // Time
+                for (int i = 1; i <= timeUnits.size(); i++, System.out.print("\n")) {
+                    System.out.println(timeUnits.get(i).getName());
+                    for (int j = 1; j <= timeUnits.size(); j++) {
+                        int[] selectedUnits = {i, j};
+                        timeConverter(selectedUnits, 1);
+                        if (j % 2 == 0) {
+                            System.out.print("\n");
+                        } else {
+                            System.out.print("\t\t");
+                        }
                     }//for
-                    break;
-                case 6: // Quit
-                    break;
-                default:
-                    System.out.println("Invalid input detected. Please enter a valid number from the list above.");
-                    break;
-            }// switch
+                }//for
+                break;
+            case 6: // Quit
+                break;
+            default:
+                System.out.println("Invalid input detected. Please enter a valid number from the list above.");
+                break;
+        }// switch
     }//converterTest
 }// Converter
