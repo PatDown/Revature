@@ -22,12 +22,12 @@ public class Converter {
         int menuSelection = 0;
         unitMapFiller();
         while (menuSelection != QUIT) {
-            System.out.println("========================================");
+            System.out.println("\n========================================");
             System.out.println("Please select an option:\n" + "1. Distance\n" + "2. Volume\n" + "3. Temperature\n"
                     + "4. Weight\n" + "5. Time\n" + "6. Quit");
             menuSelection = input.nextInt();
-            converterTest(menuSelection);
-            /*switch (menuSelection) {
+            //converterTest(menuSelection);
+            switch (menuSelection) {
                 case 1: // Distance
                     distanceConverter(unitSelection(distanceUnits));
                     break;
@@ -48,7 +48,7 @@ public class Converter {
                 default:
                     System.out.println("Invalid input detected. Please enter a valid number from the list above.");
                     break;
-            }// switch*/
+            }// switch
         } // while
         input.close();
     }// main
@@ -132,15 +132,15 @@ public class Converter {
         return selectedUnits;
     }// unitSelection
 
-    public static void distanceConverter(int[] selectedUnits, double quantity) {
+    public static void distanceConverter(int[] selectedUnits/*, double quantity*/) {
         String unit1 = distanceUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = distanceUnits.get(selectedUnits[1]).getAbbr(),
                 temp = unit1;
-        //System.out.println("Enter the quantity: ");
-        double /*quantity = input.nextFloat(),*/ converted, mid;
-        if (selectedUnits[0] == selectedUnits[1]) {
+        System.out.println("Enter the quantity: ");
+        double quantity = input.nextFloat(), converted, mid;
+        if (selectedUnits[0] == selectedUnits[1])
             mid = quantity;
-        } else {
+        else {
             switch (unit1) {
                 case "cm"://direct conversions: km, m, yd, ft, in, mm
                     switch (unit2) {
@@ -315,24 +315,23 @@ public class Converter {
                     mid = -1;
                     break;
             }// switch
-            if (mid != -1) {
+            if (mid != -1)
                 mid = convert(mid, temp, unit2);
-            }
         } // else
         converted = mid;
 
         displayConversion(quantity, unit1, converted, unit2);
     }// distanceConverter
 
-    public static void volumeConverter(int[] selectedUnits, double quantity) {
+    public static void volumeConverter(int[] selectedUnits/*, double quantity*/) {
         String unit1 = volumeUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = volumeUnits.get(selectedUnits[1]).getAbbr(),
                 temp = unit1;
-        //System.out.println("Enter the quantity: ");
-        double /*quantity = input.nextFloat(),*/ converted, mid;
-        if (selectedUnits[0] == selectedUnits[1]) {
+        System.out.println("Enter the quantity: ");
+        double quantity = input.nextFloat(), converted, mid;
+        if (selectedUnits[0] == selectedUnits[1])
             mid = quantity;
-        } else {
+        else {
             switch (unit1) {
                 case "ft3"://direct conversions: qt, in3
                     switch (unit2) {
@@ -714,57 +713,58 @@ public class Converter {
                     mid = -1;
                     break;
             }// switch
-            if (mid != -1) {
+            if (mid != -1)
                 mid = convert(mid, temp, unit2);
-            }
         } // else
         converted = mid;
         displayConversion(quantity, unit1, converted, unit2);
     }// volumeConverter
 
-    public static void temperatureConverter(int[] selectedUnits, double quantity) {
+    public static void temperatureConverter(int[] selectedUnits/*, double quantity*/) {
         String unit1 = temperatureUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = temperatureUnits.get(selectedUnits[1]).getAbbr();
-        //System.out.println("Enter the quantity: ");
-        double /*quantity = input.nextFloat(),*/ converted;
+        System.out.println("Enter the quantity: ");
+        double quantity = input.nextFloat(), converted, mid;
 
-        if (unit1.equals(unit2)) {
-            converted = quantity;
-        } else {
+        if (unit1.equals(unit2))
+            mid = quantity;
+        else {
             switch (unit1) {
                 case "F":
-                    converted = (quantity - 32) * 5 / 9;
-                    if (unit2.equals("K")) {
-                        converted += 273.15;
-                    }
+                    mid = (quantity - 32) * 5 / 9;
+                    if (unit2.equals("K"))
+                        mid += 273.15;
                     break;
                 case "C":
-                    if (unit2.equals("F")) {
-                        converted = (quantity * 9 / 5) + 32;
-                    } else {
-                        converted = quantity + 273.15;
-                    }
+                    if (unit2.equals("F"))
+                        mid = (quantity * 9 / 5) + 32;
+                    else
+                        mid = quantity + 273.15;
                     break;
-                default:// case "K"
-                    converted = quantity - 273.15;
-                    if (unit2.equals("F")) {
-                        converted = (converted * 9 / 5) + 32;
-                    }
+                case "K":
+                    mid = quantity - 273.15;
+                    if (unit2.equals("F"))
+                        mid = (mid * 9 / 5) + 32;
+                    break;
+                default:
+                    System.out.println("Something went wrong.");
+                    mid = -1;
                     break;
             }// switch
         } // else
+        converted = mid;
         displayConversion(quantity, unit1, converted, unit2);
     }// temperatureConverter
 
-    public static void weightConverter(int[] selectedUnits, double quantity) {
+    public static void weightConverter(int[] selectedUnits/*, double quantity*/) {
         String unit1 = weightUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = weightUnits.get(selectedUnits[1]).getAbbr(),
                 temp = unit1;
-        //System.out.println("Enter the quantity: ");
-        double /*quantity = input.nextFloat(),*/ converted, mid;
-        if (selectedUnits[0] == selectedUnits[1]) {
+        System.out.println("Enter the quantity: ");
+        double quantity = input.nextFloat(), converted, mid;
+        if (selectedUnits[0] == selectedUnits[1])
             mid = quantity;
-        } else {
+        else {
             switch (unit1) {
                 case "g"://direct conversions: kg, mg
                     switch (unit2) {
@@ -923,23 +923,22 @@ public class Converter {
                     mid = -1;
                     break;
             }// switch
-            if (mid != -1) {
+            if (mid != -1)
                 mid = convert(mid, temp, unit2);
-            }
         } // else
         converted = mid;
         displayConversion(quantity, unit1, converted, unit2);
     }// weightConverter
 
-    public static void timeConverter(int[] selectedUnits, double quantity) {
+    public static void timeConverter(int[] selectedUnits/*, double quantity*/) {
         String unit1 = timeUnits.get(selectedUnits[0]).getAbbr(),
                 unit2 = timeUnits.get(selectedUnits[1]).getAbbr(),
                 temp = unit1;
-        //System.out.println("Enter the quantity:");
-        double /*quantity = input.nextFloat(),*/ converted, mid;
-        if (selectedUnits[0] == selectedUnits[1]) {
+        System.out.println("Enter the quantity:");
+        double quantity = input.nextFloat(),converted, mid;
+        if (selectedUnits[0] == selectedUnits[1])
             mid = quantity;
-        } else {
+        else {
             switch (unit1) {
                 case "d"://direct conversions: yr, wk, hr, min, sec
                     switch (unit2) {
@@ -1091,9 +1090,8 @@ public class Converter {
                     mid = -1;
                     break;
             }// switch
-            if (mid != -1) {
+            if (mid != -1)
                 mid = convert(mid, temp, unit2);
-            }
         } // else
         converted = mid;
         displayConversion(quantity, unit1, converted, unit2);
@@ -1106,16 +1104,15 @@ public class Converter {
     public static double convert(double quantity, String unit1, String unit2) {
         double converted = 0;
         for (var f : Conversion.values()) {
-            if (unit1.equals(f.getUnit1()) && unit2.equals(f.getUnit2())) {
+            if (unit1.equals(f.getUnit1()) && unit2.equals(f.getUnit2()))
                 converted = quantity * f.getFactor();
-            } else if (unit1.equals(f.getUnit2()) && unit2.equals(f.getUnit1())) {
+            else if (unit1.equals(f.getUnit2()) && unit2.equals(f.getUnit1()))
                 converted = quantity / f.getFactor();
-            }
         }//for
         return converted;
     }//convert
 
-    public static void converterTest(int menuSelection) {
+    /*public static void converterTest(int menuSelection) {
         switch (menuSelection) {
             case 1: // Distance
                 for (int i = 1; i <= distanceUnits.size(); i++, System.out.print("\n")) {
@@ -1123,11 +1120,10 @@ public class Converter {
                     for (int j = 1; j <= distanceUnits.size(); j++) {
                         int[] selectedUnits = {i, j};
                         distanceConverter(selectedUnits, 1);
-                        if (j % 2 == 0) {
+                        if (j % 2 == 0)
                             System.out.print("\n");
-                        } else {
+                        else
                             System.out.print("\t\t");
-                        }
                     }//for
                 }//for
                 break;
@@ -1137,11 +1133,10 @@ public class Converter {
                     for (int j = 1; j <= volumeUnits.size(); j++) {
                         int[] selectedUnits = {i, j};
                         volumeConverter(selectedUnits, 1);
-                        if (j % 2 == 0) {
+                        if (j % 2 == 0)
                             System.out.print("\n");
-                        } else {
+                        else
                             System.out.print("\t\t");
-                        }
                     }//for
                 }//for
                 break;
@@ -1151,11 +1146,10 @@ public class Converter {
                     for (int j = 1; j <= temperatureUnits.size(); j++) {
                         int[] selectedUnits = {i, j};
                         temperatureConverter(selectedUnits, 0);
-                        if (j % 2 == 0) {
+                        if (j % 2 == 0)
                             System.out.print("\n");
-                        } else {
+                        else
                             System.out.print("\t\t");
-                        }
                     }//for
                 }//for
                 break;
@@ -1165,11 +1159,10 @@ public class Converter {
                     for (int j = 1; j <= weightUnits.size(); j++) {
                         int[] selectedUnits = {i, j};
                         weightConverter(selectedUnits, 1);
-                        if (j % 2 == 0) {
+                        if (j % 2 == 0)
                             System.out.print("\n");
-                        } else {
+                        else
                             System.out.print("\t\t");
-                        }
                     }//for
                 }//for
                 break;
@@ -1179,11 +1172,10 @@ public class Converter {
                     for (int j = 1; j <= timeUnits.size(); j++) {
                         int[] selectedUnits = {i, j};
                         timeConverter(selectedUnits, 1);
-                        if (j % 2 == 0) {
+                        if (j % 2 == 0)
                             System.out.print("\n");
-                        } else {
+                        else
                             System.out.print("\t\t");
-                        }
                     }//for
                 }//for
                 break;
@@ -1193,5 +1185,5 @@ public class Converter {
                 System.out.println("Invalid input detected. Please enter a valid number from the list above.");
                 break;
         }// switch
-    }//converterTest
+    }//converterTest*/
 }// Converter
