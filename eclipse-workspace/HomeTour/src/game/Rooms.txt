@@ -1,0 +1,45 @@
+The Foyer
+a small foyer
+The entrance to the house. To the immediate east, a double doorway to a bedroom.\nThe tile of the foyer meets up with the carpet of the hall to the north that leads to the living room.\nA small closet can be accessed from here as well.
+The Living Room
+a frequently used family room
+long description
+The Kitchen
+short description
+long description
+The Dining Room
+short description
+long description
+Grandma's Bedroom
+short description
+long description
+Bathroom
+short description
+long description
+Boys' Bedroom
+short description
+long description
+Girls' Bedroom
+short description
+long description
+Master Bedroom
+short description
+long description
+Master Bathroom
+short description
+long description
+Entertainment Room
+short description
+long description
+Office
+short description
+long description
+Laundry Room
+short description
+long description
+Garage
+short description
+long description
+Attic
+short description
+long description
