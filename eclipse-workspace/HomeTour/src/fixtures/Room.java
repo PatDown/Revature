@@ -1,5 +1,7 @@
 package fixtures;
 
+import game.Player;
+
 /**
  *
  * @author Pat Down
@@ -19,8 +21,8 @@ public class Room extends Fixture {
         this.exits = exits;
     }//setExits
     
-    /*public Room getExit(String direction){
-        
+    /*public Room getExit(Player player, String direction){
+        player.look(this, direction);
     }//getExit*/
     
     @Override

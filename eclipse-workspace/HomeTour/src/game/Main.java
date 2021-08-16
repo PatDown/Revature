@@ -48,7 +48,7 @@ public class Main {
                 player.open();
                 break;
             case "look":
-                //player.look();
+                player.look();
                 break;
             case "take":
                 player.take(command[1]);
@@ -58,6 +58,9 @@ public class Main {
                 break;
             case "use":
                 player.use(command[1]);
+                break;
+            case "turn":
+                player.turn(command[1]);
                 break;
             case "menu":
                 printCommands();
