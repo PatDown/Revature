@@ -1,45 +1,79 @@
-The Foyer
+Foyer
 a small foyer
 The entrance to the house. To the immediate east, a double doorway to a bedroom.\nThe tile of the foyer meets up with the carpet of the hall to the north that leads to the living room.\nA small closet can be accessed from here as well.
-The Living Room
+2, Living Room, north, Grandmas's Bedroom, east
+
+Living Room
 a frequently used family room
 long description
-The Kitchen
+6, Kitchen, east, Foyer, south, Hallway, west, Entertainment Room, down, Dining Room, east, Office, down
+
+Kitchen
 short description
 long description
-The Dining Room
+2, Living Room, west, Dining Room, north
+
+Dining Room
 short description
 long description
+2, Kitchen, south, Living Room, west
+
 Grandma's Bedroom
 short description
 long description
+1, Foyer, west
+
 Bathroom
 short description
 long description
+1, Hallway, south
+
 Boys' Bedroom
 short description
 long description
+1, Hallway, north
+
 Girls' Bedroom
 short description
 long description
+1, Hallway, north
+
 Master Bedroom
 short description
 long description
+2, Hallway, south, Master Bathroom, east
+
 Master Bathroom
 short description
 long description
+1, Master Bedroom, west
+
 Entertainment Room
 short description
 long description
+3, Office, south, Garage, west, Living Room, up
+
 Office
 short description
 long description
+3, Entertainment Room, north, Laundry Room, west, Living Room, up
+
 Laundry Room
 short description
 long description
+2, Garage, west, Office, east
+
 Garage
 short description
 long description
+2, Entertainment Room, east, Laundry Room, east
+
 Attic
 short description
 long description
+1, Hallway, down
+
+Hallway
+short description
+long description
+6, Boys' Bedroom, south, Girls' Bedroom, south, Master Bedroom, north, Bathroom, north, Living Room, east, Attic, up
