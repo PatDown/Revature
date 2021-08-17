@@ -16,7 +16,7 @@ public class Player {
 
     public Player(Room currentRoom) {
         this.currentRoom = currentRoom;
-        heading = "North";
+        heading = "north";
     }//constructor
     
     public Room getCurrentRoom() {
@@ -40,26 +40,11 @@ public class Player {
     }//setHeading
     
     public void go(String direction){
-        switch (direction){
-            case "forward":
-                break;
-            case "back":
-                turn("around");
-                break;
-            case "left":
-                turn(direction);
-                break;
-            case "right":
-                turn(direction);
-                break;
-            case "up":
-                break;
-            case "down":
-                break;
-            default:
-                break;
-        }//switch (direction)
-        System.out.println("Method under construction.");
+        if (currentRoom.hasExit(direction)){
+            setCurrentRoom(currentRoom.getExit(direction));
+            turn(direction);
+        } else
+           System.out.println("No exit in this direction.");
     }//go(String direction)
     
     public void open(){
@@ -87,67 +72,7 @@ public class Player {
     }//use(String item)
     
     public void turn(String direction){
-        switch (direction){
-            case "around":
-                switch (heading){
-                    case "North":
-                        heading = "South";
-                        break;
-                    case "South":
-                        heading = "North";
-                        break;
-                    case "East":
-                        heading = "West";
-                        break;
-                    case "West":
-                        heading = "East";
-                        break;
-                    default:
-                        System.out.println("Something went wrong.");
-                        break;
-                }//switch (heading
-                break;
-            case "left":
-                switch (heading){
-                    case "North":
-                        heading = "West";
-                        break;
-                    case "South":
-                        heading = "East";
-                        break;
-                    case "East":
-                        heading = "North";
-                        break;
-                    case "West":
-                        heading = "South";
-                        break;
-                    default:
-                        System.out.println("Something went wrong.");
-                        break;
-                }//switch (heading
-                break;
-            case "right":
-                switch (heading){
-                    case "North":
-                        heading = "West";
-                        break;
-                    case "South":
-                        heading = "East";
-                        break;
-                    case "East":
-                        heading = "South";
-                        break;
-                    case "West":
-                        heading = "North";
-                        break;
-                    default:
-                        System.out.println("Something went wrong.");
-                        break;
-                }//switch (heading
-                break;
-            default:
-                System.out.println("Something went wrong.");
-                break;
-        }//switch (direction)
+        if(!direction.equals(heading) && !direction.equals("up") && !direction.equals("down"))
+            setHeading(direction);
     }//turn()
 }//Player

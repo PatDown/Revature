@@ -23,4 +23,7 @@ public abstract class Fixture {
         return longDescription;
     }//getLongDescription
     
+    public void setLongDescription(String longDescription){
+        this.longDescription = longDescription;
+    }//setLongDescription
 }//Fixture
