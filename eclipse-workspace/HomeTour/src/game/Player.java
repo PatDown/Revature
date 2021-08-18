@@ -1,8 +1,7 @@
 package game;
 
-import fixtures.Item;
-import fixtures.Room;
-import java.util.Map;
+import fixtures.*;
+import java.util.*;
 
 /**
  *
@@ -41,8 +40,9 @@ public class Player {
     
     public void go(String direction){
         if (currentRoom.hasExit(direction)){
-            setCurrentRoom(currentRoom.getExit(direction));
+            Room nextRoom = currentRoom.getExit(direction);
             turn(direction);
+            setCurrentRoom(nextRoom);
         } else
            System.out.println("No exit in this direction.");
     }//go(String direction)

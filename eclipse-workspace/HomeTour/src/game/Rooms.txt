@@ -1,7 +1,7 @@
 Foyer
 a small foyer
 The entrance to the house. To the immediate east, a double doorway to a bedroom.\nThe tile of the foyer meets up with the carpet of the hall to the north that leads to the living room.\nA small closet can be accessed from here as well.
-2, Living Room, north, Grandmas's Bedroom, east
+2, Living Room, north, Grandma's Bedroom, east
 
 Living Room
 a frequently used family room

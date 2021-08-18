@@ -8,10 +8,11 @@ import java.util.*;
  */
 public class Main {
     public static Scanner input = new Scanner(System.in);
-    public static RoomManager manager;
+    public static RoomManager manager = new RoomManager();
     public static void main(String[] args) throws NullPointerException{
-        manager = new RoomManager();
+        
         manager.init();
+
         Player player = new Player(manager.getStartingRoom());
         System.out.println("Welcome to the house tour!");
         printCommands();
@@ -23,27 +24,29 @@ public class Main {
         System.out.println();
     }//printCommands
     
-    private static void printRoom(Player player) {
+    private static void printRoom(Player player) throws NullPointerException{
+        System.out.println("=============================================");
         System.out.println(player.getCurrentRoom().toString());
+        player.getCurrentRoom().printExits();
     }//printRoom
 
     private static String[] collectInput() {
-        String[] command = new String[4];
+        String[] command = new String[3];
         System.out.println("Enter command: ");
         int i = 0;
         command[0] = input.nextLine().trim().toLowerCase();
         Scanner commandScanner = new Scanner(command[0]);
-        while (++i < 4 && commandScanner.hasNext()){
-            command[i] = commandScanner.next();
+        commandScanner.useDelimiter(" ");
+        while (i < 3 && commandScanner.hasNext()){
+            command[++i] = commandScanner.next().trim();
         }//while
         return command;
     }//collectInput
 
     private static void parse(String[] command, Player player) {
-        switch(command[1].trim()){
+        switch(command[1]){
             case "go":
                 player.go(command[2]);
-                printRoom(player);
                 break;
             case "open":
                 player.open();
@@ -67,6 +70,7 @@ public class Main {
                 printCommands();
                 break;
             case "quit":
+                System.out.println("Thanks for visiting!");
                 break;
             default:
                 System.out.println("Can't recognize command. Please enter a valid command.");
