@@ -1,0 +1,27 @@
+TV
+A television
+Watch a movie or a show on the TV
+Living Room, Master Bedroom, Grandma's BedRoom, Entertainment Room
+Off, On
+false
+
+Toilet
+A toilet
+Do what you gotta do. Bring something to read.
+Bathroom, Master Bathroom
+Empty, Full
+false
+
+Closet
+Storage space
+Many clothes can be found hanging in here, among other things.
+Foyer, Grandma's Bedroom, Hallway, Boys' Bedroom, Girls' Bedroom, Master Bedroom
+Closed, Open
+false
+
+Flashlight
+A flashlight
+A portable source of light. Make sure you have batteries.
+Kitchen, Garage
+Off, On
+true

@@ -8,11 +8,14 @@ import java.util.*;
  */
 public class Main {
     public static Scanner input = new Scanner(System.in);
-    public static RoomManager manager = new RoomManager();
+    public static Manager manager = new Manager();
+    public static String D1 = "=============================================";
+    public static String D2 = "---------------------------------------------";
+    public static int ROOM_COUNT = 16;
+    
     public static void main(String[] args) throws NullPointerException{
         
         manager.init();
-
         Player player = new Player(manager.getStartingRoom());
         System.out.println("Welcome to the house tour!");
         printCommands();
@@ -21,13 +24,16 @@ public class Main {
     }//main
 	
     private static void printCommands(){
-        System.out.println();
+        System.out.println("Commands");
+        System.out.println("go - Use the 'go' command to go to a neighboring room. ");
     }//printCommands
     
     private static void printRoom(Player player) throws NullPointerException{
-        System.out.println("=============================================");
+        System.out.println(D1);
         System.out.println(player.getCurrentRoom().toString());
+        player.getCurrentRoom().printItems();
         player.getCurrentRoom().printExits();
+        System.out.println(D2);
     }//printRoom
 
     private static String[] collectInput() {
@@ -40,6 +46,7 @@ public class Main {
         while (i < 3 && commandScanner.hasNext()){
             command[++i] = commandScanner.next().trim();
         }//while
+        
         return command;
     }//collectInput
 
@@ -49,10 +56,10 @@ public class Main {
                 player.go(command[2]);
                 break;
             case "open":
-                player.open();
+                player.open(command[2]);
                 break;
             case "look":
-                player.look();
+                player.look(command[2]);
                 break;
             case "take":
                 player.take(command[2]);
@@ -69,7 +76,11 @@ public class Main {
             case "menu":
                 printCommands();
                 break;
+            case "inventory":
+                player.showInventory();
+                break;
             case "quit":
+                System.out.println(D1);
                 System.out.println("Thanks for visiting!");
                 break;
             default:
