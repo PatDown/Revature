@@ -10,7 +10,19 @@ public abstract class Fixture {
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
     }//constructor
+    
+    public Fixture(String name){
+        this.name = name;
+        shortDescription = "";
+        longDescription = "";
+    }//constructor
 
+    public Fixture(String name, String shortDescription) {
+        this.name = name;
+        this.shortDescription = shortDescription;
+        longDescription = "";
+    }//constructor
+    
     public String getName() {
         return name;
     }//getName

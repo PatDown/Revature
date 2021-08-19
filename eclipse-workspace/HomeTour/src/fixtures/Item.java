@@ -13,6 +13,7 @@ public class Item extends Fixture {
     private String currentStatus;
     private boolean takeable;
     
+    
     public Item(String name, String shortDescription, String longDescription){
         super(name, shortDescription, longDescription);
         itemRoom = new Room[Main.ROOM_COUNT];
@@ -21,9 +22,22 @@ public class Item extends Fixture {
         usable = false;
         takeable = false;
     }//constructor
+
+    public Item(String name) {
+        super(name);
+        itemRoom = new Room[Main.ROOM_COUNT];
+        status = new String[2];
+        currentStatus = "";
+        usable = false;
+        takeable = false; 
+    }//constructor
     
-    public boolean isUsable() {
-        return usable;
+    public boolean isUsable(Room room) {
+        for (Room r : itemRoom){
+            if (r == room)
+                return true;
+        }//for
+        return false;
     }//isUsable
 
     public void setUsable(boolean usable) {
@@ -38,8 +52,8 @@ public class Item extends Fixture {
         this.itemRoom = itemRoom;
     }//setItemRoom
     
-    public boolean isInRoom(Room room){
-        for (var i : itemRoom){
+    public boolean inRoom(Room room){
+        for (Room i : itemRoom){
             if (i == room)
                 return true;
         }//for
@@ -60,7 +74,7 @@ public class Item extends Fixture {
     
     public void setStatus(String[] status) {
         this.status = status;
-        currentStatus = status[0];
+        setCurrentStatus(status[0]);
     }//setActions
     
     public void changeStatus(){

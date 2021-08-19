@@ -55,28 +55,32 @@ public class Main {
             case "go":
                 player.go(command[2]);
                 break;
-            case "open":
-                player.open(command[2]);
-                break;
             case "look":
+                System.out.println(D2);
                 player.look(command[2]);
                 break;
             case "take":
+                System.out.println(D2);
                 player.take(command[2]);
                 break;
             case "place":
+                System.out.println(D2);
                 player.place(command[2]);
                 break;
             case "use":
+                System.out.println(D2);
                 player.use(command[2]);
                 break;
             case "turn":
+                System.out.println(D2);
                 player.turn(command[2]);
                 break;
             case "menu":
+                System.out.println(D2);
                 printCommands();
                 break;
             case "inventory":
+                System.out.println(D2);
                 player.showInventory();
                 break;
             case "quit":
