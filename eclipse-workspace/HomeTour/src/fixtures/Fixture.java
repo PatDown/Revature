@@ -1,9 +1,9 @@
 package fixtures;
 
 public abstract class Fixture {
-    private String name;
-    private String shortDescription;
-    private String longDescription;
+    private final String name;
+    private final String shortDescription;
+    private final String longDescription;
 
     public Fixture(String name, String shortDescription, String longDescription) {
         this.name = name;
@@ -23,7 +23,4 @@ public abstract class Fixture {
         return longDescription;
     }//getLongDescription
     
-    public void setLongDescription(String longDescription){
-        this.longDescription = longDescription;
-    }//setLongDescription
 }//Fixture

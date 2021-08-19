@@ -16,6 +16,7 @@ public class Player {
     public Player(Room currentRoom) {
         this.currentRoom = currentRoom;
         heading = "north";
+        inventory = new HashMap<>();
     }//constructor
     
     public Room getCurrentRoom() {
@@ -29,6 +30,17 @@ public class Player {
     public Map<String, Item> getInventory(){
         return inventory;
     }//getInventory
+    
+    public void showInventory(){
+        System.out.println(Main.D2);
+        if (!getInventory().isEmpty()){
+            System.out.println("Inventory");
+            inventory.values().forEach(i -> {
+                System.out.println(i.getName() + " - " + i.getLongDescription());
+            });
+        } else
+            System.out.println("Inventory is empty.");
+    }//showInventory
     
     public String getHeading(){
         return heading;
@@ -47,9 +59,9 @@ public class Player {
            System.out.println("No exit in this direction.");
     }//go(String direction)
     
-    public void open(){
+    public void open(String item){
         System.out.println("Method under construction.");
-    }//open()
+    }//open(String item)
     
     public void look(){
         System.out.println("Method under construction.");
@@ -59,20 +71,30 @@ public class Player {
         System.out.println("Method under construction.");
     }//look(String direction)
     
-    public void take(String item){
-        System.out.println("Method under construction.");
+    public void take(String itemName){
+        Item item = Main.manager.getItem(itemName);
+        if (item.isTakeable()){
+            if (!inventory.containsKey(item.getName()))
+                inventory.put(item.getName(), item);
+            else
+                System.out.println(item.getName() + " already in inventory.");
+        }//if
+        else
+            System.out.println("Cannot take " + item.getName());
     }//take(String item)
     
     public void place(String item){
         System.out.println("Method under construction.");
     }//place(String item)
     
-    public void use(String item){
+    public void use(String name){
+        
         System.out.println("Method under construction.");
     }//use(String item)
     
     public void turn(String direction){
         if(!direction.equals(heading) && !direction.equals("up") && !direction.equals("down"))
             setHeading(direction);
-    }//turn()
+    }//turn(String direction)
+    
 }//Player
