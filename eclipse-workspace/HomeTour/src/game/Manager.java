@@ -51,9 +51,9 @@ public class Manager {
         return items.get(name);
     }//getItem
     
-    public void setItemRooms(Item item, Room room){
-        
-    }//setItemRooms
+    public boolean isItem(String name){
+        return items.values().stream().anyMatch(i -> (i.getName().equalsIgnoreCase(name)));
+    }//isItem
     
     public void init() throws NullPointerException{
         try {
@@ -98,8 +98,8 @@ public class Manager {
         
         for (var i : rooms.values()){
             for (var j : items.values()){
-                if(j.isInRoom(i))
-                    i.setItems(j);
+                if(j.inRoom(i))
+                    i.addItem(j);
             }//for
         }//for
         fileScanner2.close();

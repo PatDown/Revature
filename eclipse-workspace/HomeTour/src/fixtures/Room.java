@@ -125,9 +125,28 @@ public class Room extends Fixture {
         return items;
     }//getItems
     
-    public void setItems(Item item){
-        this.items.put(item.getName(), item);
+    public void addItem(Item item){
+        if (!items.containsKey(item.getName()))
+            items.put(item.getName(), item);
+        else
+            System.out.println(item.getName() + " cannot be placed in this room.");
     }//setItems
+    
+    public void removeItem(Item item){
+        items.remove(item.getName());
+    }//removeItem
+    
+    public Item getItem(String name){
+        for (Item i : items.values()){
+            if (i.getName().equalsIgnoreCase(name))
+                name = i.getName();
+        }//for
+        return items.get(name);
+    }//getItem
+    
+    public boolean hasItem(String name){
+        return items.keySet().stream().anyMatch(s -> (s.equalsIgnoreCase(name)));
+    }//hasItem(String name)
     
     public void printItems(){
         System.out.println("Items");
