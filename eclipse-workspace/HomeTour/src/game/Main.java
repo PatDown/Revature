@@ -1,5 +1,6 @@
 package game;
 
+import fixtures.*;
 import java.util.*;
 
 /**
@@ -55,20 +56,17 @@ public class Main {
             case "go":
                 player.go(command[2]);
                 break;
-            case "open":
-                player.open(command[2]);
-                break;
             case "look":
                 player.look(command[2]);
                 break;
             case "take":
-                player.take(command[2]);
+                player.take(manager.getItem(command[2]));
                 break;
             case "place":
                 player.place(command[2]);
                 break;
             case "use":
-                player.use(command[2]);
+                player.use(manager.getItem(command[2]));
                 break;
             case "turn":
                 player.turn(command[2]);

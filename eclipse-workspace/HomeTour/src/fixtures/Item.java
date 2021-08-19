@@ -22,8 +22,12 @@ public class Item extends Fixture {
         takeable = false;
     }//constructor
     
-    public boolean isUsable() {
-        return usable;
+    public boolean isUsable(Room room) {
+        for (Room r : itemRoom){
+            if (r == room)
+                return true;
+        }//for
+        return false;
     }//isUsable
 
     public void setUsable(boolean usable) {
@@ -60,7 +64,7 @@ public class Item extends Fixture {
     
     public void setStatus(String[] status) {
         this.status = status;
-        currentStatus = status[0];
+        setCurrentStatus(status[0]);
     }//setActions
     
     public void changeStatus(){

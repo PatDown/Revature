@@ -13,7 +13,7 @@ public class Manager {
     private final Map<String, Room> rooms = new HashMap<>();
     private static final Map<String, String[]> exitMap = new HashMap<>();
     private static final Map<String, Item> items = new HashMap<>();
-    private final Map<String, Room[]> itemRooms = new HashMap<>();
+    private final Map<Item, Room[]> itemRooms = new HashMap<>();
     private final Map<String, String[]> status = new HashMap<>();
     private Scanner fileScanner1;
     private Scanner fileScanner2;
@@ -44,8 +44,16 @@ public class Manager {
     }//getRoom
     
     public Item getItem(String name){
+        for (Item i : items.values()){
+            if (i.getName().equalsIgnoreCase(name))
+                name = i.getName();
+        }//for
         return items.get(name);
     }//getItem
+    
+    public void setItemRooms(Item item, Room room){
+        
+    }//setItemRooms
     
     public void init() throws NullPointerException{
         try {
@@ -70,7 +78,7 @@ public class Manager {
         } catch (FileNotFoundException e){
             System.out.println(e.getMessage());
         }//catch
-        Item tv = new Item(
+        Item lights = new Item(
             fileScanner2.nextLine().trim(), 
             fileScanner2.nextLine().trim(), 
             fileScanner2.nextLine().trim().translateEscapes());
@@ -78,13 +86,14 @@ public class Manager {
         Room[] roomsArray = getRooms(itemRooms.split(", "));
         String actions = fileScanner2.nextLine().trim();
         String[] statusArray = actions.split(", ");
-        boolean takeable = fileScanner2.nextBoolean();
-        items.put(tv.getName(), tv);
-        items.get(tv.getName()).setTakeable(takeable);
-        this.itemRooms.put(tv.getName(), roomsArray);
-        this.status.put(tv.getName(), statusArray);
-        items.get(tv.getName()).setItemRoom(roomsArray);
-        items.get(tv.getName()).setStatus(statusArray);
+        String takeStatus = fileScanner2.nextLine();
+        boolean takeable = takeStatus.equals("true");
+        items.put(lights.getName(), lights);
+        items.get(lights.getName()).setTakeable(takeable);
+        this.itemRooms.put(lights, roomsArray);
+        this.status.put(lights.getName(), statusArray);
+        items.get(lights.getName()).setItemRoom(roomsArray);
+        items.get(lights.getName()).setStatus(statusArray);
         findItems();
         
         for (var i : rooms.values()){
@@ -92,8 +101,6 @@ public class Manager {
                 if(j.isInRoom(i))
                     i.setItems(j);
             }//for
-            System.out.println(i.getName());
-            i.printItems();
         }//for
         fileScanner2.close();
     }//init
@@ -116,33 +123,30 @@ public class Manager {
         });
     }//buildHouse
     
-    public void findItems() throws NullPointerException{
-        String name, sDescription, lDescription, itemRooms, status;
-        boolean takeable;
-        
+    public void findItems() throws NullPointerException{        
         while(fileScanner2.hasNext()){
             fileScanner2.nextLine();
-            name = fileScanner2.nextLine().trim();
-            sDescription = fileScanner2.nextLine().trim();
-            lDescription = fileScanner2.nextLine().trim().translateEscapes();
+            String name = fileScanner2.nextLine().trim();
+            String sDescription = fileScanner2.nextLine().trim();
+            String lDescription = fileScanner2.nextLine().trim().translateEscapes();
+            Item item = new Item(name, sDescription, lDescription);
+            items.put(name, item);
 
-            items.put(name, new Item(name, sDescription, lDescription));
-
-            itemRooms = fileScanner2.nextLine().trim();
-            Room[] roomsArray = getRooms(itemRooms.split(", "));
-            this.itemRooms.put(name, roomsArray);
-            status = fileScanner2.nextLine().trim();
+            String iRooms = fileScanner2.nextLine().trim();
+            Room[] roomsArray = getRooms(iRooms.split(", "));
+            this.itemRooms.put(item, roomsArray);
+            String status = fileScanner2.nextLine().trim();
             String[] statusArray = status.split(", ");
-            fileScanner2.nextLine();
-            takeable = fileScanner2.nextBoolean();
+            String takeStatus = fileScanner2.nextLine();
+            boolean takeable = takeStatus.equals("true");
             this.status.put(name, statusArray);
             items.get(name).setTakeable(takeable);
             items.get(name).setItemRoom(roomsArray);
             items.get(name).setStatus(statusArray);
         }//while
-        /*for (var i : items.values()){
-            i.setItemRoom(this.itemRooms.get(i.getName()));
+        for (var i : items.values()){
+            i.setItemRoom(this.itemRooms.get(i));
             i.setStatus(this.status.get(i.getName()));
-        }//for*/
+        }//for
     }//findItems
 }//RoomManager

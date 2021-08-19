@@ -8,28 +8,22 @@ import java.util.*;
  * @author Pat Down
  */
 public class Room extends Fixture {    
-    private final Map<String, String> exits;
-    private Map<String, Item> items;
-    private final Item lights = new Item("Lights", "The lights.", "The lighting of the room.");
+    private final Map<Room, String> exits;
+    private final Map<String, Item> items;
     
     public Room(String name, String shortDescription, String longDescription) {
         super(name, shortDescription, longDescription);
-        this.exits = new HashMap<>();
-        this.items = new HashMap<>();
-        this.lights.setStatus(new String[]{"On", "Off"});
-        this.lights.setItemRoom(new Room[]{this});
-        this.lights.setUsable(true);
-        this.lights.setTakeable(false);
-        this.items.put(lights.getName(), lights);
+        exits = new HashMap<>();
+        items = new HashMap<>();
     }//constructor
     
-    public Map<String, String> getExits(){
+    public Map<Room, String> getExits(){
         return exits;
     }//getExits
     
     public void setExits(String[] exitArray){
         for (int i = 0; i < exitArray.length; i+=2){
-            this.exits.put(exitArray[i], exitArray[i+1]);
+            this.exits.put(Main.manager.getRoom(exitArray[i]), exitArray[i+1]);
         }//for
     }//setExits
     
@@ -38,7 +32,7 @@ public class Room extends Fixture {
         int exitNum = 0;
         for(var e : exits.entrySet()){
             if (e.getValue().equals(direction))
-                directionExits[exitNum++] = Main.manager.getRooms().get(e.getKey());
+                directionExits[exitNum++] = Main.manager.getRoom(e.getKey().getName());
         }//for
         
         if (exitNum < 2)
@@ -63,9 +57,68 @@ public class Room extends Fixture {
     
     public void printExits(){
         System.out.println("Exits");
+        StringBuilder northExits = new StringBuilder();
+        StringBuilder southExits = new StringBuilder();
+        StringBuilder eastExits = new StringBuilder();
+        StringBuilder westExits = new StringBuilder();
+        StringBuilder upExits = new StringBuilder();
+        StringBuilder downExits = new StringBuilder();
+        
         getExits().entrySet().forEach(e -> {
-            System.out.println(e.getKey() + " - " + e.getValue());
+            switch (e.getValue()){
+                case "north":
+                    northExits.append("\n\t");
+                    northExits.append(e.getKey().getName());
+                    northExits.append(": ");
+                    northExits.append(e.getKey().getShortDescription());
+                    break;
+                case "south":
+                    southExits.append("\n\t");
+                    southExits.append(e.getKey().getName());
+                    southExits.append(": ");
+                    southExits.append(e.getKey().getShortDescription());
+                    break;
+                case "east":
+                    eastExits.append("\n\t");
+                    eastExits.append(e.getKey().getName());
+                    eastExits.append(": ");
+                    eastExits.append(e.getKey().getShortDescription());
+                    break;
+                case "west":
+                    westExits.append("\n\t");
+                    westExits.append(e.getKey().getName());
+                    westExits.append(": ");
+                    westExits.append(e.getKey().getShortDescription());
+                    break;
+                case "up":
+                    upExits.append("\n\t");
+                    upExits.append(e.getKey().getName());
+                    upExits.append(": ");
+                    upExits.append(e.getKey().getShortDescription());
+                    break;
+                case "down":
+                    downExits.append("\n\t");
+                    downExits.append(e.getKey().getName());
+                    downExits.append(": ");
+                    downExits.append(e.getKey().getShortDescription());
+                    break;
+                default:
+                    System.out.println("Something went wrong in the printExits method.");
+                    break;
+            }//switch
         });
+        if (northExits.length() > 0)
+            System.out.println("North" + northExits.toString());
+        if (southExits.length() > 0)
+            System.out.println("South" + southExits.toString());
+        if (eastExits.length() > 0)
+            System.out.println("East" + eastExits.toString());
+        if (westExits.length() > 0)
+            System.out.println("West" + westExits.toString());
+        if (upExits.length() > 0)
+            System.out.println("Up" + upExits.toString());
+        if (downExits.length() > 0)
+            System.out.println("Down" + downExits.toString());
     }//printExits
     
     public Map<String, Item> getItems(){

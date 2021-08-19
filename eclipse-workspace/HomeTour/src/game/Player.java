@@ -10,7 +10,7 @@ import java.util.*;
 public class Player {
     public static final int CAPACITY = 5;
     private Room currentRoom;
-    private Map<String, Item> inventory;
+    private final Map<String, Item> inventory;
     private String heading;
 
     public Player(Room currentRoom) {
@@ -30,6 +30,10 @@ public class Player {
     public Map<String, Item> getInventory(){
         return inventory;
     }//getInventory
+    
+    public boolean inInventory(Item item){
+        return inventory.values().stream().anyMatch(i -> (i == item));
+    }//inInventory(Item item)
     
     public void showInventory(){
         System.out.println(Main.D2);
@@ -59,10 +63,6 @@ public class Player {
            System.out.println("No exit in this direction.");
     }//go(String direction)
     
-    public void open(String item){
-        System.out.println("Method under construction.");
-    }//open(String item)
-    
     public void look(){
         System.out.println("Method under construction.");
     }//look()
@@ -71,12 +71,12 @@ public class Player {
         System.out.println("Method under construction.");
     }//look(String direction)
     
-    public void take(String itemName){
-        Item item = Main.manager.getItem(itemName);
+    public void take(Item item){
         if (item.isTakeable()){
-            if (!inventory.containsKey(item.getName()))
+            if (!inventory.containsKey(item.getName())){
+                item.setUsable(true);
                 inventory.put(item.getName(), item);
-            else
+            } else
                 System.out.println(item.getName() + " already in inventory.");
         }//if
         else
@@ -87,10 +87,13 @@ public class Player {
         System.out.println("Method under construction.");
     }//place(String item)
     
-    public void use(String name){
-        
-        System.out.println("Method under construction.");
-    }//use(String item)
+    public void use(Item item){
+        if (item.isUsable(currentRoom)){
+            item.changeStatus();
+            System.out.println("Used " + item.getName());
+        } else
+            System.out.println(item.getName() + " cannot be used at this time.");
+    }//use(Item item)
     
     public void turn(String direction){
         if(!direction.equals(heading) && !direction.equals("up") && !direction.equals("down"))
