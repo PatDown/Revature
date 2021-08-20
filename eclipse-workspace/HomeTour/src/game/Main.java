@@ -34,6 +34,10 @@ public class Main {
         System.out.println("\tquit - Use the 'quit' command to exit the tour.");
     }//printCommands()
     
+    private static void commandInfo(String command){
+        
+    }//commandInfo(String command)
+    
     private static void printRoom(Player player) throws NullPointerException{
         System.out.println(D1);
         System.out.println(player.getCurrentRoom().toString());
@@ -86,6 +90,9 @@ public class Main {
                 break;
             case "menu":
                 printCommands();
+                break;
+            case "info":
+                commandInfo(command[2]);
                 break;
             case "quit":
                 System.out.println(D1);

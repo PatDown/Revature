@@ -64,7 +64,7 @@ public class Player {
     
     public void setHeading(String heading){
         this.heading = heading;
-    }//setHeading()
+    }//setHeading(String heading)
     
     public void go(String direction){
         if (currentRoom.hasExit(direction)){
@@ -130,11 +130,8 @@ public class Player {
                     System.out.println("Cannot use " + name + " at this time.");
             } else if (inInventory(name)){
                 Item item = getInventoryItem(name);
-                if (item.isUsable(currentRoom)){
-                    item.changeStatus();
-                    System.out.println("Used " + item.getName());
-                } else
-                    System.out.println("Cannot use " + name + " at this time.");
+                item.changeStatus();
+                System.out.println("Used " + item.getName());
             } else
                 System.out.println("Cannot access " + name);
         } else
@@ -142,8 +139,66 @@ public class Player {
     }//use(String name)
     
     public void turn(String direction){
-        if(!direction.equals(heading) && !direction.equals("up") && !direction.equals("down"))
-            setHeading(direction);
+        switch(direction) {
+            case "north":
+            case "east":
+            case "south":
+            case "west":
+                setHeading(direction);
+                break;
+            case "right":
+                switch(heading){
+                    case "north":
+                        setHeading("north");
+                        break;
+                    case "east":
+                        setHeading("east");
+                        break;
+                    case "south":
+                        setHeading("west");
+                        break;
+                    case "west":
+                        setHeading("north");
+                        break;
+                }//switch(heading)
+                
+                break;
+            case "left":
+                switch(heading){
+                    case "north":
+                        setHeading("west");
+                        break;
+                    case "east":
+                        setHeading("north");
+                        break;
+                    case "south":
+                        setHeading("east");
+                        break;
+                    case "west":
+                        setHeading("south");
+                        break;
+                }//switch(heading)
+                break;
+            case "around":
+                switch(heading){
+                    case "north":
+                        setHeading("south");
+                        break;
+                    case "east":
+                        setHeading("west");
+                        break;
+                    case "south":
+                        setHeading("north");
+                        break;
+                    case "west":
+                        setHeading("east");
+                        break;
+                }//switch(heading)
+                break;
+            default:
+                System.out.println("Cannot turn " + direction);
+        }//switch(direction)
+        
     }//turn(String direction)
     
     public void invalidItem(String name){
