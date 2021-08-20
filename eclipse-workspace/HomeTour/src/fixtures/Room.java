@@ -10,12 +10,15 @@ import java.util.*;
 public class Room extends Fixture {    
     private final Map<Room, String> exits;
     private final Map<String, Item> items;
+    private final Item lights = new Item("Lights", "It's lit.", "The lighting of the room. Be sure to turn it off when leaving the room.",
+                                   true, new String[]{"On", "Off"}, false);
     
     public Room(String name, String shortDescription, String longDescription) {
         super(name, shortDescription, longDescription);
         exits = new HashMap<>();
         items = new HashMap<>();
-    }//Room(String name, String shortDescription, String longDescription)
+        items.put(lights.getName(), lights);
+    }//Room(String, String, String)
     
     public Map<Room, String> getExits(){
         return exits;
@@ -24,7 +27,7 @@ public class Room extends Fixture {
     public void setExits(String[] exitArray){
         for (int i = 0; i < exitArray.length; i+=2)
             this.exits.put(Main.manager.getRoom(exitArray[i]), exitArray[i+1]);
-    }//setExits(String[] exitArray)
+    }//setExits(String[])
     
     public Room getExit(String direction){
         Room[] directionExits = new Room[3];
@@ -47,11 +50,11 @@ public class Room extends Fixture {
             }while(selection != 1 && selection != 2);
             return directionExits[selection-1];
         }//else
-    }//getExit(String direction)
+    }//getExit(String)
     
     public boolean hasExit(String direction){
         return exits.containsValue(direction);
-    }//hasExit(String direction)
+    }//hasExit(String)
     
     public void printExits(){
         //System.out.println("Exits\n");
@@ -128,22 +131,22 @@ public class Room extends Fixture {
             items.put(item.getName(), item);
         else
             System.out.println(item.getName() + " cannot be placed in this room.");
-    }//addItem(Item item)
+    }//addItem(Item)
     
     public void removeItem(Item item){
         items.remove(item.getName());
-    }//removeItem(Item item)
+    }//removeItem(Item)
     
     public Item getItem(String name){
         for (Item i : items.values())
             if (i.getName().equalsIgnoreCase(name))
                 name = i.getName();
         return items.get(name);
-    }//getItem(String name)
+    }//getItem(String)
     
     public boolean hasItem(String name){
         return items.keySet().stream().anyMatch(s -> (s.equalsIgnoreCase(name)));
-    }//hasItem(String name)
+    }//hasItem(String)
     
     public void printItems(){
         System.out.println("Items");

@@ -20,25 +20,58 @@ public class Main {
         printCommands();
         printRoom(player);
         parse(collectInput(), player);
-    }//main(String[] args)
+    }//main(String[])
 	
     private static void printCommands(){
         System.out.println(D1);
         System.out.println("Commands");
-        System.out.println("\tgo - Use the 'go' command to go to a neighboring room. ");
-        System.out.println("\ttake - Use the 'take' command to add items to your inventory.");
-        System.out.println("\tplace - Use the 'place' command to place items from your inventory.");
-        System.out.println("\tuse - Use the 'use' command to use an item.");
-        System.out.println("\tturn - use the 'turn' command to change the direction you are facing.");
-        System.out.println("\tmenu - Use the 'menu' command to show these controls again.");
-        System.out.println("\tquit - Use the 'quit' command to exit the tour.");
+        System.out.println("\tGo - Use the 'go' command to go to a neighboring room. ");
+        System.out.println("\tTake - Use the 'take' command to add items to your inventory.");
+        System.out.println("\tPlace - Use the 'place' command to place items from your inventory.");
+        System.out.println("\tUse - Use the 'use' command to use an item.");
+        System.out.println("\tTurn - use the 'turn' command to change the direction you are facing.");
+        System.out.println("\tMenu - Use the 'menu' command to show these controls again.");
+        System.out.println("\tInfo - Use the 'info' command to view the valid inputs for each command.");
+        System.out.println("\tQuit - Use the 'quit' command to exit the tour.");
     }//printCommands()
     
     private static void commandInfo(String command){
-        
-    }//commandInfo(String command)
+        System.out.println(D2 + "\nValid inputs for '" + command + "' command");
+        switch(command){
+            case "go":
+                System.out.println("North  South  East  West  Up  Down");
+                break;
+            case "take":
+            case "place":
+                manager.getItems().values().forEach(i ->{
+                    if (i.isTakeable())
+                        System.out.print(i.getName() + "  ");
+                });
+                System.out.println();
+                break;
+            case "use":
+                manager.getItems().values().forEach(i -> {
+                    System.out.print(i.getName() + "  ");
+                });
+                System.out.println();
+                break;
+            case "turn":
+                System.out.println("North  South  East  West  Right  Left  Around");
+                break;
+            case "info":
+                System.out.println("Go  Take  Place  Use  Turn  Menu  Info  Quit");
+                break;
+            case "menu":
+            case "quit":
+                System.out.println("No additional inputs required.");
+                break;
+            default:
+                System.out.println(command + " is not a command.");
+                break;
+        }//switch(command)
+    }//commandInfo(String)
     
-    private static void printRoom(Player player) throws NullPointerException{
+    private static void printRoom(Player player) {
         System.out.println(D1);
         System.out.println(player.getCurrentRoom().toString());
         player.getCurrentRoom().printItems();
@@ -46,7 +79,7 @@ public class Main {
             player.showInventory();
         player.getCurrentRoom().printExits();
         System.out.println(D2);
-    }//printRoom(Player player)
+    }//printRoom(Player)
 
     private static String[] collectInput() {
         String[] command = new String[3];
@@ -55,11 +88,8 @@ public class Main {
         command[0] = input.nextLine().trim().toLowerCase();
         Scanner commandScanner = new Scanner(command[0]);
         commandScanner.useDelimiter(" ");
-        i++;
-        while (i < 3 && commandScanner.hasNext()){
+        while (++i < 3 && commandScanner.hasNext())
             command[i] = commandScanner.next().trim();
-            i++;
-        }// while (i < 3 && commandScanner.hasNext())
         return command;
     }//collectInput()
 
@@ -106,5 +136,5 @@ public class Main {
             printRoom(player);
             parse(collectInput(), player);
         }//if (!command[0].equals("quit"))
-    }//parse(String[] command, Player player)
+    }//parse(String[], Player)
 }//Main

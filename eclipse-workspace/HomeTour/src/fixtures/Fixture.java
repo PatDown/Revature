@@ -9,19 +9,13 @@ public abstract class Fixture {
         this.name = name;
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
-    }//Fixture(String name, String shortDescription, String longDescription)
+    }//Fixture(String, String, String)
     
     public Fixture(String name){
         this.name = name;
         shortDescription = "";
         longDescription = "";
-    }//Fixture(String name)
-
-    public Fixture(String name, String shortDescription) {
-        this.name = name;
-        this.shortDescription = shortDescription;
-        longDescription = "";
-    }//Fixture(String name, String shortDescription)
+    }//Fixture(String)
     
     public String getName() {
         return name;
@@ -34,5 +28,4 @@ public abstract class Fixture {
     public String getLongDescription() {
         return longDescription;
     }//getLongDescription()
-    
 }//Fixture

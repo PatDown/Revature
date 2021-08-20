@@ -17,7 +17,7 @@ public class Player {
         this.currentRoom = currentRoom;
         heading = "north";
         inventory = new HashMap<>();
-    }//Player(Room currentRoom)
+    }//Player(Room)
     
     public Room getCurrentRoom() {
         return currentRoom;
@@ -25,7 +25,7 @@ public class Player {
     
     public void setCurrentRoom(Room currentRoom){
         this.currentRoom = currentRoom;
-    }//setCurrentRoom(Room currentRoom)
+    }//setCurrentRoom(Room)
     
     public Map<String, Item> getInventory(){
         return inventory;
@@ -33,28 +33,24 @@ public class Player {
     
     public void removeInventory(Item item){
         inventory.remove(item.getName(), item);
-    }//removeInventory(Item item)
+    }//removeInventory(Item)
     
     public boolean inInventory(String name){
         return inventory.values().stream().anyMatch(i -> (i.getName().equalsIgnoreCase(name)));
-    }//inInventory(Item item)
+    }//inInventory(Item)
     
     public Item getInventoryItem(String name){
-        for (Item i : inventory.values()){
+        for (Item i : inventory.values())
             if (i.getName().equalsIgnoreCase(name))
                 name = i.getName();
-        }//for (Item i : inventory.values())
         return inventory.get(name);
-    }//getInventoryItem(String name)
+    }//getInventoryItem(String)
     
     public void showInventory(){
-        if (!getInventory().isEmpty()){
-            System.out.println("Inventory");
-            inventory.values().forEach(i -> {
-                System.out.println(i.getName() + " - " + i.getCurrentStatus());
-            });
-        } else
-            System.out.println("Inventory is empty.");
+        System.out.println("Inventory");
+        inventory.values().forEach(i -> {
+            System.out.println(i.getName() + " - " + i.getCurrentStatus());
+        });
         System.out.println(Main.D2);
     }//showInventory()
     
@@ -64,7 +60,7 @@ public class Player {
     
     public void setHeading(String heading){
         this.heading = heading;
-    }//setHeading(String heading)
+    }//setHeading(String)
     
     public void go(String direction){
         if (currentRoom.hasExit(direction)){
@@ -73,15 +69,11 @@ public class Player {
             setCurrentRoom(nextRoom);
         } else
            System.out.println("No exit in this direction.");
-    }//go(String direction)
+    }//go(String)
     
-    public void look(){
+    public void look(String command){
         System.out.println("Method under construction.");
-    }//look()
-    
-    public void look(String direction){
-        System.out.println("Method under construction.");
-    }//look(String direction)
+    }//look(String)
     
     public void take(String name){
         if (Main.manager.isItem(name)){
@@ -101,7 +93,7 @@ public class Player {
                 System.out.println("Cannot find " + name);
         } else
             invalidItem(name);
-    }//take(String item)
+    }//take(String)
     
     public void place(String name){
         if (Main.manager.isItem(name)){
@@ -117,26 +109,26 @@ public class Player {
                 System.out.println("Cannot place " + name + " in room.");
         } else
             invalidItem(name);
-    }//place(String item)
+    }//place(String)
     
     public void use(String name){
-        if (Main.manager.isItem(name)){
-            if (currentRoom.hasItem(name)){
+        if (Main.manager.isItem(name) || currentRoom.hasItem(name)){
+            if (inInventory(name)){
+                Item item = getInventoryItem(name);
+                item.changeStatus();
+                System.out.println("Used " + item.getName());    
+            } else if (currentRoom.hasItem(name)){
                 Item item = currentRoom.getItem(name);
                 if (item.isUsable(currentRoom)){
                     item.changeStatus();
                     System.out.println("Used " + item.getName());
                 } else
                     System.out.println("Cannot use " + name + " at this time.");
-            } else if (inInventory(name)){
-                Item item = getInventoryItem(name);
-                item.changeStatus();
-                System.out.println("Used " + item.getName());
             } else
                 System.out.println("Cannot access " + name);
         } else
             invalidItem(name);
-    }//use(String name)
+    }//use(String)
     
     public void turn(String direction){
         switch(direction) {
@@ -161,7 +153,6 @@ public class Player {
                         setHeading("north");
                         break;
                 }//switch(heading)
-                
                 break;
             case "left":
                 switch(heading){
@@ -195,13 +186,16 @@ public class Player {
                         break;
                 }//switch(heading)
                 break;
+            case "up":
+            case "down":
+                break;
             default:
                 System.out.println("Cannot turn " + direction);
+                break;
         }//switch(direction)
-        
-    }//turn(String direction)
+    }//turn(String)
     
     public void invalidItem(String name){
         System.out.println(name + " is not a valid item.");
-    }//invalidItem(String name)
+    }//invalidItem(String)
 }//Player

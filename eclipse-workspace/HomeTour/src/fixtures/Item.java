@@ -13,7 +13,6 @@ public class Item extends Fixture {
     private String currentStatus;
     private boolean takeable;
     
-    
     public Item(String name, String shortDescription, String longDescription){
         super(name, shortDescription, longDescription);
         itemRoom = new Room[Main.ROOM_COUNT];
@@ -21,7 +20,7 @@ public class Item extends Fixture {
         currentStatus = "";
         usable = false;
         takeable = false;
-    }//Item(String name, String shortDescription, String longDescription)
+    }//Item(String, String, String)
 
     public Item(String name) {
         super(name);
@@ -30,18 +29,31 @@ public class Item extends Fixture {
         currentStatus = "";
         usable = false;
         takeable = false; 
-    }//Item(String name)
+    }//Item(String)
+
+    public Item(String name, String shortDescription, String longDescription, boolean usable, String[] status, boolean takeable) {
+        super(name, shortDescription, longDescription);
+        this.usable = usable;
+        itemRoom = new Room[Main.ROOM_COUNT];
+        this.status = status;
+        currentStatus = status[0];
+        this.takeable = takeable;
+    }//Item(String, String, String, boolean, String[], boolean) 
+    
+    public boolean isUsable(){
+        return usable;
+    }//isUsable()
     
     public boolean isUsable(Room room) {
         for (Room r : itemRoom)
             if (r == room)
-                return true;
-        return false;
-    }//isUsable(Room room)
+                setUsable(true);
+        return isUsable();
+    }//isUsable(Room)
 
     public void setUsable(boolean usable) {
         this.usable = usable;
-    }//setUsable(boolean usable)
+    }//setUsable(boolean)
 
     public Room[] getItemRoom() {
         return itemRoom;
@@ -49,14 +61,14 @@ public class Item extends Fixture {
 
     public void setItemRoom(Room[] itemRoom) {
         this.itemRoom = itemRoom;
-    }//setItemRoom(Room[] itemRoom
+    }//setItemRoom(Room[])
     
     public boolean inRoom(Room room){
         for (Room i : itemRoom)
             if (i == room)
                 return true;
         return false;
-    }//inRoom(Room room)
+    }//inRoom(Room)
     
     public String[] getStatus() {
         return status;
@@ -68,12 +80,12 @@ public class Item extends Fixture {
 
     public void setCurrentStatus(String currentStatus){
         this.currentStatus = currentStatus;
-    }//setCurrentStatus(String currentStatus)
+    }//setCurrentStatus(String)
     
     public void setStatus(String[] status) {
         this.status = status;
         setCurrentStatus(status[0]);
-    }//setStatus(String[] status)
+    }//setStatus(String[])
     
     public void changeStatus(){
         if(getCurrentStatus().equals(status[0]))
@@ -88,7 +100,7 @@ public class Item extends Fixture {
 
     public void setTakeable(boolean takeable) {
         this.takeable = takeable;
-    }//setTakeable(boolean takeable)
+    }//setTakeable(boolean)
     
     @Override
     public String toString(){
