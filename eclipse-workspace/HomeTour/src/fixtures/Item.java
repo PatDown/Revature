@@ -21,7 +21,7 @@ public class Item extends Fixture {
         currentStatus = "";
         usable = false;
         takeable = false;
-    }//constructor
+    }//Item(String name, String shortDescription, String longDescription)
 
     public Item(String name) {
         super(name);
@@ -30,67 +30,65 @@ public class Item extends Fixture {
         currentStatus = "";
         usable = false;
         takeable = false; 
-    }//constructor
+    }//Item(String name)
     
     public boolean isUsable(Room room) {
-        for (Room r : itemRoom){
+        for (Room r : itemRoom)
             if (r == room)
                 return true;
-        }//for
         return false;
-    }//isUsable
+    }//isUsable(Room room)
 
     public void setUsable(boolean usable) {
         this.usable = usable;
-    }//setUsable
+    }//setUsable(boolean usable)
 
     public Room[] getItemRoom() {
         return itemRoom;
-    }//getItemRoom
+    }//getItemRoom()
 
     public void setItemRoom(Room[] itemRoom) {
         this.itemRoom = itemRoom;
-    }//setItemRoom
+    }//setItemRoom(Room[] itemRoom
     
     public boolean inRoom(Room room){
-        for (Room i : itemRoom){
+        for (Room i : itemRoom)
             if (i == room)
                 return true;
-        }//for
         return false;
-    }//isInRoom
+    }//inRoom(Room room)
     
     public String[] getStatus() {
         return status;
-    }//getActoins
+    }//getActoins()
     
     public String getCurrentStatus(){
         return currentStatus;
-    }//getCurrentStatus
+    }//getCurrentStatus()
 
     public void setCurrentStatus(String currentStatus){
         this.currentStatus = currentStatus;
-    }//setCurrentStatus
+    }//setCurrentStatus(String currentStatus)
     
     public void setStatus(String[] status) {
         this.status = status;
         setCurrentStatus(status[0]);
-    }//setActions
+    }//setStatus(String[] status)
     
     public void changeStatus(){
         if(getCurrentStatus().equals(status[0]))
             setCurrentStatus(status[1]);
         else
             setCurrentStatus(status[0]);
-    }//changeStatus
+    }//changeStatus()
 
     public boolean isTakeable() {
         return takeable;
-    }//isTakeable
+    }//isTakeable()
 
     public void setTakeable(boolean takeable) {
         this.takeable = takeable;
-    }//setTakeable
+    }//setTakeable(boolean takeable)
     
     @Override
     public String toString(){
@@ -102,5 +100,4 @@ public class Item extends Fixture {
         itemString.append(getCurrentStatus());
         return itemString.toString();
     }//toString override
-    
 }//Item

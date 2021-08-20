@@ -15,17 +15,16 @@ public class Room extends Fixture {
         super(name, shortDescription, longDescription);
         exits = new HashMap<>();
         items = new HashMap<>();
-    }//constructor
+    }//Room(String name, String shortDescription, String longDescription)
     
     public Map<Room, String> getExits(){
         return exits;
-    }//getExits
+    }//getExits()
     
     public void setExits(String[] exitArray){
-        for (int i = 0; i < exitArray.length; i+=2){
+        for (int i = 0; i < exitArray.length; i+=2)
             this.exits.put(Main.manager.getRoom(exitArray[i]), exitArray[i+1]);
-        }//for
-    }//setExits
+    }//setExits(String[] exitArray)
     
     public Room getExit(String direction){
         Room[] directionExits = new Room[3];
@@ -48,14 +47,14 @@ public class Room extends Fixture {
             }while(selection != 1 && selection != 2);
             return directionExits[selection-1];
         }//else
-    }//getExit
+    }//getExit(String direction)
     
     public boolean hasExit(String direction){
         return exits.containsValue(direction);
     }//hasExit(String direction)
     
     public void printExits(){
-        System.out.println("Exits");
+        //System.out.println("Exits\n");
         StringBuilder northExits = new StringBuilder();
         StringBuilder southExits = new StringBuilder();
         StringBuilder eastExits = new StringBuilder();
@@ -64,7 +63,7 @@ public class Room extends Fixture {
         StringBuilder downExits = new StringBuilder();
         
         getExits().entrySet().forEach(e -> {
-            switch (e.getValue()){
+            switch(e.getValue()){
                 case "north":
                     northExits.append("\n\t");
                     northExits.append(e.getKey().getName());
@@ -104,7 +103,7 @@ public class Room extends Fixture {
                 default:
                     System.out.println("Something went wrong in the printExits method.");
                     break;
-            }//switch
+            }//switch(e.getValue())
         });
         if (northExits.length() > 0)
             System.out.println("North" + northExits.toString());
@@ -118,30 +117,29 @@ public class Room extends Fixture {
             System.out.println("Up" + upExits.toString());
         if (downExits.length() > 0)
             System.out.println("Down" + downExits.toString());
-    }//printExits
+    }//printExits()
     
     public Map<String, Item> getItems(){
         return items;
-    }//getItems
+    }//getItems()
     
     public void addItem(Item item){
         if (!items.containsKey(item.getName()))
             items.put(item.getName(), item);
         else
             System.out.println(item.getName() + " cannot be placed in this room.");
-    }//setItems
+    }//addItem(Item item)
     
     public void removeItem(Item item){
         items.remove(item.getName());
-    }//removeItem
+    }//removeItem(Item item)
     
     public Item getItem(String name){
-        for (Item i : items.values()){
+        for (Item i : items.values())
             if (i.getName().equalsIgnoreCase(name))
                 name = i.getName();
-        }//for
         return items.get(name);
-    }//getItem
+    }//getItem(String name)
     
     public boolean hasItem(String name){
         return items.keySet().stream().anyMatch(s -> (s.equalsIgnoreCase(name)));
@@ -150,10 +148,10 @@ public class Room extends Fixture {
     public void printItems(){
         System.out.println("Items");
         getItems().values().forEach(e -> {
-            System.out.println(e.toString());
+            System.out.println("\t" + e.toString());
         });
         System.out.println(Main.D2);
-    }//printItems
+    }//printItems()
     
     @Override
     public String toString(){
