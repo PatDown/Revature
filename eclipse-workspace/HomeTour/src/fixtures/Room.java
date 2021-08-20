@@ -54,7 +54,7 @@ public class Room extends Fixture {
     }//hasExit(String direction)
     
     public void printExits(){
-        System.out.println("Exits\n");
+        //System.out.println("Exits\n");
         StringBuilder northExits = new StringBuilder();
         StringBuilder southExits = new StringBuilder();
         StringBuilder eastExits = new StringBuilder();
