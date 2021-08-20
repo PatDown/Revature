@@ -30,10 +30,9 @@ public class Room extends Fixture {
     public Room getExit(String direction){
         Room[] directionExits = new Room[3];
         int exitNum = 0;
-        for(var e : exits.entrySet()){
+        for(var e : exits.entrySet())
             if (e.getValue().equals(direction))
                 directionExits[exitNum++] = Main.manager.getRoom(e.getKey().getName());
-        }//for
         
         if (exitNum < 2)
             return directionExits[0];

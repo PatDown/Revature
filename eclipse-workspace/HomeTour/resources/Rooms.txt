@@ -10,70 +10,70 @@ Kitchen, east, Foyer, south, Hallway, west, Entertainment Room, down, Dining Roo
 
 Kitchen
 a quaint little kitchen
-long description
+The place where food is made.\nThe open floor plan allows the kitchen to share its space with the dining room to the north and the living room to the west.
 Living Room, west, Dining Room, north
 
 Dining Room
-short description
-long description
+the place to eat.
+Directly connected to the southern kitchen and the western living room.
 Kitchen, south, Living Room, west
 
 Grandma's Bedroom
-short description
-long description
+she lives quite comfortably.
+Bedroom of the matriarch. To the west lies the foyer.
 Foyer, west
 
 Bathroom
-short description
-long description
+where you go when you gotta go.
+The main bathroom of the house.\nThe only exit is the hallway to the south.
 Hallway, south
 
 Boys' Bedroom
-short description
-long description
+smells like armpits.
+Where the 2 boys sleep. Perpetually in a state of disarray.\nThe northern door opens to the hallway.
 Hallway, north
 
 Girls' Bedroom
-short description
-long description
+please turn down the volume.
+Where the 2 girls sleep. Dirtier than the boys' room, but a more pleasant aroma.\nGo north to the hallway.
 Hallway, north
 
 Master Bedroom
-short description
-long description
+keeper of the comfiest bed.
+The bedroom of the man and woman of the house.\nThe hallway is to the south, while the master bathroom is to the east.
 Hallway, south, Master Bathroom, east
 
 Master Bathroom
-short description
-long description
+nice and cozy.
+Personal lavatory of the homeowners. Links to the master bedroom to the west.
 Master Bedroom, west
 
 Entertainment Room
-short description
-long description
+where gamers get their cramps.
+This room contains the majority of video game consoles in the house.\nTo the south, past the stairway to the living room, is the office.\nThe garage rests to the west.
 Office, south, Garage, west, Living Room, up
 
 Office
-short description
-long description
+all work and no play.
+A makeshift office/workout room/library/storage room. Truly a jack of all trades.\nThe northern stairway to the living room precedes the entertainment room.\nThe laundry room is to the west.
 Entertainment Room, north, Laundry Room, west, Living Room, up
 
 Laundry Room
-short description
-long description
+ah, the miracle that is bleach.
+Where clothes get washed and dried. Smells surprisingly decent for a place with dirty clothes.\nNestled between the eastern office and the western garage.
 Garage, west, Office, east
 
 Garage
-short description
-long description
+vroom vroom room.
+The indoor driveway.\nBoth the entertainment room and the laundry room lay east of the garage.
 Entertainment Room, east, Laundry Room, east
 
 Attic
-short description
-long description
+the ceiling basement.
+Just as dusty and cobwebbed as one would imagine.\nThe only exit is the stairway to the hallway.
 Hallway, down
 
 Hallway
-short description
-long description
+connector of many rooms
+Protruding west out of the living room, the hallway touches the majority of bedrooms in the house.\nThe attic and main bathroom are also access via this passageway.\nA closet resides at the very end.
 Boys' Bedroom, south, Girls' Bedroom, south, Master Bedroom, north, Bathroom, north, Living Room, east, Attic, up
