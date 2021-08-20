@@ -17,19 +17,19 @@ public class Player {
         this.currentRoom = currentRoom;
         heading = "north";
         inventory = new HashMap<>();
-    }//constructor
+    }//Player(Room currentRoom)
     
     public Room getCurrentRoom() {
         return currentRoom;
-    }//getCurrentRoom
+    }//getCurrentRoom()
     
     public void setCurrentRoom(Room currentRoom){
         this.currentRoom = currentRoom;
-    }//setCurrentRoom
+    }//setCurrentRoom(Room currentRoom)
     
     public Map<String, Item> getInventory(){
         return inventory;
-    }//getInventory
+    }//getInventory()
     
     public void removeInventory(Item item){
         inventory.remove(item.getName(), item);
@@ -43,7 +43,7 @@ public class Player {
         for (Item i : inventory.values()){
             if (i.getName().equalsIgnoreCase(name))
                 name = i.getName();
-        }//for
+        }//for (Item i : inventory.values())
         return inventory.get(name);
     }//getInventoryItem(String name)
     
@@ -51,20 +51,20 @@ public class Player {
         if (!getInventory().isEmpty()){
             System.out.println("Inventory");
             inventory.values().forEach(i -> {
-                System.out.println(i.getName() + " - " + i.getLongDescription());
+                System.out.println(i.getName() + " - " + i.getCurrentStatus());
             });
         } else
             System.out.println("Inventory is empty.");
         System.out.println(Main.D2);
-    }//showInventory
+    }//showInventory()
     
     public String getHeading(){
         return heading;
-    }//getHeading
+    }//getHeading()
     
     public void setHeading(String heading){
         this.heading = heading;
-    }//setHeading
+    }//setHeading()
     
     public void go(String direction){
         if (currentRoom.hasExit(direction)){
@@ -117,7 +117,6 @@ public class Player {
                 System.out.println("Cannot place " + name + " in room.");
         } else
             invalidItem(name);
-        
     }//place(String item)
     
     public void use(String name){

@@ -9,30 +9,30 @@ public abstract class Fixture {
         this.name = name;
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
-    }//constructor
+    }//Fixture(String name, String shortDescription, String longDescription)
     
     public Fixture(String name){
         this.name = name;
         shortDescription = "";
         longDescription = "";
-    }//constructor
+    }//Fixture(String name)
 
     public Fixture(String name, String shortDescription) {
         this.name = name;
         this.shortDescription = shortDescription;
         longDescription = "";
-    }//constructor
+    }//Fixture(String name, String shortDescription)
     
     public String getName() {
         return name;
-    }//getName
+    }//getName()
 
     public String getShortDescription() {
         return shortDescription;
-    }//getShortDescription
+    }//getShortDescription()
 
     public String getLongDescription() {
         return longDescription;
-    }//getLongDescription
+    }//getLongDescription()
     
 }//Fixture

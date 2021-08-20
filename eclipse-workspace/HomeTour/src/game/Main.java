@@ -1,6 +1,5 @@
 package game;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -10,24 +9,30 @@ import java.util.*;
 public class Main {
     public static Scanner input = new Scanner(System.in);
     public static Manager manager = new Manager();
-    public static String D1 = "=============================================";
-    public static String D2 = "---------------------------------------------";
+    public static String D1 = "===============================================================================================";
+    public static String D2 = "-----------------------------------------------------------------------------------------------";
     public static int ROOM_COUNT = 16;
     
     public static void main(String[] args) throws NullPointerException{
-        
         manager.init();
         Player player = new Player(manager.getStartingRoom());
         System.out.println("Welcome to the house tour!");
         printCommands();
         printRoom(player);
         parse(collectInput(), player);
-    }//main
+    }//main(String[] args)
 	
     private static void printCommands(){
+        System.out.println(D1);
         System.out.println("Commands");
-        System.out.println("go - Use the 'go' command to go to a neighboring room. ");
-    }//printCommands
+        System.out.println("\tgo - Use the 'go' command to go to a neighboring room. ");
+        System.out.println("\ttake - Use the 'take' command to add items to your inventory.");
+        System.out.println("\tplace - Use the 'place' command to place items from your inventory.");
+        System.out.println("\tuse - Use the 'use' command to use an item.");
+        System.out.println("\tturn - use the 'turn' command to change the direction you are facing.");
+        System.out.println("\tmenu - Use the 'menu' command to show these controls again.");
+        System.out.println("\tquit - Use the 'quit' command to exit the tour.");
+    }//printCommands()
     
     private static void printRoom(Player player) throws NullPointerException{
         System.out.println(D1);
@@ -37,7 +42,7 @@ public class Main {
             player.showInventory();
         player.getCurrentRoom().printExits();
         System.out.println(D2);
-    }//printRoom
+    }//printRoom(Player player)
 
     private static String[] collectInput() {
         String[] command = new String[3];
@@ -46,12 +51,13 @@ public class Main {
         command[0] = input.nextLine().trim().toLowerCase();
         Scanner commandScanner = new Scanner(command[0]);
         commandScanner.useDelimiter(" ");
+        i++;
         while (i < 3 && commandScanner.hasNext()){
-            command[++i] = commandScanner.next().trim();
-        }//while
-        
+            command[i] = commandScanner.next().trim();
+            i++;
+        }// while (i < 3 && commandScanner.hasNext())
         return command;
-    }//collectInput
+    }//collectInput()
 
     private static void parse(String[] command, Player player) {
         switch(command[1]){
@@ -79,7 +85,6 @@ public class Main {
                 player.turn(command[2]);
                 break;
             case "menu":
-                System.out.println(D2);
                 printCommands();
                 break;
             case "quit":
@@ -89,10 +94,10 @@ public class Main {
             default:
                 System.out.println("Can't recognize command. Please enter a valid command.");
                 break;
-        }//switch
+        }//switch(command[1])
         if (!command[0].equals("quit")){
             printRoom(player);
             parse(collectInput(), player);
-        }//if
-    }//parse
+        }//if (!command[0].equals("quit"))
+    }//parse(String[] command, Player player)
 }//Main

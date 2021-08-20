@@ -22,15 +22,15 @@ public class Manager {
 
     public Room getStartingRoom() {
         return startingRoom;
-    }//getStartingRoom
+    }//getStartingRoom()
     
     public Map<String, String[]> getExitMap(){
         return exitMap;
-    }//getExitMap
+    }//getExitMap()
     
     public Map<String, Room> getRooms(){
         return rooms;
-    }//getRooms
+    }//getRooms()
     
     public Room[] getRooms(String[] rooms){
         Room[] roomArray = new Room[rooms.length];
@@ -41,26 +41,25 @@ public class Manager {
     
     public Room getRoom(String name){
         return rooms.get(name);
-    }//getRoom
+    }//getRoom(String name)
     
     public Item getItem(String name){
-        for (Item i : items.values()){
+        for (Item i : items.values())
             if (i.getName().equalsIgnoreCase(name))
                 name = i.getName();
-        }//for
         return items.get(name);
-    }//getItem
+    }//getItem(String name)
     
     public boolean isItem(String name){
         return items.values().stream().anyMatch(i -> (i.getName().equalsIgnoreCase(name)));
-    }//isItem
+    }//isItem(String name)
     
     public void init() throws NullPointerException{
         try {
             fileScanner1 = new Scanner(new File(roomText));
         }catch(FileNotFoundException e){
             System.out.print(e.getMessage());
-        }//catch
+        }//catch(FileNotFoundException e)
         Room foyer = new Room(
             fileScanner1.nextLine().trim(),
             fileScanner1.nextLine().trim(),
@@ -73,11 +72,12 @@ public class Manager {
         exitMap.put(foyer.getName(), exitsArray);
         buildHouse();
         fileScanner1.close();
+        
         try{
             fileScanner2 = new Scanner(new File(itemText));
         } catch (FileNotFoundException e){
             System.out.println(e.getMessage());
-        }//catch
+        }//catch (FileNotFoundException e)
         Item lights = new Item(
             fileScanner2.nextLine().trim(), 
             fileScanner2.nextLine().trim(), 
@@ -96,14 +96,13 @@ public class Manager {
         items.get(lights.getName()).setStatus(statusArray);
         findItems();
         
-        for (var i : rooms.values()){
-            for (var j : items.values()){
-                if(j.inRoom(i))
-                    i.addItem(j);
-            }//for
-        }//for
+        rooms.values().forEach(i -> {
+            items.values().stream().filter(j -> (j.inRoom(i))).forEachOrdered(j -> {
+                i.addItem(j);
+            });
+        });
         fileScanner2.close();
-    }//init
+    }//init()
     
     public void buildHouse() throws NullPointerException{        
         while (fileScanner1.hasNext()){
@@ -115,13 +114,14 @@ public class Manager {
             String exits = fileScanner1.nextLine();
             String[] exitsArray = exits.split(", ");
             exitMap.put(name, exitsArray);
-        }//while
+        }//while (fileScanner1.hasNext())
+        
         rooms.values().forEach(i -> {
             exitMap.entrySet().stream().filter(j -> (i.getName().equals(j.getKey()))).forEachOrdered(j -> {
                 i.setExits(j.getValue());
             });
         });
-    }//buildHouse
+    }//buildHouse()
     
     public void findItems() throws NullPointerException{        
         while(fileScanner2.hasNext()){
@@ -143,10 +143,13 @@ public class Manager {
             items.get(name).setTakeable(takeable);
             items.get(name).setItemRoom(roomsArray);
             items.get(name).setStatus(statusArray);
-        }//while
-        for (var i : items.values()){
+        }//while(fileScanner2.hasNext())
+        
+        items.values().stream().map(i -> {
             i.setItemRoom(this.itemRooms.get(i));
+            return i;
+        }).forEachOrdered(i -> {
             i.setStatus(this.status.get(i.getName()));
-        }//for
-    }//findItems
+        });
+    }//findItems()
 }//RoomManager

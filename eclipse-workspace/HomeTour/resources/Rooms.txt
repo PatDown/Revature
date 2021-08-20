@@ -1,79 +1,79 @@
 Foyer
 a small foyer
-The entrance to the house. To the immediate east, a double doorway to a bedroom.\nThe tile of the foyer meets up with the carpet of the hall to the north that leads to the living room.\nA small closet can be accessed from here as well.
+\tThe entrance to the house. To the immediate east, a double doorway to a bedroom.\n\tThe tile of the foyer meets up with the carpet of the hall to the north that leads to the living room.\n\tA small closet can be accessed from here as well.
 Living Room, north, Grandma's Bedroom, east
 
 Living Room
 a frequently used family room
-The main room of the house.\nThe kitchen and dining room can be seen to the east.\nA hallway to the west leads to many bedrooms and the bathroom.\nA set of stairs descends to the lower floor of the house.\nThe foyer lies to the south.
+\tThe main room of the house.\n\tThe kitchen and dining room can be seen to the east.\n\tA hallway to the west leads to many bedrooms and the bathroom.\n\tA set of stairs descends to the lower floor of the house.\n\tThe foyer lies to the south.
 Kitchen, east, Foyer, south, Hallway, west, Entertainment Room, down, Dining Room, east, Office, down
 
 Kitchen
-a quaint little kitchen
-The place where food is made.\nThe open floor plan allows the kitchen to share its space with the dining room to the north and the living room to the west.
+someone's hungry.
+\tThe place where food is made.\n\tThe open floor plan allows the kitchen to share its space with the dining room to the north and the living room to the west.
 Living Room, west, Dining Room, north
 
 Dining Room
-the place to eat.
-Directly connected to the southern kitchen and the western living room.
+time to chow down.
+\tDirectly connected to the southern kitchen and the western living room.
 Kitchen, south, Living Room, west
 
 Grandma's Bedroom
 she lives quite comfortably.
-Bedroom of the matriarch. To the west lies the foyer.
+\tBedroom of the matriarch. To the west lies the foyer.
 Foyer, west
 
 Bathroom
 where you go when you gotta go.
-The main bathroom of the house.\nThe only exit is the hallway to the south.
+\tThe main bathroom of the house.\n\tThe only exit is the hallway to the south.
 Hallway, south
 
 Boys' Bedroom
 smells like armpits.
-Where the 2 boys sleep. Perpetually in a state of disarray.\nThe northern door opens to the hallway.
+\tWhere the 2 boys sleep. Perpetually in a state of disarray.\n\tThe northern door opens to the hallway.
 Hallway, north
 
 Girls' Bedroom
 please turn down the volume.
-Where the 2 girls sleep. Dirtier than the boys' room, but a more pleasant aroma.\nGo north to the hallway.
+Where the 2 girls sleep. Dirtier than the boys' room, but a more pleasant aroma.\n\tGo north to the hallway.
 Hallway, north
 
 Master Bedroom
 keeper of the comfiest bed.
-The bedroom of the man and woman of the house.\nThe hallway is to the south, while the master bathroom is to the east.
+\tThe bedroom of the man and woman of the house.\n\tThe hallway is to the south, while the master bathroom is to the east.
 Hallway, south, Master Bathroom, east
 
 Master Bathroom
 nice and cozy.
-Personal lavatory of the homeowners. Links to the master bedroom to the west.
+\tPersonal lavatory of the homeowners. Links to the master bedroom to the west.
 Master Bedroom, west
 
 Entertainment Room
 where gamers get their cramps.
-This room contains the majority of video game consoles in the house.\nTo the south, past the stairway to the living room, is the office.\nThe garage rests to the west.
+\tThis room contains the majority of video game consoles in the house.\n\tTo the south, past the stairway to the living room, is the office.\n\tThe garage rests to the west.
 Office, south, Garage, west, Living Room, up
 
 Office
 all work and no play.
-A makeshift office/workout room/library/storage room. Truly a jack of all trades.\nThe northern stairway to the living room precedes the entertainment room.\nThe laundry room is to the west.
+\tA makeshift office/workout room/library/storage room. Truly a jack of all trades.\n\tThe northern stairway to the living room precedes the entertainment room.\n\tThe laundry room is to the west.
 Entertainment Room, north, Laundry Room, west, Living Room, up
 
 Laundry Room
 ah, the miracle that is bleach.
-Where clothes get washed and dried. Smells surprisingly decent for a place with dirty clothes.\nNestled between the eastern office and the western garage.
+\tWhere clothes get washed and dried. Smells surprisingly decent for a place with dirty clothes.\n\tNestled between the eastern office and the western garage.
 Garage, west, Office, east
 
 Garage
 vroom vroom room.
-The indoor driveway.\nBoth the entertainment room and the laundry room lay east of the garage.
+\tThe indoor driveway.\n\tBoth the entertainment room and the laundry room lay east of the garage.
 Entertainment Room, east, Laundry Room, east
 
 Attic
 the ceiling basement.
-Just as dusty and cobwebbed as one would imagine.\nThe only exit is the stairway to the hallway.
+\tJust as dusty and cobwebbed as one would imagine.\n\tThe only exit is the stairway to the hallway.
 Hallway, down
 
 Hallway
 connector of many rooms
-Protruding west out of the living room, the hallway touches the majority of bedrooms in the house.\nThe attic and main bathroom are also access via this passageway.\nA closet resides at the very end.
+\tProtruding west out of the living room, the hallway touches the majority of bedrooms in the house.\n\tThe attic and main bathroom are also access via this passageway.\n\tA closet resides at the very end.
 Boys' Bedroom, south, Girls' Bedroom, south, Master Bedroom, north, Bathroom, north, Living Room, east, Attic, up

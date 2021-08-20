@@ -8,7 +8,7 @@ false
 TV
 They keep getting flatter.
 Watch your favorite movies and shows. Or fall asleep to the History channel.
-Living Room, Master Bedroom, Grandma's BedRoom, Entertainment Room
+Living Room, Master Bedroom, Grandma's Bedroom, Entertainment Room
 Off, On
 false
 
@@ -36,7 +36,7 @@ true
 Remote
 Trusty weapon of the couch potato.
 Remote controller for the televisions in the house. Any remote can be used on any TV. 
-Living Room, Master Bedroom, Grandma's BedRoom, Entertainment Room
+Living Room, Master Bedroom, Grandma's Bedroom, Entertainment Room
 Idle, In use
 true
 
@@ -55,7 +55,7 @@ Idle, Active
 false;
 
 Bed
-Ah the sweet release of sleep.
+Ah, the sweet release of sleep.
 Mattress on a frame. Blanket on the mattress. Pillow on the blanket. Not much more than that.
 Grandma's Bedroom, Boys' Bedroom, Girls' Bedroom, Master Bedroom
 Vacant, Occupied
