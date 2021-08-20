@@ -1,5 +1,6 @@
 package game;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -32,6 +33,8 @@ public class Main {
         System.out.println(D1);
         System.out.println(player.getCurrentRoom().toString());
         player.getCurrentRoom().printItems();
+        if (!player.getInventory().isEmpty())
+            player.showInventory();
         player.getCurrentRoom().printExits();
         System.out.println(D2);
     }//printRoom
@@ -78,10 +81,6 @@ public class Main {
             case "menu":
                 System.out.println(D2);
                 printCommands();
-                break;
-            case "inventory":
-                System.out.println(D2);
-                player.showInventory();
                 break;
             case "quit":
                 System.out.println(D1);

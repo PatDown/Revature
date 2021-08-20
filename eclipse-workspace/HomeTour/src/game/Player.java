@@ -55,6 +55,7 @@ public class Player {
             });
         } else
             System.out.println("Inventory is empty.");
+        System.out.println(Main.D2);
     }//showInventory
     
     public String getHeading(){
@@ -129,7 +130,7 @@ public class Player {
                 } else
                     System.out.println("Cannot use " + name + " at this time.");
             } else if (inInventory(name)){
-                Item item = inventory.get(name);
+                Item item = getInventoryItem(name);
                 if (item.isUsable(currentRoom)){
                     item.changeStatus();
                     System.out.println("Used " + item.getName());

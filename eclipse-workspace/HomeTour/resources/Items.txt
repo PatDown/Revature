@@ -1,34 +1,63 @@
 Lights
-The lights.
-The lighting of the room.
+It's lit.
+The lighting of the room. Be sure to turn it off when leaving the room.
 Foyer, Living Room, Grandma's Bedroom, Kitchen, Dining Room, Hallway, Boys' Bedroom, Girls' Bedroom, Master Bedroom, Master Bathroom, Bathroom, Attic, Entertainment Room, Office, Garage, Laundry Room
 On, Off
 false
 
 TV
-A television.
-Watch a movie or a show on the TV
+They keep getting flatter.
+Watch your favorite movies and shows. Or fall asleep to the History channel.
 Living Room, Master Bedroom, Grandma's BedRoom, Entertainment Room
 Off, On
 false
 
 Toilet
-A toilet.
-Do what you gotta do. Bring something to read.
+Watch out for splash-back.
+The porcelain throne upon which the most natural of deeds is performed.
 Bathroom, Master Bathroom
 Empty, Full
 false
 
 Closet
-Storage space.
+Pick out some sweet duds.
 Many clothes can be found hanging in here, among other things.
 Foyer, Grandma's Bedroom, Hallway, Boys' Bedroom, Girls' Bedroom, Master Bedroom
 Closed, Open
 false
 
 Flashlight
-A flashlight.
+For the inevitable blackout.
 A portable source of light. Make sure you have batteries.
 Kitchen, Garage
 Off, On
 true
+
+Remote
+Trusty weapon of the couch potato.
+Remote controller for the televisions in the house. Any remote can be used on any TV. 
+Living Room, Master Bedroom, Grandma's BedRoom, Entertainment Room
+Idle, In use
+true
+
+Treadmill
+In-home jogging trail.
+Run all you want. You won't get anywhere.
+Office
+Off, On
+false
+
+Microwave
+MMMMMMMMMMMMMMMMMMMMMM Ding!
+Box for bombarding meals with heat. Not to be confused with the oven.
+Kitchen
+Idle, Active
+false;
+
+Bed
+Ah the sweet release of sleep.
+Mattress on a frame. Blanket on the mattress. Pillow on the blanket. Not much more than that.
+Grandma's Bedroom, Boys' Bedroom, Girls' Bedroom, Master Bedroom
+Vacant, Occupied
+false
+ 
