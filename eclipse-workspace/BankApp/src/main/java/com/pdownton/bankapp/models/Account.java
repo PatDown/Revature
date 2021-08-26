@@ -10,7 +10,7 @@ public abstract class Account {
     
     private final String number = generateAccountNumber();
     private float balance;
-    protected String  type;
+    protected String type;
     
     public Account(float balance) {
         super();
@@ -26,7 +26,7 @@ public abstract class Account {
             numberBuilder.append(parts[i]);
             if (i+1 < parts.length)
                 numberBuilder.append("-");
-        }//for(int i: parts)
+        }//for(int i = 0; i < parts.length; i++)
         return numberBuilder.toString();
     }//generateAccountNumber()
     

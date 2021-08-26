@@ -9,9 +9,9 @@ import java.util.*;//HashMap, Map
  */
 public class Bank {
     public static final int QUIT = 7;
-    public Map<Integer, Client> clients = new HashMap<>();
-    public static Map<Account, Client> accounts = new HashMap<>();
-    private Client currentClient;
+    public final Map<Integer, Client> clients = new HashMap<>();
+    public static final Map<Account, Client> accounts = new HashMap<>();
+    private Client currentClient = null;
     
     public void init() {
         menu();
@@ -25,12 +25,16 @@ public class Bank {
         currentClient = client;
     }//setCurrentClient(Client)
     
+    public Map<Account, Client> getAccounts(){
+        return accounts;
+    }//getAccounts()
+    
     public Map<Integer, Client> getClients(){
         return clients;
     }//getClients()
     
     public Client getClient(int id){
-        return getClients().get(id);
+        return getClients().getOrDefault(id, null);
     }//getClient(int)
     
     public void printClients(){
@@ -43,6 +47,7 @@ public class Bank {
     }//printClients()
     
     public void createClient(){
+        BankApp.input.nextLine();
         System.out.println("Enter a name:");
         String name = BankApp.input.nextLine().trim();
         Client client = new Client(name);
@@ -59,28 +64,43 @@ public class Bank {
     }//addClient(Client)
     
     public void removeClient(int id){
-        if (isClient(id))
+        if (isClient(id)){
+            Client client = getClient(id);
             getClients().remove(id);
-        else
+            getAccounts().entrySet().stream().filter(e -> (e.getValue() == client)).forEachOrdered(e -> {
+                getAccounts().remove(e.getKey());
+            });
+            if(client == getCurrentClient()){
+                setCurrentClient(getClients().values().stream().findFirst().orElse(null));
+            }//if(client == getCurrentClient())
+        } else
             System.out.println("Cannot find client with ID " + id +". Returning to menu.");
     }//removeClient(int)
     
-    public void clientUpdateMenu(){
+    public int clientUpdateMenu(){
         System.out.println("What needs updating?\n"
-                + "1. Name\n"
-                + "2. Back\n"
-                + "Enter choice:");
+               + "1. Name\n"
+               + "2. Back\n"
+               + "Enter choice:");
+        int choice = BankApp.input.nextInt();
+        return choice;
     }//clientUpdateMenu()
     
     public void updateClient(int id){
         if (isClient(id)){
             Client client = getClients().get(id);
-            clientUpdateMenu();
-            switch(BankApp.input.nextInt()){
+            
+            switch(clientUpdateMenu()){
                 case 1:
+                    BankApp.input.nextLine();
                     System.out.println("Enter new name:");
                     client.setName(BankApp.input.nextLine().trim());
+                    getClients().replace(client.getID(), client);
+                    getAccounts().entrySet().stream().filter(e -> (e.getValue()==client)).forEachOrdered(e -> {
+                        getAccounts().replace(e.getKey(), client);
+                    });
                     break;
+
                 case 2:
                     break;
                 default:
@@ -105,9 +125,11 @@ public class Bank {
     }//isClient(int)
     
     public void menu(){
+        System.out.println(BankApp.DIVIDER);
+        if (getCurrentClient() != null)
+            System.out.println(getCurrentClient().toString());
         
-        System.out.println(BankApp.DIVIDER
-                + "\nMain Menu\n"
+        System.out.println("Main menu\n"
                 + "1. Client Menu\n"
                 + "2. Add new client\n"
                 + "3. Remove client\n"
@@ -118,11 +140,10 @@ public class Bank {
                 + "Enter selection:");       
         
         int choice = BankApp.input.nextInt();
-        BankApp.input.nextLine();
         
         switch(choice){
             case 1:
-                if (getClients().isEmpty())
+                if (getCurrentClient() == null)
                     System.out.println("No clients.");
                 else{
                     getCurrentClient().clientMenu();
@@ -133,21 +154,24 @@ public class Bank {
                 break;
             case 3:
                 printClients();
-                System.out.println("Enter the ID of the client");
-                removeClient(BankApp.input.nextInt());
-                BankApp.input.nextLine();
+                if(!getClients().isEmpty()){
+                    System.out.println("Enter the ID of the client");
+                    removeClient(BankApp.input.nextInt());
+                }//if(!getClients().isEmpty())
                 break;
             case 4:
                 printClients();
-                System.out.println("Enter the ID of the client");
-                changeClient(BankApp.input.nextInt());
-                BankApp.input.nextLine();
+                if(!getClients().isEmpty()){
+                    System.out.println("Enter the ID of the client");
+                    changeClient(BankApp.input.nextInt());
+                }//if(!getClients().isEmpty())
                 break;
             case 5:
                 printClients();
-                System.out.println("Enter the ID of the client");
-                updateClient(BankApp.input.nextInt());
-                BankApp.input.nextLine();
+                if(!getClients().isEmpty()){
+                    System.out.println("Enter the ID of the client");
+                    updateClient(BankApp.input.nextInt());
+                }//if(!getClients().isEmpty())
                 break;
             case 6:
                 printClients();
