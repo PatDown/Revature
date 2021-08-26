@@ -1,0 +1,6 @@
+com\pdownton\bankapp\models\Account.class
+com\pdownton\bankapp\BankApp.class
+com\pdownton\bankapp\models\Bank.class
+com\pdownton\bankapp\models\Savings.class
+com\pdownton\bankapp\models\Client.class
+com\pdownton\bankapp\models\Checking.class
