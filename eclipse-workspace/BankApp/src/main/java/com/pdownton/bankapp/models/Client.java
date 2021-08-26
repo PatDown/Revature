@@ -8,10 +8,10 @@ import java.util.*;//Map, HashMap
  * @author Pat Down
  */
 public class Client {
-    public static final int BACK = 7;
+    public static final int BACK = 8;
     private final int id = (int)(Math.random()*(1000)+1);
     private String name;
-    private Map<String, Account> accounts;
+    private final Map<String, Account> accounts;
     private static Account currentAccount;
     
     public Client(){
@@ -31,6 +31,8 @@ public class Client {
     }//getID()
 
     public String getName() {
+        if(this == null)
+            return null;
         return name;
     }//getName()
 
@@ -45,7 +47,7 @@ public class Client {
     public Account getAccount(String accNum){
         Account account = null;
         if (getAccounts().containsKey(accNum))
-            account = getAccounts().get(accNum);
+            return getAccounts().get(accNum);
         else{
             for(Account a : Bank.accounts.keySet()){
                 if (a.getNumber().equals(accNum))
@@ -55,8 +57,12 @@ public class Client {
         return account;
     }//getAccount(String)
     
+    public boolean isClientAccount(String accNum){
+        return getAccounts().containsKey(accNum);
+    }//isClientAccount(String)
+    
     public boolean isAccount(String accNum){
-        return accounts.containsKey(accNum);
+        return Bank.accounts.keySet().stream().anyMatch(a -> (a.getNumber().equals(accNum)));
     }//isAccount(String)
     
     public Account getCurrentAccount(){
@@ -74,6 +80,8 @@ public class Client {
     
     public void clientMenu(){
         System.out.println(BankApp.DIVIDER);
+        if (getCurrentAccount() != null)
+            System.out.println(getCurrentAccount().toString());
         System.out.println("Client Menu\n"
                 + "1. Deposit\n"
                 + "2. Withdraw\n"
@@ -81,7 +89,8 @@ public class Client {
                 + "4. Add new account\n"
                 + "5. Change account\n"
                 + "6. Remove account\n"
-                + "7. Back\n"
+                + "7. View accounts\n"
+                + "8. Back\n"
                 + "Enter selection:");
         int choice = BankApp.input.nextInt();
         BankApp.input.nextLine();
@@ -94,7 +103,7 @@ public class Client {
                     BankApp.input.nextLine();
                 } else {
                     System.out.println("No accounts.");
-                }
+                }//else
                 break;
             case 2:
                 if (!getAccounts().isEmpty()){
@@ -103,19 +112,28 @@ public class Client {
                     BankApp.input.nextLine();
                 } else {
                     System.out.println("No accounts.");
-                }
+                }//else
                 break;
             case 3:
-                transfer(getAccount(findAccount()), getAccount(findAccount()));
+                printAccounts();
+                if (!getAccounts().isEmpty())
+                    transfer(getAccount(findAccount()), getAccount(findAccount()));
                 break;
             case 4:
                 createAccount();
                 break;
             case 5:
-                changeAccount(findAccount());
+                printAccounts();
+                if(!getAccounts().isEmpty())
+                    changeAccount(findAccount());
                 break;
             case 6:
-                deleteAccount(findAccount());
+                printAccounts();
+                if (!getAccounts().isEmpty())
+                    deleteAccount(findAccount());
+                break;
+            case 7:
+                printAccounts();
                 break;
             case BACK:
                 break;
@@ -158,42 +176,60 @@ public class Client {
     }//createAccount()
     
     public void addAccount(Account account, float interest){
-        while (isAccount(account.getNumber())){
+        while (isClientAccount(account.getNumber())){
             if (interest == -1)
                 account = new Checking(account.getBalance());
             else
                 account = new Savings(account.getBalance(), interest);
-        }//while (isAccount(account.getNumber()))
-            
+        }//while (isClientAccount(account.getNumber()))
+        if (getAccounts().isEmpty())
+            setCurrentAccount(account);
+        getAccounts().put(account.getNumber(), account);
         Bank.accounts.putIfAbsent(account, this);
     }//addAccount(Account, float)
     
     public void deleteAccount(String accNum){
-        if (isAccount(accNum))
-            accounts.remove(accNum);
-        else
-            System.out.println("Account " + accNum + "could not be found.");
+        if (isClientAccount(accNum)) {
+            Account account = getAccounts().get(accNum);
+            getAccounts().remove(accNum);
+            if (account == getCurrentAccount())
+                setCurrentAccount(getAccounts().values().stream().findFirst().orElse(null));
+        } else
+            System.out.println("Account " + accNum + " could not be found.");
     }//deleteAccount(String)
     
     public void changeAccount(String accNum){
-        if (isAccount(accNum))
+        if (isClientAccount(accNum))
             setCurrentAccount(getAccount(accNum));
         else
-            System.out.println("Account " + accNum + "could not be found.");
+            System.out.println("Account " + accNum + " could not be found.");
     }//changeAccount(String)
     
     public void transfer(Account acc1, Account acc2){
-        System.out.println("Enter amount:");
-        float amount = BankApp.input.nextFloat();
-        BankApp.input.nextLine();
-        if (acc1.getBalance() < amount)
-            System.out.println("Cannot complete transfer");
-        else{
-            acc1.withdraw(amount);
-            acc2.deposit(amount);
-            System.out.printf("Transferred $%.2f from %s to %s.\n", amount, acc1.getNumber(), acc2.getNumber());
+        if (acc1 == null || acc2 == null)
+            System.out.println("One of these accounts could not be found.");
+        else {
+            System.out.println("Enter amount:");
+            float amount = BankApp.input.nextFloat();
+            BankApp.input.nextLine();
+            if (acc1.getBalance() < amount)
+                System.out.println("Cannot complete transfer");
+            else{
+                acc1.withdraw(amount);
+                acc2.deposit(amount);
+                System.out.printf("Transferred $%.2f from %s to %s.\n", amount, acc1.getNumber(), acc2.getNumber());
+            }//else
         }//else
     }//transfer(Account, Account)
+    
+    public void printAccounts(){
+        if (!getAccounts().isEmpty()){
+            getAccounts().values().forEach(c -> {
+                System.out.println(c.toString());
+            });
+        } else 
+            System.out.println("No accounts. Returning to menu.");
+    }//printAccounts()
     
     @Override
     public String toString(){

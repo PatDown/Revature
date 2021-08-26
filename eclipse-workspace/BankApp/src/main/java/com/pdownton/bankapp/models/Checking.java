@@ -17,7 +17,7 @@ public class Checking extends Account {
         s.append("Account number: ");
         s.append(getNumber());
         s.append(" | Balance: $");
-        s.append(getBalance());
+        s.append(String.format("%.2f", getBalance()));
         s.append(" | Account type: ");
         s.append(getType());
         return s.toString();
