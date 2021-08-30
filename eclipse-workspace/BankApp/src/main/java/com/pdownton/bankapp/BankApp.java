@@ -8,7 +8,7 @@ public class BankApp {
     public static final String DIVIDER = "=========================================";
     public static void main(String[] args) {
         Bank bank = new Bank();
-        //bank.init();
+        
     }//main
      
 }//BankAppStart

@@ -1,6 +1,5 @@
 package com.pdownton.bankapp.models;
 
-import com.pdownton.bankapp.BankApp;
 import java.util.*;//Map, HashMap
 
 /**
@@ -72,165 +71,161 @@ public class Client {
         currentAccount = account;
     }//setCurrentAccount(Account)
     
-    public String findAccount(){
-        BankApp.input.nextLine();
-        System.out.println("Enter account number:");
-        return BankApp.input.nextLine().trim();
-    }//findAccount()
+//    public String findAccount(){
+//        BankApp.input.nextLine();
+//        System.out.println("Enter account number:");
+//        return BankApp.input.nextLine().trim();
+//    }//findAccount()
     
-    public void clientMenu(){
-        System.out.println(BankApp.DIVIDER);
-        if (getCurrentAccount() != null)
-            System.out.println(getCurrentAccount().toString());
-        System.out.println("Client Menu\n"
-                + "1. Deposit\n"
-                + "2. Withdraw\n"
-                + "3. Transfer funds\n"
-                + "4. Add new account\n"
-                + "5. Change account\n"
-                + "6. Remove account\n"
-                + "7. View accounts\n"
-                + "8. Back\n"
-                + "Enter selection:");
-        int choice = BankApp.input.nextInt();
-        
-        switch(choice){
-            case 1:
-                if (!getAccounts().isEmpty())
-                    getCurrentAccount().deposit(validAmount());
-                else
-                    System.out.println("No accounts.");
-                break;
-            case 2:
-                if (!getAccounts().isEmpty())
-                    getCurrentAccount().withdraw(validAmount());
-                else
-                    System.out.println("No accounts.");
-                break;
-            case 3:
-                printAccounts();
-                if (!getAccounts().isEmpty())
-                    transfer(getAccount(findAccount()), getAccount(findAccount()));
-                break;
-            case 4:
-                createAccount();
-                break;
-            case 5:
-                printAccounts();
-                if(!getAccounts().isEmpty() && getAccounts().size() > 1)
-                    changeAccount(findAccount());
-                else
-                    System.out.println("Cannot switch accounts. Current account is the only account on file.");
-                break;
-            case 6:
-                printAccounts();
-                if (!getAccounts().isEmpty())
-                    deleteAccount(findAccount());
-                break;
-            case 7:
-                printAccounts();
-                break;
-            case BACK:
-                break;
-            default:
-                System.out.println("Invalid input. Please try again.");
-                break;
-        }//switch(choice)
-        if (choice != BACK)
-            clientMenu();
-    }//clientMenu()
+//    public void clientMenu(){
+//        System.out.println(BankApp.DIVIDER);
+//        if (getCurrentAccount() != null)
+//            System.out.println(getCurrentAccount().toString());
+//        System.out.println("Client Menu\n"
+//                + "1. Deposit\n"
+//                + "2. Withdraw\n"
+//                + "3. Transfer funds\n"
+//                + "4. Add new account\n"
+//                + "5. Change account\n"
+//                + "6. Remove account\n"
+//                + "7. View accounts\n"
+//                + "8. Back\n"
+//                + "Enter selection:");
+//        int choice = BankApp.input.nextInt();
+//        
+//        switch(choice){
+//            case 1:
+//                if (!getAccounts().isEmpty())
+//                    getCurrentAccount().deposit(validAmount());
+//                else
+//                    System.out.println("No accounts.");
+//                break;
+//            case 2:
+//                if (!getAccounts().isEmpty())
+//                    getCurrentAccount().withdraw(validAmount());
+//                else
+//                    System.out.println("No accounts.");
+//                break;
+//            case 3:
+//                printAccounts();
+//                if (!getAccounts().isEmpty())
+//                    transfer(getAccount(findAccount()), getAccount(findAccount()));
+//                break;
+//            case 4:
+//                createAccount();
+//                break;
+//            case 5:
+//                printAccounts();
+//                if(!getAccounts().isEmpty() && getAccounts().size() > 1)
+//                    changeAccount(findAccount());
+//                else
+//                    System.out.println("Cannot switch accounts. Current account is the only account on file.");
+//                break;
+//            case 6:
+//                printAccounts();
+//                if (!getAccounts().isEmpty())
+//                    deleteAccount(findAccount());
+//                break;
+//            case 7:
+//                printAccounts();
+//                break;
+//            case BACK:
+//                break;
+//            default:
+//                System.out.println("Invalid input. Please try again.");
+//                break;
+//        }//switch(choice)
+//        if (choice != BACK)
+//            clientMenu();
+//    }//clientMenu()
     
-    public void createAccount() {
-        System.out.print("Balance - ");
-        float balance = validAmount();
-        
-        System.out.println("Enter account type:\n1. Checking\n2. Savings\n3. Go Back");
-        int type = BankApp.input.nextInt();
-        switch(type){
-            case 1:
-                Account checking = new Checking(balance);
-                addAccount(checking, -1);
-                break;
-            case 2:
-                System.out.println("Enter the interest rate:");
-                float interest = BankApp.input.nextFloat();
-                Account savings = new Savings(balance, interest);
-                addAccount(savings, interest);
-                break;
-            case 3:
-                break;
-            default:
-                System.out.println("Invalid input. Please start again.");
-                createAccount();
-                break;
-        }//switch(type)
-        
-    }//createAccount()
+    public Account createAccount(float balance, String type) {
+        if (validAmount(balance) && type.equalsIgnoreCase("checking"))
+            return new Checking(balance);
+        return new Checking(0);
+    }//createAccount(float, String)
     
-    public void addAccount(Account account, float interest){
-        while (isClientAccount(account.getNumber())){
-            if (interest == -1)
-                account = new Checking(account.getBalance());
-            else
-                account = new Savings(account.getBalance(), interest);
-        }//while(isClientAccount(account.getNumber()))
+    public Account createAccount(float balance, String type, float interest) {
+        if (validAmount(balance) && type.equalsIgnoreCase("savings") && validAmount(interest))
+            return new Savings(balance, interest);
+        return new Savings(0, 0);
+        
+    }//createAccount(float, String, float)
+    
+    public String addAccount(Account account){
         if (getAccounts().isEmpty())
             setCurrentAccount(account);
+        while(getAccounts().containsKey(account.getNumber())){
+            if (account.getType().equalsIgnoreCase("checking"))
+                account = (Checking) account;
+            if (account.getType().equalsIgnoreCase("savings"))
+                account = (Savings) account;
+        }//while(getAccounts().containsKey(account.getNumber()))
         getAccounts().put(account.getNumber(), account);
         Bank.accounts.putIfAbsent(account, this);
-    }//addAccount(Account, float)
+        return String.format("Account #%s added to client%s", account.getNumber(), getID());
+    }//addAccount(Account)
     
-    public void deleteAccount(String accNum){
-        if (isClientAccount(accNum)) {
-            Account account = getAccounts().get(accNum);
-            getAccounts().remove(accNum);
-            if (account == getCurrentAccount())
-                setCurrentAccount(getAccounts().values().stream().findFirst().orElse(null));
-        } else
-            System.out.println("Account " + accNum + " could not be found.");
+    public String deleteAccount(String accNum){
+        if (getAccounts().isEmpty())
+            return "No accounts.";
+        else {
+            if (isClientAccount(accNum)) {
+                Account account = getAccounts().get(accNum);
+                getAccounts().remove(accNum);
+                if (account == getCurrentAccount())
+                    setCurrentAccount(getAccounts().values().stream().findFirst().orElse(null));
+                return String.format("Account #%s removed from client %s", accNum, getID());
+            } else
+                return String.format("Account #%s could not be found.", accNum);
+        }//else
     }//deleteAccount(String)
     
-    public void changeAccount(String accNum){
-        if (isClientAccount(accNum))
-            setCurrentAccount(getAccount(accNum));
-        else
-            System.out.println("Account " + accNum + " could not be found.");
+    public String changeAccount(String accNum){
+        if (getAccounts().isEmpty())
+            return "No accounts.";
+        else if (getAccounts().size() == 1)
+            return "Cannot switch accounts. Current account is the only account on file.";
+        else {
+            if (isClientAccount(accNum)){
+                setCurrentAccount(getAccount(accNum));
+                return String.format("Switched to account #%s", accNum);
+            } else
+                return String.format("Account #%s could not be found.", accNum);
+        }//else
     }//changeAccount(String)
     
-    public void transfer(Account acc1, Account acc2){
+    public String transfer(Account acc1, Account acc2, float amount){
         if (acc1 == null || acc2 == null)
-            System.out.println("One of these accounts could not be found.");
+            return "One of these accounts could not be found.";
         else {
-            float amount = validAmount();
-            if (acc1.getBalance() < amount)
-                System.out.println("Cannot complete transfer");
-            else {
-                acc1.withdraw(amount);
-                acc2.deposit(amount);
-                System.out.printf("Transferred $%.2f from %s to %s.\n", amount, acc1.getNumber(), acc2.getNumber());
-            }//else
+            if (validAmount(amount)){
+                if (acc1.getBalance() < amount)
+                    return "Invalid amount specified. Cannot complete transfer";
+                else {
+                    acc1.withdraw(amount);
+                    acc2.deposit(amount);
+                    return String.format("Transferred $%.2f from %s to %s.", amount, acc1.getNumber(), acc2.getNumber());
+                }//else
+            } else
+                return "Invalid amount specified. Cannot complete transfer";
         }//else
-    }//transfer(Account, Account)
+    }//transfer(Account, Account, float)
     
-    public void printAccounts(){
+    public String printAccounts(){
+        StringBuilder accountList = new StringBuilder();
         if (!getAccounts().isEmpty()){
             getAccounts().values().forEach(account -> {
-                System.out.println(account.toString());
+                accountList.append(account.toString());
+                accountList.append("\n");
             });
+            return accountList.toString();
         } else 
-            System.out.println("No accounts. Returning to menu.");
+            return "No accounts. Returning to menu.";
     }//printAccounts()
     
-    public float validAmount() {
-        System.out.println("Enter amount:");
-        float amount = BankApp.input.nextFloat();
-            
-        while(amount <= 0) {
-            System.out.println("Invalid amount entered.\nEnter amount:");
-            amount = BankApp.input.nextFloat();
-        }//while(amount <= 0) 
-        
-        return amount;
+    public boolean validAmount(float amount) {        
+        return amount > 0;
     }//validAmount()
     
     @Override

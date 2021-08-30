@@ -14,10 +14,6 @@ public class Bank {
     public static final Map<Account, Client> accounts = new HashMap<>();
     private Client currentClient = null;
     
-    public void init() {
-        //menu();
-    }//init()
-    
     public Client getCurrentClient(){
         return currentClient;
     }//getCurrentClient()
