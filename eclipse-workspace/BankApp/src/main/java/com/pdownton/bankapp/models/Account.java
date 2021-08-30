@@ -21,7 +21,7 @@ public abstract class Account {
     public String generateAccountNumber(){
         StringBuilder numberBuilder = new StringBuilder();
         int[] parts = new int[4];
-        for(int i = 0; i < parts.length; i++){
+        for(int i = 0; i < parts.length; i++) {
             parts[i] = (int)(Math.random()*(MAX-MIN+1)+MIN);
             numberBuilder.append(parts[i]);
             if (i+1 < parts.length)
@@ -51,11 +51,10 @@ public abstract class Account {
     }//setType(String)
     
     public void withdraw(float amount) {
-        if (getBalance() < amount){
+        if (getBalance() < amount)
             System.out.println("Not enough money in account.");
-        } else {
+        else
             setBalance(getBalance() - amount);
-        }//else
     }//withdraw(float)
     
     public void deposit(float amount){

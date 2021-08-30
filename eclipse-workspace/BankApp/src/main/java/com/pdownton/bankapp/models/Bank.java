@@ -3,6 +3,7 @@ package com.pdownton.bankapp.models;
 import com.pdownton.bankapp.BankApp;
 import java.util.*;//HashMap, Map
 
+
 /**
  *
  * @author Pat Down
@@ -14,7 +15,7 @@ public class Bank {
     private Client currentClient = null;
     
     public void init() {
-        menu();
+        //menu();
     }//init()
     
     public Client getCurrentClient(){
@@ -37,27 +38,27 @@ public class Bank {
         return getClients().getOrDefault(id, null);
     }//getClient(int)
     
-    public void printClients(){
+    public String printClients(){
+        StringBuilder clientList = new StringBuilder();
         if (!getClients().isEmpty()){
             getClients().values().forEach(c -> {
-                System.out.println(c.toString());
+                clientList.append(c.toString());
+                clientList.append("\n");
             });
         } else 
-            System.out.println("No clients. Returning to menu.");
+           return "No clients.";
+        return clientList.toString();
     }//printClients()
     
-    public void createClient(){
-        BankApp.input.nextLine();
-        System.out.println("Enter a name:");
-        String name = BankApp.input.nextLine().trim();
+    public Client createClient(String name){
         Client client = new Client(name);
-        addClient(client);
+        //addClient(client);
+        return client;
     }//createClient()
     
     public void addClient(Client client){
-        while(isClient(client.getID())){
+        while(isClient(client.getID()))
             client = new Client(client.getName());
-        }//while(isClient(client.getID()))
         if (getClients().isEmpty())
             setCurrentClient(client);
         getClients().put(client.getID(), client);
@@ -70,27 +71,27 @@ public class Bank {
             getAccounts().entrySet().stream().filter(e -> (e.getValue() == client)).forEachOrdered(e -> {
                 getAccounts().remove(e.getKey());
             });
-            if(client == getCurrentClient()){
+            if(client == getCurrentClient())
                 setCurrentClient(getClients().values().stream().findFirst().orElse(null));
-            }//if(client == getCurrentClient())
         } else
             System.out.println("Cannot find client with ID " + id +". Returning to menu.");
     }//removeClient(int)
     
-    public int clientUpdateMenu(){
-        System.out.println("What needs updating?\n"
-               + "1. Name\n"
-               + "2. Back\n"
-               + "Enter choice:");
-        int choice = BankApp.input.nextInt();
-        return choice;
-    }//clientUpdateMenu()
+//    public int clientUpdateMenu(){
+//        System.out.println("What needs updating?\n"
+//               + "1. Name\n"
+//               + "2. Back\n"
+//               + "Enter choice:");
+//        int choice = BankApp.input.nextInt();
+//        return choice;
+//    }//clientUpdateMenu()
     
     public void updateClient(int id){
         if (isClient(id)){
             Client client = getClients().get(id);
-            
-            switch(clientUpdateMenu()){
+            //clientUpdateMenu();
+            int choice = BankApp.input.nextInt();
+            switch(choice){
                 case 1:
                     BankApp.input.nextLine();
                     System.out.println("Enter new name:");
@@ -100,7 +101,6 @@ public class Bank {
                         getAccounts().replace(e.getKey(), client);
                     });
                     break;
-
                 case 2:
                     break;
                 default:
@@ -108,9 +108,8 @@ public class Bank {
                     updateClient(id);
                     break;
             }//switch(BankApp.input.nextInt())
-        } else {
+        } else
             System.out.println("Cannot find client with ID " + id +". Returning to menu.");
-        }//else
     }//updateClient(int)
     
     public void changeClient(int id){
@@ -124,69 +123,74 @@ public class Bank {
         return getClients().containsKey(id);
     }//isClient(int)
     
-    public void menu(){
-        System.out.println(BankApp.DIVIDER);
-        if (getCurrentClient() != null)
-            System.out.println(getCurrentClient().toString());
-        
-        System.out.println("Main menu\n"
-                + "1. Client Menu\n"
-                + "2. Add new client\n"
-                + "3. Remove client\n"
-                + "4. Change client\n"
-                + "5. Update client\n"
-                + "6. View clients\n"
-                + "7. Exit\n"
-                + "Enter selection:");       
-        
-        int choice = BankApp.input.nextInt();
-        
-        switch(choice){
-            case 1:
-                if (getCurrentClient() == null)
-                    System.out.println("No clients.");
-                else{
-                    getCurrentClient().clientMenu();
-                }//else
-                break;
-            case 2:
-                createClient();
-                break;
-            case 3:
-                printClients();
-                if(!getClients().isEmpty()){
-                    System.out.println("Enter the ID of the client");
-                    removeClient(BankApp.input.nextInt());
-                }//if(!getClients().isEmpty())
-                break;
-            case 4:
-                printClients();
-                if(!getClients().isEmpty()){
-                    System.out.println("Enter the ID of the client");
-                    changeClient(BankApp.input.nextInt());
-                }//if(!getClients().isEmpty())
-                break;
-            case 5:
-                printClients();
-                if(!getClients().isEmpty()){
-                    System.out.println("Enter the ID of the client");
-                    updateClient(BankApp.input.nextInt());
-                }//if(!getClients().isEmpty())
-                break;
-            case 6:
-                printClients();
-                break;
-            case QUIT:
-                System.out.println("Please come again!");
-                break;
-            default:
-                System.out.println("Invalid input. Please try again.");
-                break;
-        }//switch(choice)
-        
-        if (choice != QUIT)
-            menu();
-        
-    }//menu()
+//    public void menu(){
+//        System.out.println(BankApp.DIVIDER);
+//        if (getCurrentClient() != null)
+//            System.out.println(getCurrentClient().toString());
+//        
+//        System.out.println("Main menu\n"
+//                + "1. Client Menu\n"
+//                + "2. Add new client\n"
+//                + "3. Remove client\n"
+//                + "4. Change client\n"
+//                + "5. Update client\n"
+//                + "6. View clients\n"
+//                + "7. Exit\n"
+//                + "Enter selection:");
+//        int choice;
+//        
+//        try {
+//            choice = BankApp.input.nextInt();
+//        } catch (InputMismatchException e){
+//            System.out.println("Invalid input");
+//            choice = 0;
+//        }//catch
+//        
+//        switch(choice){
+//            case 1:
+//                if (getCurrentClient() == null)
+//                    System.out.println("No clients.");
+//                else
+//                    getCurrentClient().clientMenu();
+//                break;
+//            case 2:
+//                createClient();
+//                break;
+//            case 3:
+//                printClients();
+//                if(!getClients().isEmpty()){
+//                    System.out.println("Enter the ID of the client");
+//                    removeClient(BankApp.input.nextInt());
+//                }//if(!getClients().isEmpty())
+//                break;
+//            case 4:
+//                printClients();
+//                if(!getClients().isEmpty()){
+//                    System.out.println("Enter the ID of the client");
+//                    changeClient(BankApp.input.nextInt());
+//                }//if(!getClients().isEmpty())
+//                break;
+//            case 5:
+//                printClients();
+//                if(!getClients().isEmpty()){
+//                    System.out.println("Enter the ID of the client");
+//                    updateClient(BankApp.input.nextInt());
+//                }//if(!getClients().isEmpty())
+//                break;
+//            case 6:
+//                printClients();
+//                break;
+//            case QUIT:
+//                System.out.println("Please come again!");
+//                break;
+//            default:
+//                System.out.println("Invalid input. Please try again.");
+//                break;
+//        }//switch(choice)
+//        
+//        if (choice != QUIT)
+//            menu();
+//    }//menu()
+    
     
 }//Bank
