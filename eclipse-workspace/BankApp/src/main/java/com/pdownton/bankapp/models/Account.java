@@ -50,15 +50,19 @@ public abstract class Account {
         this.type = type;
     }//setType(String)
     
-    public void withdraw(float amount) {
+    public String withdraw(float amount) {
+        
         if (getBalance() < amount)
-            System.out.println("Not enough money in account.");
-        else
+            return "Not enough money in account.";
+        else {
             setBalance(getBalance() - amount);
+            return String.format("New balance: $%.2f", getBalance());
+        }
     }//withdraw(float)
     
-    public void deposit(float amount){
+    public String deposit(float amount){
         setBalance(getBalance() + amount);
+        return String.format("New balance: $%.2f", getBalance());
     }//deposit(float)
     
 }//Account
