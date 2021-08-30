@@ -9,10 +9,10 @@ import java.util.*;//Map, HashMap
  */
 public class Client {
     public static final int BACK = 8;
-    private final int id = (int)(Math.random()*(1000)+1);
+    private final int id = (int)(Math.random()*(900)+100);
     private String name;
     private final Map<String, Account> accounts;
-    private static Account currentAccount;
+    private Account currentAccount;
     
     public Client(){
         super();
@@ -47,13 +47,12 @@ public class Client {
     public Account getAccount(String accNum){
         Account account = null;
         if (getAccounts().containsKey(accNum))
-            return getAccounts().get(accNum);
-        else{
-            for(Account a : Bank.accounts.keySet()){
-                if (a.getNumber().equals(accNum))
-                    account = a;
-            }
-        }
+            account = getAccounts().get(accNum);
+        else {
+            for(Account acc : Bank.accounts.keySet())
+                if (acc.getNumber().equals(accNum))
+                    account = acc;
+        }//else
         return account;
     }//getAccount(String)
     
@@ -74,6 +73,7 @@ public class Client {
     }//setCurrentAccount(Account)
     
     public String findAccount(){
+        BankApp.input.nextLine();
         System.out.println("Enter account number:");
         return BankApp.input.nextLine().trim();
     }//findAccount()
@@ -93,26 +93,19 @@ public class Client {
                 + "8. Back\n"
                 + "Enter selection:");
         int choice = BankApp.input.nextInt();
-        BankApp.input.nextLine();
         
         switch(choice){
             case 1:
-                if (!getAccounts().isEmpty()){
-                    System.out.println("Enter amount:");
-                    getCurrentAccount().deposit(BankApp.input.nextFloat());
-                    BankApp.input.nextLine();
-                } else {
+                if (!getAccounts().isEmpty())
+                    getCurrentAccount().deposit(validAmount());
+                else
                     System.out.println("No accounts.");
-                }//else
                 break;
             case 2:
-                if (!getAccounts().isEmpty()){
-                    System.out.println("Enter amount:");
-                    getCurrentAccount().withdraw(BankApp.input.nextFloat());
-                    BankApp.input.nextLine();
-                } else {
+                if (!getAccounts().isEmpty())
+                    getCurrentAccount().withdraw(validAmount());
+                else
                     System.out.println("No accounts.");
-                }//else
                 break;
             case 3:
                 printAccounts();
@@ -124,8 +117,10 @@ public class Client {
                 break;
             case 5:
                 printAccounts();
-                if(!getAccounts().isEmpty())
+                if(!getAccounts().isEmpty() && getAccounts().size() > 1)
                     changeAccount(findAccount());
+                else
+                    System.out.println("Cannot switch accounts. Current account is the only account on file.");
                 break;
             case 6:
                 printAccounts();
@@ -145,14 +140,12 @@ public class Client {
             clientMenu();
     }//clientMenu()
     
-    public void createAccount(){
-        System.out.println("Enter starting balance:");
-        float balance = BankApp.input.nextFloat();
-        BankApp.input.nextLine();
+    public void createAccount() {
+        System.out.print("Balance - ");
+        float balance = validAmount();
         
         System.out.println("Enter account type:\n1. Checking\n2. Savings\n3. Go Back");
         int type = BankApp.input.nextInt();
-        BankApp.input.nextLine();
         switch(type){
             case 1:
                 Account checking = new Checking(balance);
@@ -161,7 +154,6 @@ public class Client {
             case 2:
                 System.out.println("Enter the interest rate:");
                 float interest = BankApp.input.nextFloat();
-                BankApp.input.nextLine();
                 Account savings = new Savings(balance, interest);
                 addAccount(savings, interest);
                 break;
@@ -181,7 +173,7 @@ public class Client {
                 account = new Checking(account.getBalance());
             else
                 account = new Savings(account.getBalance(), interest);
-        }//while (isClientAccount(account.getNumber()))
+        }//while(isClientAccount(account.getNumber()))
         if (getAccounts().isEmpty())
             setCurrentAccount(account);
         getAccounts().put(account.getNumber(), account);
@@ -209,12 +201,10 @@ public class Client {
         if (acc1 == null || acc2 == null)
             System.out.println("One of these accounts could not be found.");
         else {
-            System.out.println("Enter amount:");
-            float amount = BankApp.input.nextFloat();
-            BankApp.input.nextLine();
+            float amount = validAmount();
             if (acc1.getBalance() < amount)
                 System.out.println("Cannot complete transfer");
-            else{
+            else {
                 acc1.withdraw(amount);
                 acc2.deposit(amount);
                 System.out.printf("Transferred $%.2f from %s to %s.\n", amount, acc1.getNumber(), acc2.getNumber());
@@ -224,21 +214,33 @@ public class Client {
     
     public void printAccounts(){
         if (!getAccounts().isEmpty()){
-            getAccounts().values().forEach(c -> {
-                System.out.println(c.toString());
+            getAccounts().values().forEach(account -> {
+                System.out.println(account.toString());
             });
         } else 
             System.out.println("No accounts. Returning to menu.");
     }//printAccounts()
     
+    public float validAmount() {
+        System.out.println("Enter amount:");
+        float amount = BankApp.input.nextFloat();
+            
+        while(amount <= 0) {
+            System.out.println("Invalid amount entered.\nEnter amount:");
+            amount = BankApp.input.nextFloat();
+        }//while(amount <= 0) 
+        
+        return amount;
+    }//validAmount()
+    
     @Override
     public String toString(){
-        StringBuilder s = new StringBuilder();
-        s.append("Client ID: ");
-        s.append(id);
-        s.append(" | Account holder: ");
-        s.append(name);
-        return s.toString();
+        StringBuilder clientString = new StringBuilder();
+        clientString.append("Client ID: ");
+        clientString.append(getID());
+        clientString.append(" | Account holder: ");
+        clientString.append(getName());
+        return clientString.toString();
     }//toString override
     
 }//Client
