@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.pdownton.bankapp.models;
 
 import org.junit.jupiter.api.AfterEach;
@@ -19,23 +14,23 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AccountTest {
     
     public AccountTest() {
-    }
+    }//AccountTest()
     
     @BeforeAll
     public static void setUpClass() {
-    }
+    }//setUpClass()
     
     @AfterAll
     public static void tearDownClass() {
-    }
+    }//tearDownClass()
     
     @BeforeEach
     public void setUp() {
-    }
+    }//setUp()
     
     @AfterEach
     public void tearDown() {
-    }
+    }//tearDown()
 
     /**
      * Test of withdraw method, of class Account.
@@ -43,12 +38,17 @@ public class AccountTest {
     @Test
     public void testWithdraw() {
         System.out.println("withdraw");
-        float amount = 0.0F;
-        Account instance = null;
-        instance.withdraw(amount);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        float amount = 500;
+        Account instance = new Checking(1000);
+        
+        String expResult = String.format("New balance: $%.2f", 500F);
+        String result = instance.withdraw(amount);
+        
+        assertEquals(instance.getBalance(), 500F);
+        assertEquals(expResult, result);
+        
+        System.out.println(result);
+    }//testWithdraw()
 
     /**
      * Test of deposit method, of class Account.
@@ -56,18 +56,14 @@ public class AccountTest {
     @Test
     public void testDeposit() {
         System.out.println("deposit");
-        float amount = 0.0F;
-        Account instance = null;
-        instance.deposit(amount);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    public class AccountImpl extends Account {
-
-        public AccountImpl() {
-            super(0.0F);
-        }
-    }
+        float amount = 500;
+        Account instance = new Savings(1000, 0.01F);
+        
+        String expResult = String.format("New balance: $%.2f", 1500F);
+        String result = instance.deposit(amount);
+        
+        assertEquals(expResult, result);
+        System.out.println(result);
+    }//testDeposit()
     
-}
+}//AccountTest
