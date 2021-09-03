@@ -1,0 +1,4 @@
+com\pdownton\bankapp\models\AccountTest.class
+com\pdownton\bankapp\models\ClientTest.class
+com\pdownton\bankapp\models\BankTest.class
+com\pdownton\bankapp\BankAppTest.class

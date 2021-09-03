@@ -6,21 +6,17 @@ package com.pdownton.bankapp.models;
  */
 public class Checking extends Account {
     
-    public Checking(float balance) {
-        super(balance);
+    public Checking(){
+        super();
+        balance = 0.00F;
         type = "Checking";
-    }//Checking(float)
+        clientID = 0;
+    }//Checking()
     
-    @Override
-    public String toString(){
-        StringBuilder s = new StringBuilder();
-        s.append("Account number: ");
-        s.append(getNumber());
-        s.append(" | Balance: $");
-        s.append(String.format("%.2f", getBalance()));
-        s.append(" | Account type: ");
-        s.append(getType());
-        return s.toString();
-    }//toString override
+    public Checking(float balance, int clientID) {
+        super(balance, clientID);
+        type = "Checking";
+        this.clientID = clientID;
+    }//Checking(float, int)
     
 }//Checking

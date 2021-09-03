@@ -18,24 +18,26 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BankAppTest {
     
+    BankApp bankApp;
     public BankAppTest() {
-    }
+        
+    }//BankAppTest()
     
     @BeforeAll
     public static void setUpClass() {
-    }
+    }//setUpClass()
     
     @AfterAll
     public static void tearDownClass() {
-    }
+    }//tearDownClass()
     
     @BeforeEach
     public void setUp() {
-    }
+    }//setUp()
     
     @AfterEach
     public void tearDown() {
-    }
+    }//tearDown()
 
     /**
      * Test of main method, of class BankApp.
@@ -46,6 +48,6 @@ public class BankAppTest {
         String[] args = null;
         BankApp.main(args);
         assertTrue(true);
-    }
+    }//testMain()
     
-}
+}//BankAppTest

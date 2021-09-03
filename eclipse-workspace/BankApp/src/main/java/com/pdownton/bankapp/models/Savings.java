@@ -5,13 +5,22 @@ package com.pdownton.bankapp.models;
  * @author Pat Down
  */
 public class Savings extends Account{
+    
     private float interest;
 
-    public Savings(float balance, float interest) {
-        super(balance);
-        this.interest = interest;
+    public Savings(){
+        super();
+        balance = 0.00F;
         type = "Savings";
-    }//Savings(float, float)
+        clientID = 0;
+        interest = 0.00F;
+    }//Savings()
+    
+    public Savings(float balance, int clientID, float interest) {
+        super(balance, clientID);
+        type = "Savings";
+        this.interest = interest;
+    }//Savings(float, int, float)
 
     public float getInterest() {
         return interest;
@@ -24,16 +33,15 @@ public class Savings extends Account{
     @Override
     public String toString(){
         StringBuilder s = new StringBuilder();
-        s.append("Account number: ");
         s.append(getNumber());
-        s.append(" | Balance: $");
+        s.append(", ");
         s.append(String.format("%.2f", getBalance()));
-        s.append(" | Account type: ");
+        s.append(", ");
         s.append(getType());
-        s.append(" | Interest rate: ");
-        s.append(getInterest());
-        s.append("%");
-        
+        s.append(", ");
+        s.append(getClientID());
+        s.append(", ");
+        s.append(String.format("%.2f", getInterest()));        
         return s.toString();
     }//toString override
 }//Savings

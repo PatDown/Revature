@@ -8,17 +8,28 @@ public abstract class Account {
     private static final int MIN = 1000;
     private static final int MAX = 9999;
     
-    private final String number = generateAccountNumber();
-    private float balance;
+    protected String number;
+    protected float balance;
     protected String type;
+    protected int clientID;
     
-    public Account(float balance) {
+    public Account(){
         super();
+        number = generateAccountNumber();
+        balance = 0.0F;
+        type = "";
+        clientID = 0;
+    }//Account()
+    
+    public Account(float balance, int clientID) {
+        super();
+        number = generateAccountNumber();
         this.balance = balance;
         type = "";
-    }//Account(float)
-
-    public String generateAccountNumber(){
+        this.clientID = clientID;
+    }//Account(float, String, int)
+    
+    private String generateAccountNumber(){
         StringBuilder numberBuilder = new StringBuilder();
         int[] parts = new int[4];
         for(int i = 0; i < parts.length; i++) {
@@ -33,6 +44,10 @@ public abstract class Account {
     public String getNumber() {
         return number;
     }//getNumber()
+    
+    public void setNumber(String number){
+        this.number = number;
+    }//setNumber(String)
 
     public float getBalance() {
         return balance;
@@ -50,19 +65,32 @@ public abstract class Account {
         this.type = type;
     }//setType(String)
     
-    public String withdraw(float amount) {
-        
-        if (getBalance() < amount)
-            return "Not enough money in account.";
-        else {
-            setBalance(getBalance() - amount);
-            return String.format("New balance: $%.2f", getBalance());
-        }
-    }//withdraw(float)
+    public int getClientID(){
+        return clientID;
+    }//getClientID()
     
-    public String deposit(float amount){
-        setBalance(getBalance() + amount);
-        return String.format("New balance: $%.2f", getBalance());
-    }//deposit(float)
+    public void setClientID(int clientID){
+        this.clientID = clientID;
+    }//setClientID(int)
+    
+    public Savings toSavings(){
+        return (Savings) this;
+    }//toSavings(Account)
+    
+    @Override
+    public String toString(){
+        StringBuilder s = new StringBuilder();
+        s.append(getNumber());
+        s.append(", ");
+        s.append(String.format("%.2f", getBalance()));
+        s.append(", ");
+        s.append(getType());
+        s.append(", ");
+        s.append(getType());
+        s.append(", ");
+        s.append(getClientID());
+        s.append(", NULL");
+        return s.toString();
+    }//toString override
     
 }//Account
