@@ -31,15 +31,30 @@ public class AccountController {
     }//getAccounts(Context)
     
     public static void getAccount(Context ctx) throws SQLException{
-        Account row = accountService.getAccount(ctx.pathParam("num"));
+        Account row = accountService.getAccount(Integer.parseInt(ctx.pathParam("id")), ctx.pathParam("num"));
         if (row == null)
             ctx.status(404);
         else
             ctx.json(row);
     }//getAccount(Context)
     
+    public static void updateAccount(Context ctx) throws SQLException {
+        Account row = accountService.getAccount(Integer.parseInt(ctx.pathParam("id")), ctx.pathParam("num"));
+        String[] params = ctx.body().split(":");
+        if (row == null)
+            ctx.status(404);
+        else {
+            boolean result = accountService.updateAccount(row.getNumber(), params);
+            
+            if (result)
+                ctx.json(row);
+            else
+                ctx.status(404);
+        }//else
+    }//
+    
     public static void removeAccount(Context ctx) throws SQLException {
-        Account row = accountService.getAccount(ctx.pathParam("num"));
+        Account row = accountService.getAccount(Integer.parseInt(ctx.pathParam("id")), ctx.pathParam("num"));
         boolean result = accountService.removeAccount(row.getNumber());
         if (result)
             ctx.status(404);

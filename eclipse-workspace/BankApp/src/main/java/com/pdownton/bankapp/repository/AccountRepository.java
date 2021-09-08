@@ -97,12 +97,13 @@ public class AccountRepository implements Repository<Account>{
 
     @Override
     public void update(Account account, String[] params) throws SQLException {
-        String sql = "UPDATE accounts SET ? WHERE STRCMP(num, ?) = 0";
+        String sql = "UPDATE accounts SET ? = ? WHERE num = ?";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setString(1, params[0]);
-        pstmt.setString(2, params[1]);
+        pstmt.setFloat(2, Float.parseFloat(params[1]));
+        pstmt.setString(3, account.getNumber());
         pstmt.executeUpdate();
-    }//update(Account, String[])
+    }//update(Account, String[)
 
     @Override
     public void delete(Account account) throws SQLException {

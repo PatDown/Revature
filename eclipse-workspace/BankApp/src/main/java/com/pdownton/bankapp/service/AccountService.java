@@ -41,7 +41,7 @@ public class AccountService {
             accountRepository.save(account);
         } catch(SQLException e) {
             e.printStackTrace();
-        }
+        }//
         return account;
     }//create(float, int, float)
     
@@ -60,10 +60,12 @@ public class AccountService {
         return accounts;
     }//getAccounts(int)
     
-    public Account getAccount(String accNum) {
+    public Account getAccount(int id, String accNum) {
         Account account = null;
         try {
             account = accountRepository.findById(accNum);
+            if (account.getClientID() != id)
+                account = null;
         } catch (SQLException e){
             e.printStackTrace();
         }//catch(SQLException)
@@ -71,30 +73,54 @@ public class AccountService {
         return account;
     }//getAccount(String, int)
     
-    public boolean withdraw(String accNum, float amount) throws SQLException {
-        Account account = accountRepository.findById(accNum);
-        
-        if (account == null)
-            return false;
-        float currentBalance = account.getBalance();
-        if (currentBalance < amount)
-            return false;
-        account.setBalance(currentBalance - amount);
-        accountRepository.update(account, new String[]{"balance =  " + account.getBalance(), accNum});
-        return true;
+    public boolean withdraw(String accNum, float amount) {
+        try {
+            Account account = accountRepository.findById(accNum);
+
+            if (account == null)
+                return false;
+            float currentBalance = account.getBalance();
+            if (currentBalance < amount)
+                return false;
+            account.setBalance(currentBalance - amount);
+            accountRepository.update(account, new String[]{"balance =  " + account.getBalance()});
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }//
+        return false;
     }//withdraw(String, float)
     
-    public boolean deposit(String accNum, float amount) throws SQLException {
-        Account account = accountRepository.findById(accNum);
-        
-        if (account == null)
-            return false;
-        float currentBalance = account.getBalance();
-        
-        account.setBalance(currentBalance + amount);
-        accountRepository.update(account, new String[]{"balance =  " + account.getBalance(), accNum});
-        return true;
-    }//deposit(float)
+    public boolean deposit(String accNum, float amount) {
+        try {
+            Account account = accountRepository.findById(accNum);
+
+            if (account == null)
+                return false;
+            float currentBalance = account.getBalance();
+
+            account.setBalance(currentBalance + amount);
+            accountRepository.update(account, new String[]{"balance =  " + account.getBalance()});
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }//
+        return false;
+    }//deposit(String, float)
+    
+    public boolean updateAccount(String accNum, String[] params){
+        Account account;
+        try {
+            account = accountRepository.findById(accNum);
+            if (account == null)
+                return false;
+            accountRepository.update(account, params);
+            return true;
+        } catch (SQLException e){
+            e.printStackTrace();
+        }//
+        return false;
+    }//
     
     public boolean removeAccount(String accNum){
         Account account;
@@ -106,7 +132,7 @@ public class AccountService {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }//
         
         return true;
     }//removeAccount(String)
