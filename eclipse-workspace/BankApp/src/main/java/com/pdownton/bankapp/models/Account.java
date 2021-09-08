@@ -12,6 +12,7 @@ public abstract class Account {
     protected float balance;
     protected String type;
     protected int clientID;
+    protected float interest;
     
     public Account(){
         super();
@@ -19,6 +20,7 @@ public abstract class Account {
         balance = 0.0F;
         type = "";
         clientID = 0;
+        interest = -1;
     }//Account()
     
     public Account(float balance, int clientID) {
@@ -27,7 +29,8 @@ public abstract class Account {
         this.balance = balance;
         type = "";
         this.clientID = clientID;
-    }//Account(float, String, int)
+        interest = -1;
+    }//Account(float, int)
     
     private String generateAccountNumber(){
         StringBuilder numberBuilder = new StringBuilder();
@@ -73,24 +76,14 @@ public abstract class Account {
         this.clientID = clientID;
     }//setClientID(int)
     
-    public Savings toSavings(){
-        return (Savings) this;
-    }//toSavings(Account)
+    public float getInterest(){
+        if (interest < 0)
+            return 0;
+        return interest;
+    }//getInterest()
     
-    @Override
-    public String toString(){
-        StringBuilder s = new StringBuilder();
-        s.append(getNumber());
-        s.append(", ");
-        s.append(String.format("%.2f", getBalance()));
-        s.append(", ");
-        s.append(getType());
-        s.append(", ");
-        s.append(getType());
-        s.append(", ");
-        s.append(getClientID());
-        s.append(", NULL");
-        return s.toString();
-    }//toString override
+    public void setInterest(float interest){
+        this.interest = interest;
+    }//setInterest(float)
     
 }//Account

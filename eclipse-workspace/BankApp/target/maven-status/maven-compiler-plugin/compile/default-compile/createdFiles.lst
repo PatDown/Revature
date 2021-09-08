@@ -1,4 +1,5 @@
 com\pdownton\bankapp\service\ClientService.class
+com\pdownton\bankapp\repository\Repository.class
 com\pdownton\bankapp\models\Account.class
 com\pdownton\bankapp\repository\AccountRepository.class
 com\pdownton\bankapp\service\BankService.class
@@ -10,10 +11,8 @@ com\pdownton\bankapp\models\Savings.class
 com\pdownton\bankapp\controller\SavingsController.class
 com\pdownton\bankapp\service\AccountService.class
 com\pdownton\bankapp\ConnectionFactory.class
-com\pdownton\bankapp\repository\BankRepository.class
 com\pdownton\bankapp\controller\BankController.class
 com\pdownton\bankapp\models\Bank.class
 com\pdownton\bankapp\controller\ClientController.class
 com\pdownton\bankapp\repository\ClientRepository.class
-.netbeans_automatic_build
 com\pdownton\bankapp\controller\AccountController.class

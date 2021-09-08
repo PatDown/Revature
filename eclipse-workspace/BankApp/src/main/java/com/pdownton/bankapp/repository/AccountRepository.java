@@ -7,8 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -16,11 +16,11 @@ import java.util.List;
  */
 public class AccountRepository implements Repository<Account>{
     
-    List<Account> accounts;
-    Connection connection;
+    private final Map<String, Account> accounts;
+    private final Connection connection;
 
     public AccountRepository(Connection conn) {
-        accounts = new ArrayList<>();
+        accounts = new HashMap<>();
         connection = conn;
     }//AccountRepository(Connection)
     
@@ -31,7 +31,7 @@ public class AccountRepository implements Repository<Account>{
 
     @Override
     public Account findById(String accNum) throws SQLException {
-        String sql = "SELECT * FROM clients WHERE account_num = (string)";
+        String sql = "SELECT * FROM accounts WHERE num = ?";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setString(1, accNum);
         ResultSet rs = pstmt.executeQuery();
@@ -43,20 +43,25 @@ public class AccountRepository implements Repository<Account>{
             else
                 row = new Savings();
             
-            row.setNumber(rs.getString("account_num"));
+            row.setNumber(rs.getString("num"));
             row.setBalance(rs.getFloat("balance"));
             row.setType(rs.getString("type"));
-            row.setClientID(rs.getInt("clientID"));
+            row.setClientID(rs.getInt("customer_id"));
             if (row.getType().equalsIgnoreCase("Savings"))
-                row.toSavings().setInterest(rs.getFloat("interest"));
+                row.setInterest(rs.getFloat("interest"));
             return row;
         }//if(rs.next())
         
         return null;
     }//findById(String)
-
+    
     @Override
-    public List<Account> getAll() throws SQLException {
+    public Map<Integer, Account> getClients() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }//getClients()
+    
+    @Override
+    public Map<String, Account> getAccounts() throws SQLException {
         String sql = "SELECT * FROM accounts";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         ResultSet rs = pstmt.executeQuery();
@@ -67,28 +72,32 @@ public class AccountRepository implements Repository<Account>{
                 row = new Checking();
             else
                 row = new Savings();
-            row.setNumber(rs.getString("account_num"));
+            row.setNumber(rs.getString("num"));
             row.setBalance(rs.getFloat("balance"));
             row.setType(rs.getString("type"));
             row.setClientID(rs.getInt("customer_id"));
             if(row.getType().equalsIgnoreCase("Savings"))
-                row.toSavings().setInterest(rs.getFloat("interest"));
-            accounts.add(row);
+                row.setInterest(rs.getFloat("interest"));
+            accounts.put(row.getNumber(), row);
         }//while(rs.next())
         return accounts;
-    }//getAll()
+    }//getAccounts()
 
     @Override
     public void save(Account account) throws SQLException {
-        String sql = "INSERT INTO accounts VALUES (string)";
+        String sql = "INSERT INTO accounts VALUES (?, ?, ?, ?, ?)";
         PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setString(1, account.toString());
+        pstmt.setString(1, account.getNumber());
+        pstmt.setFloat(2, account.getBalance());
+        pstmt.setString(3, account.getType());
+        pstmt.setInt(4, account.getClientID());
+        pstmt.setFloat(5, account.getInterest());
         pstmt.executeQuery();
     }//save(Account)
 
     @Override
     public void update(Account account, String[] params) throws SQLException {
-        String sql = "UPDATE accounts SET (string) WHERE (string)";
+        String sql = "UPDATE accounts SET ? WHERE STRCMP(num, ?) = 0";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setString(1, params[0]);
         pstmt.setString(2, params[1]);
@@ -97,7 +106,7 @@ public class AccountRepository implements Repository<Account>{
 
     @Override
     public void delete(Account account) throws SQLException {
-        String sql = "DELETE FROM accounts WHERE account_num = (string)";
+        String sql = "DELETE FROM accounts WHERE STRCMP(num, ?) = 0";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setString(1, account.getNumber());
         pstmt.executeQuery();

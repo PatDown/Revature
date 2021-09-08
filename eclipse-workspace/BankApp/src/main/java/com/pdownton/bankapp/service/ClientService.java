@@ -1,15 +1,13 @@
 package com.pdownton.bankapp.service;
 
 import com.pdownton.bankapp.models.Account;
-import com.pdownton.bankapp.models.Bank;
-import com.pdownton.bankapp.models.Checking;
 import com.pdownton.bankapp.models.Client;
-import com.pdownton.bankapp.models.Savings;
 import com.pdownton.bankapp.repository.AccountRepository;
 import com.pdownton.bankapp.repository.ClientRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -18,144 +16,87 @@ import java.util.List;
  */
 public class ClientService {
     
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
     
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
     
-    public void init(Connection conn) {
+    public ClientService(Connection conn){
         clientRepository = new ClientRepository(conn);
-    }//init(Connection)
+        accountRepository = new AccountRepository(conn);
+    }//ClientService(Connection)
     
-    public Client create(String name) throws SQLException{
-        Client client = new Client(name);
+    public Client create(Client client) throws SQLException{
         clientRepository.save(client);
         return client;
     }//create(String)
     
     public Client getClient(int id) {
-        Client client = new Client();
+        Client client = null;
         try {
-            return clientRepository.get(id);
+            client = clientRepository.get(id);
         } catch (SQLException e){
             e.printStackTrace();
-            return null;
-        }
+        }//catch (SQLException)
+        return client;
     }//getClient(int)
     
     public List<Client> getClients(){
         List<Client> clients = new ArrayList<>();
         try {
-            clients = clientRepository.getAll();
+            for (Client client : clientRepository.getClients().values())
+                clients.add(client);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         
         return clients;
-    }//getClients
+    }//getClients()
     
-    public boolean isClientAccount(int id, String accNum){
-        Client client = null;
+    public boolean updateClient(int id, String newName){
+        Client client;
         try {
             client = clientRepository.get(id);
-        } catch (SQLException e){
-            e.printStackTrace();
-        }//catch(SQLException)
-        
-        if (client == null)
-            return false;
-        
-        return client.getAccounts().containsKey(accNum);
-    }//isClientAccount(int, String)
-    
-    public boolean isAccount(String accNum){
-        Account account = null; 
-        try {
-            account= accountRepository.findById(accNum);
+            if (client == null)
+                return false;
+            clientRepository.update(client, new String[]{newName});
         } catch (SQLException e) {
             e.printStackTrace();
-        }//catch(SQLException)
-        
-        return account != null;
-    }//isAccount(String)
-    
-    public boolean addAccount(int id, String name, float balance, String type, float interest) throws SQLException{
-        Client client = null;
-        try {
-            client = clientRepository.get(id);
-        } catch (SQLException e){
-            e.printStackTrace();
-        }//catch(SQLException)
-        
-        if (client == null)
             return false;
-        Account account;
-        if (type.equalsIgnoreCase("Checking"))
-            account = new Checking(balance, id);
-        else
-            account = new Savings(balance, id, interest);
-        
-        if (client.getAccounts().isEmpty())
-            client.setCurrentAccount(account);
-        while(client.getAccounts().containsKey(account.getNumber())){
-            if (account.getType().equalsIgnoreCase("checking"))
-                account = new Checking(balance, id);
-            if (account.getType().equalsIgnoreCase("savings"))
-                account = new Savings(balance, id, interest);
-        }//while(client.getAccounts().containsKey(account.getNumber()))
-        client.getAccounts().put(account.getNumber(), account);
-        Bank.accounts.putIfAbsent(account, client);
-        clientRepository.save(client);
+        }//catch (SQLException)
         return true;
-    }//addAccount(int, String, float, String, float)
+    }//updateClient(int, String)
     
-    public boolean deleteAccount(int id, String accNum) throws SQLException {
-        Client client = null;
+    public boolean removeClient(int id){
         try {
-            client = clientRepository.get(id);
-        } catch (SQLException e){
+            Client client = clientRepository.get(id);
+            clientRepository.delete(client);
+        } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }//catch(SQLException)
         
-        if (client == null)
-            return false;
-        
-        if (client.getAccounts().isEmpty())
-            return false;
-        else {
-            if (client.getAccounts().containsKey(accNum)) {
-                Account account = client.getAccount(accNum);
-                client.getAccounts().remove(accNum);
-                if (account == client.getCurrentAccount())
-                    client.setCurrentAccount(client.getAccounts().values().stream().findFirst().orElse(null));
-                clientRepository.save(client);
-                return true;
-            } else
-                return false;
-        }//else
-    }//deleteAccount(int, String)
+        return true;
+    }//removeClient(int)
     
-    public boolean changeAccount(int id, String accNum){
-        Client client = null;
-        try {
-            client = clientRepository.get(id);
+    public Collection<Account> findAccounts(Client client, float[] bounds){
+        Collection<Account> accounts = new ArrayList<>();
+        try{
+            accounts = accountRepository.getAccounts().values();
         } catch (SQLException e){
             e.printStackTrace();
-        }//catch(SQLException)
+        }
+        for (Account account : accounts){
+            if (account.getClientID() != client.getID())
+                accounts.remove(account);
+            if (account.getBalance() > bounds[0] || account.getBalance() < bounds[1])
+                accounts.remove(account);
+        }
         
-        if (client == null)
-            return false;
-                
-        if (client.getAccounts().isEmpty() || client.getAccounts().size() < 2)
-            return false;
-        else {
-            if (client.getAccounts().containsKey(accNum)){
-                Account account = client.getAccount(accNum);
-                client.setCurrentAccount(account);
-                return true;
-            } else
-                return false;
-        }//else
-    }//changeAccount(int, String)
+        return accounts;
+    }//
+    /*
+    
+    
     
     public boolean transfer(int id, String accNum1, String accNum2, float amount) throws SQLException{
         Client client = null;
@@ -184,21 +125,11 @@ public class ClientService {
         } else
             return false;
     }//transfer(int, String, String, float)
-    
-    public boolean removeClient(int id){
-        try {
-            Client client = clientRepository.get(id);
-            clientRepository.delete(client);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }//catch(SQLException)
+    */
         
-        return false;
-    }//removeClient(int)
-    
     private boolean validAmount(float amount) {        
         return amount > 0;
     }//validAmount(float)
 
+    
 }//ClientService

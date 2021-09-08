@@ -6,8 +6,6 @@ package com.pdownton.bankapp.models;
  */
 public class Savings extends Account{
     
-    private float interest;
-
     public Savings(){
         super();
         balance = 0.00F;
@@ -21,14 +19,6 @@ public class Savings extends Account{
         type = "Savings";
         this.interest = interest;
     }//Savings(float, int, float)
-
-    public float getInterest() {
-        return interest;
-    }//getInterest()
-
-    public void setInterest(float interest) {
-        this.interest = interest;
-    }//setInterest(float)
     
     @Override
     public String toString(){

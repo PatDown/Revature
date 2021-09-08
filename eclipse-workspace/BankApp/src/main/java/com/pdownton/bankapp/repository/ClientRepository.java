@@ -1,12 +1,15 @@
 package com.pdownton.bankapp.repository;
 
+import com.pdownton.bankapp.models.Account;
 import com.pdownton.bankapp.models.Client;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -15,11 +18,11 @@ import java.util.List;
 
 public class ClientRepository implements Repository<Client> {
     
-    private List<Client> clients;
+    private final Map<Integer, Client> clients;
     Connection connection;
     
     public ClientRepository(Connection conn){
-        clients = new ArrayList<>();
+        clients = new HashMap<>();
         connection = conn;
     }//ClientRepository(Connection)
     
@@ -47,7 +50,7 @@ public class ClientRepository implements Repository<Client> {
     }//findById(String)
 
     @Override
-    public List<Client> getAll() throws SQLException {
+    public Map<Integer, Client> getClients() throws SQLException {
         String sql = "SELECT * FROM clients";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         ResultSet rs = pstmt.executeQuery();
@@ -56,25 +59,31 @@ public class ClientRepository implements Repository<Client> {
             Client row = new Client();
             row.setID(rs.getInt("id"));
             row.setName(rs.getString("name"));
-            clients.add(row);
+            clients.put(row.getID(), row);
         }//while(rs.next())
         return clients;
     }//getAll()
     
     @Override
+    public Map<String, Client> getAccounts(){
+        throw new UnsupportedOperationException("Not supported yet.");
+    }//getAccounts()
+    
+    @Override
     public void save(Client client) throws SQLException {
-        String sql = "INSERT INTO clients (string) VALUES (?)";
+        String sql = "INSERT INTO clients VALUES (?, ?)";
         PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setString(1, client.toString());
+        pstmt.setInt(1, client.getID());
+        pstmt.setString(2, client.getName());
         pstmt.executeQuery();
     }//save(Client)
 
     @Override
     public void update(Client client, String[] params) throws SQLException {
-        String sql = "UPDATE clients SET (string) WHERE id = ?";
+        String sql = "UPDATE clients SET name = ? WHERE id = ?";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setString(1, params[0]);
-        pstmt.setInt(2, Integer.valueOf(params[1]));
+        pstmt.setInt(2, client.getID());
         pstmt.executeUpdate();
     }//update(Client, String[])
 
