@@ -12,23 +12,23 @@ public class Client {
     
     private int id;
     private String name;
-    private Map<String, Account> accounts;
-    private Account currentAccount;
+    //private Map<String, Account> accounts;
+    //private Account currentAccount;
     
     public Client(){
         super();
         this.id = (int)(Math.random()*(900)+100);;
         name = "";
-        accounts = new HashMap<>();
-        currentAccount = null;
+        //accounts = new HashMap<>();
+        //currentAccount = null;
     }//Client()
 
     public Client(String name) {
         super();
         this.id = (int)(Math.random()*(900)+100);
         this.name = name;
-        accounts = new HashMap<>();
-        currentAccount = null;
+        //accounts = new HashMap<>();
+        //currentAccount = null;
     }//Client(String)
 
     public int getID() {
@@ -49,6 +49,7 @@ public class Client {
         this.name = name;
     }//setName(String)
 
+    /*
     public Map<String, Account> getAccounts() {
         return accounts;
     }//getAccounts()
@@ -68,10 +69,10 @@ public class Client {
 
         return account;
     }//getAccount(String)
-    
+    */
     @Override
     public String toString(){
-        return "Client(id= " + id + ", name= " + name + ")";
+        return String.format("%d, %s", getID(), getName());
     }//toString override
     
 }//Client
