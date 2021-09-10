@@ -11,7 +11,6 @@ public abstract class Account {
     protected int id;
     private String username;
     private String password;
-    public static Account currentAccount = null;
     
     public static List<Integer> ids = new ArrayList<>();
 
