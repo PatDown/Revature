@@ -17,7 +17,7 @@ public class Client {
     
     public Client(){
         super();
-        this.id = (int)(Math.random()*(900)+100);;
+        this.id = (int)(Math.random()*(900)+100);
         name = "";
         //accounts = new HashMap<>();
         //currentAccount = null;
