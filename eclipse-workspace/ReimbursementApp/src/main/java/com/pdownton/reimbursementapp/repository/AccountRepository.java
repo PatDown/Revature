@@ -38,6 +38,7 @@ public class AccountRepository implements Repository<Account>{
             row.setId(id);
             row.setUsername(rs.getString("username"));
             row.setPassword(rs.getString("password"));
+            row.setName(rs.getString("name"));
             return row;
         }//if (rs.next())
         else
@@ -59,6 +60,7 @@ public class AccountRepository implements Repository<Account>{
             row.setId(rs.getInt("id"));
             row.setUsername(rs.getString("username"));
             row.setPassword(rs.getString("password"));
+            row.setName(rs.getString("name"));
             accounts.add(row);
         }//while (rs.next())
         return accounts;
@@ -66,11 +68,12 @@ public class AccountRepository implements Repository<Account>{
 
     @Override
     public void save(Account a) throws SQLException {
-        String sql = "INSERT INTO accounts VALUES(?, ?, ?)";
+        String sql = "INSERT INTO accounts VALUES(?, ?, ?, ?)";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setInt(1, a.getId());
         pstmt.setString(2, a.getUsername());
         pstmt.setString(3, a.getPassword());
+        pstmt.setString(4, a.getName());
         pstmt.executeQuery();
     }//save(Employee)
 

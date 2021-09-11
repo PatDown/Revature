@@ -1,8 +1,6 @@
 package com.pdownton.reimbursementapp.service;
 
 import com.pdownton.reimbursementapp.models.Account;
-import com.pdownton.reimbursementapp.models.Employee;
-import com.pdownton.reimbursementapp.models.Manager;
 import com.pdownton.reimbursementapp.models.Reimbursement;
 import com.pdownton.reimbursementapp.repository.AccountRepository;
 import java.sql.Connection;
@@ -69,13 +67,13 @@ public class AccountService {
         return accountList;
     }//getAccounts()
     
-    public int login(String username, String password){
+    public String login(String username, String password){
         for (var entry : accounts.entrySet())
             if (entry.getValue().getUsername().equals(username) && entry.getValue().getPassword().equals(password)){
                 currentAccount = entry.getValue();
-                return entry.getKey();
+                return String.format("Hello %s!", entry.getValue().getName());
             }//if (entry.getValue().getUsername().equals(username) && entry.getValue().getPassword().equals(password))
-        return 0;
+        return "Invalid credentials";
     }//login(String, String)
     
     public void logout(){
@@ -140,7 +138,7 @@ public class AccountService {
             mean = totalSpent / reimbursements.size();
 
             stats.append(String.format("Mean: $%.2f\n", mean));
-            stats.append(String.format("Biggest Spender: %d - $%.2f\n", biggestSpender, maxSpent));
+            stats.append(String.format("Biggest Spender: %s - $%.2f\n", accounts.get(biggestSpender).getName(), maxSpent));
 
             return stats.toString();
         } else
