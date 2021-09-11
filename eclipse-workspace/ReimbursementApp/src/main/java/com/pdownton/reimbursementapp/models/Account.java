@@ -11,18 +11,26 @@ public abstract class Account {
     protected int id;
     private String username;
     private String password;
+    private String name;
     
     public static List<Integer> ids = new ArrayList<>();
 
     public Account() {
         super();
-    }//Manager()
+    }//Account()
 
     public Account(String username, String password) {
         super();
         this.username = username;
         this.password = password;
-    }//Manager(String, String)
+    }//AccountString, String)
+    
+    public Account(String username, String password, String name){
+        super();
+        this.username = username;
+        this.password = password;
+        this.name = name;
+    }//AccountString, String, String)
     
     public int getId(){
         return id;
@@ -47,5 +55,13 @@ public abstract class Account {
     public void setPassword(String password) {
         this.password = password;
     }//setPassword(String)
+
+    public String getName() {
+        return name;
+    }//getName()
+
+    public void setName(String name) {
+        this.name = name;
+    }//setName(String)
     
 }//Account
