@@ -40,12 +40,9 @@ public class AccountController {
     
     public static void login(Context ctx){
         String[] credentials = ctx.body().split(",");
-        int id = accountService.login(credentials[0], credentials[1]);
+        String message = accountService.login(credentials[0], credentials[1]);
         
-        if (id != 0)
-            ctx.json("Login Successful");
-        else
-            ctx.json("Invalid credentials.");
+        ctx.json(message);
     }//login(Context)
     
     public static void logout(Context ctx){

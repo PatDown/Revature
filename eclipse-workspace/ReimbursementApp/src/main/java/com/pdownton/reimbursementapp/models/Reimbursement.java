@@ -68,12 +68,12 @@ public class Reimbursement {
     }//setEmployeeId(int)
 
     private int generateId(){
-        int[] i = new int[4];
+        int[] i = new int[3];
         StringBuilder idBuilder = new StringBuilder();
-        for (int j = 0; j < 4; j++){
+        for (int j = 0; j < 3; j++){
             i[j] = (int)(Math.random()*(900)+100);
             idBuilder.append(i[j]);
-        }//for (int j = 0; j < 4; j++)
+        }//for (int j = 0; j < 3; j++)
         int k = Integer.valueOf(idBuilder.toString());
         if (ids.contains(k))
             k = generateId();
