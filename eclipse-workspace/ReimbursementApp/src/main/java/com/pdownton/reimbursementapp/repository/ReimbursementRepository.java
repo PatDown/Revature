@@ -23,7 +23,7 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
     
     @Override
     public Reimbursement get(int id) throws SQLException {
-        String sql = "SELECT * FROM reimbursement WHERE id = ?";
+        String sql = "SELECT * FROM requests WHERE id = ?";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setInt(1, id);
         ResultSet rs = pstmt.executeQuery();
@@ -43,22 +43,24 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
     @Override
     public List<Reimbursement> getAll() throws SQLException {
         List<Reimbursement> reimbursements = new ArrayList<>();
-        String sql = "SELECT * FROM reimbursement";
+        String sql = "SELECT * FROM requests";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()){
             Reimbursement row = new Reimbursement();
+            row.setId(rs.getInt("id"));
             row.setAmount(rs.getFloat("amount"));
             row.setReason(rs.getString("reason"));
             row.setStatus(rs.getString("status"));
             row.setEmployeeId(rs.getInt("employee_id"));
+            reimbursements.add(row);
         }//while (rs.next())
         return reimbursements;
     }//getAll()
 
     @Override
     public void save(Reimbursement r) throws SQLException {
-        String sql = "INSERT INTO reimbursement VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO requests VALUES(?, ?, ?, ?, ?)";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setInt(1, r.getId());
         pstmt.setFloat(2, r.getAmount());
@@ -70,7 +72,7 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
 
     @Override
     public void update(Reimbursement r, String[] params) throws SQLException {
-        String sql = "UPDATE reimbursement SET status = ? WHERE id = ?";
+        String sql = "UPDATE requests SET status = ? WHERE id = ?";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setString(1, params[0]);
         pstmt.setInt(2, r.getId());
@@ -79,7 +81,7 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
 
     @Override
     public void delete(Reimbursement r) throws SQLException {
-        String sql = "DELETE FROM reimbursement WHERE id = ?";
+        String sql = "DELETE FROM requests WHERE id = ?";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setInt(1, r.getId());
         ResultSet rs = pstmt.executeQuery();        

@@ -86,9 +86,10 @@ public class ReimbursementServiceTest {
         System.out.println("updateStatus");
         int id = 0;
         String status = "";
+        int managerId = 0;
         ReimbursementService instance = new ReimbursementService();
-        boolean expResult = false;
-        boolean result = instance.updateStatus(id, status);
+        String expResult = "";
+        String result = instance.updateStatus(id, status, managerId);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

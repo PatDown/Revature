@@ -23,14 +23,21 @@ public abstract class Account {
         super();
         this.username = username;
         this.password = password;
-    }//AccountString, String)
+    }//Account(String, String)
     
     public Account(String username, String password, String name){
         super();
         this.username = username;
         this.password = password;
         this.name = name;
-    }//AccountString, String, String)
+    }//Account(String, String, String)
+
+    public Account(int id, String username, String password, String name) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+    }//Account(int, String, String, String)
     
     public int getId(){
         return id;
@@ -64,4 +71,12 @@ public abstract class Account {
         this.name = name;
     }//setName(String)
     
+    @Override
+    public String toString(){
+        StringBuilder aBuilder = new StringBuilder();
+        aBuilder.append(String.format("Username: %s | ", username));
+        aBuilder.append(String.format("Password: %s | ", password));
+        aBuilder.append(String.format("Name: %s", name));
+        return aBuilder.toString();
+    }//toString()
 }//Account

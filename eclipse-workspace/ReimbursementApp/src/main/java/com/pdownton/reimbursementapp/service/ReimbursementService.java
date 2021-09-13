@@ -37,7 +37,7 @@ public class ReimbursementService {
         return reimbursement;
     }//getReimbursement(int)
     
-    public List<Reimbursement> getAll(){
+    public List<Reimbursement> getAll(int id){
         List<Reimbursement> rmbsmts = new ArrayList<>();
         try {
             rmbsmts = reimbursementRepo.getAll();
@@ -46,10 +46,18 @@ public class ReimbursementService {
         }//catch (SQLException)
         
         for (var r : rmbsmts)
-            reimbursements.putIfAbsent(r.getId(), r);
+            if (!reimbursements.containsValue(r))
+                reimbursements.put(r.getId(), r);
         
-        return rmbsmts;
-    }//getAll()
+        if (id > 100) {
+            List<Reimbursement> personal = new ArrayList<>();
+            rmbsmts.stream().filter(r -> (r.getEmployeeId() == id)).forEachOrdered(r -> {
+                personal.add(r);
+            });
+            return personal;
+        } else
+            return rmbsmts;
+    }//getAll(int)
     
     public Reimbursement create(Reimbursement reimbursement){
         try {
@@ -60,17 +68,23 @@ public class ReimbursementService {
         return reimbursement;
     }//create(Reimbursement)
     
-    public boolean updateStatus(int id, String status){
+    public String updateStatus(int id, String status, int managerId){
         Reimbursement r = getReimbursement(id);
+        if (r == null)
+            return "Request does not exist.";
+        if (managerId < 10 || managerId > 99)
+            return "You are not a manager.";
+        if (r.getEmployeeId() == managerId)
+            return "You cannot approve your own request.";
+        if (!r.getStatus().equals("Pending"))
+            return "Cannot update status.";
         try {
             reimbursementRepo.update(r, new String[]{status});
-            
         } catch (SQLException e){
            e.printStackTrace();
-           return false;
         }//catch (SQLException)
          
-        return true;
+        return String.format("Request %s!", status);
     }//updateStatus(Reimbursement, String)
     
 }//ReimbursementService

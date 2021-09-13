@@ -1,6 +1,7 @@
 package com.pdownton.reimbursementapp.repository;
 
 import com.pdownton.reimbursementapp.models.Account;
+import com.pdownton.reimbursementapp.models.Account;
 import com.pdownton.reimbursementapp.models.Employee;
 import com.pdownton.reimbursementapp.models.Manager;
 import java.sql.Connection;
@@ -75,7 +76,7 @@ public class AccountRepository implements Repository<Account>{
         pstmt.setString(3, a.getPassword());
         pstmt.setString(4, a.getName());
         pstmt.executeQuery();
-    }//save(Employee)
+    }//save(Account)
 
     @Override
     public void update(Account a, String[] params) throws SQLException {

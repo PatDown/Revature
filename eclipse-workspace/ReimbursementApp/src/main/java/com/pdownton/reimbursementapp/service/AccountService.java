@@ -27,8 +27,16 @@ public class AccountService {
     public AccountService(Connection conn){
         super();
         accountRepo = new AccountRepository(conn);
-        reimbursementService = new ReimbursementService();
+        reimbursementService = new ReimbursementService(conn);
     }//AccountService(Connection)
+    
+    public Account getCurrentAccount(){
+        return currentAccount;
+    }//getCurrentAccount()
+    
+    public void setCurrentAccount(int id){
+        currentAccount = getAccount(id);
+    }//setCurrentAccount(int)
     
     public Account create(Account account){
         try {
@@ -68,80 +76,64 @@ public class AccountService {
     }//getAccounts()
     
     public String login(String username, String password){
-        for (var entry : accounts.entrySet())
-            if (entry.getValue().getUsername().equals(username) && entry.getValue().getPassword().equals(password)){
-                currentAccount = entry.getValue();
-                return String.format("Hello %s!", entry.getValue().getName());
-            }//if (entry.getValue().getUsername().equals(username) && entry.getValue().getPassword().equals(password))
-        return "Invalid credentials";
+        if (!isLoggedIn()){
+            for (var entry : accounts.entrySet())
+                if (entry.getValue().getUsername().equals(username) && entry.getValue().getPassword().equals(password)){
+                    currentAccount = entry.getValue();
+                    return String.format("Hello %s!", entry.getValue().getName());
+                }//if (entry.getValue().getUsername().equals(username) && entry.getValue().getPassword().equals(password))
+            return "Invalid credentials.";
+        } else
+            return "Already logged in.";
     }//login(String, String)
     
-    public void logout(){
-        currentAccount = null;
+    public String logout(){
+        if (isLoggedIn()){
+            currentAccount = null;
+            return "Successfully logged out.";
+        } else
+            return "Could not log out.";
     }//logout()
     
-    public boolean isLoggedIn(){
+    private boolean isLoggedIn(){
         return currentAccount != null;
     }//isLoggedIn()
     
-    public Reimbursement createRequest(Reimbursement r){
-        if (isLoggedIn()){
-            r.setEmployeeId(currentAccount.getId());
-            getReimbursements().add(reimbursementService.create(r));
-            return r;
-        } else
-            return null;
-    }//createRequest(Reimbursement)
-    
-    public List<Reimbursement> getReimbursements(){
-        List<Reimbursement> reimbursements = reimbursementService.getAll();
-        if (currentAccount.getId() > 100) {
-            reimbursements.stream().filter(r -> (r.getEmployeeId() != currentAccount.getId())).forEachOrdered(r -> {
-                reimbursements.remove(r);
-            });
-        }//if (currentAccount.getId() > 100)
-        return reimbursements;
-    }//getReimbursements()
-    
-    public boolean updateReimbursement(int id, String newStatus){
-        if (id < 100)
-            return reimbursementService.updateStatus(id, newStatus);
-        else
-            return false;
-    }//updateReimbursement(int, String)
-    
     public String statistics(){
-        if (currentAccount.getId() < 100) {
-            StringBuilder stats = new StringBuilder();
-            List<Reimbursement> reimbursements = getReimbursements();
-            float mean, totalSpent = 0, maxSpent = 0;
-            int biggestSpender = 0;
-            Map<Integer, Float> employeeSpending = new HashMap<>();
+        if (isLoggedIn()){
+            if (currentAccount.getId() < 100) {
+                StringBuilder stats = new StringBuilder();
+                List<Reimbursement> reimbursements = reimbursementService.getAll(currentAccount.getId());
+                float mean, totalSpent = 0, maxSpent = 0;
+                int biggestSpender = 0;
+                Map<Integer, Float> employeeSpending = new HashMap<>();
 
-            for (var r : reimbursements){
-                float amount = r.getAmount();
-                int employeeId = r.getEmployeeId();
-                totalSpent += amount;
+                for (var r : reimbursements){
+                    float amount = r.getAmount();
+                    int employeeId = r.getEmployeeId();
+                    totalSpent += amount;
 
-                if (employeeSpending.containsKey(employeeId))
-                    employeeSpending.replace(employeeId, employeeSpending.get(employeeId) + amount);
-                else
-                    employeeSpending.put(employeeId, amount);
+                    if (employeeSpending.containsKey(employeeId))
+                        employeeSpending.replace(employeeId, employeeSpending.get(employeeId) + amount);
+                    else
+                        employeeSpending.put(employeeId, amount);
 
-                if (employeeSpending.get(employeeId) > maxSpent){
-                    maxSpent = employeeSpending.get(employeeId);
-                    biggestSpender = employeeId;
-                }//if (employeeSpending.get(employeeId) > maxSpent)
+                    if (employeeSpending.get(employeeId) > maxSpent){
+                        maxSpent = employeeSpending.get(employeeId);
+                        biggestSpender = employeeId;
+                    }//if (employeeSpending.get(employeeId) > maxSpent)
 
-            }//for (var r : reimbursements)
+                }//for (var r : reimbursements)
 
-            mean = totalSpent / reimbursements.size();
+                mean = totalSpent / reimbursements.size();
 
-            stats.append(String.format("Mean: $%.2f\n", mean));
-            stats.append(String.format("Biggest Spender: %s - $%.2f\n", accounts.get(biggestSpender).getName(), maxSpent));
+                stats.append(String.format("Mean: $%.2f\n", mean));
+                stats.append(String.format("Biggest Spender: %s - $%.2f\n", accounts.get(biggestSpender).getName(), maxSpent));
 
-            return stats.toString();
+                return stats.toString();
+            } else
+                return "You are not a manager.";
         } else
-            return "You are not a manager.";
+            return "You are not logged in.";
     }//statistics()
 }//AccountService

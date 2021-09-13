@@ -23,7 +23,7 @@ public class Reimbursement {
     public Reimbursement(float amount, String reason, int employee_id) {
         this.amount = amount;
         this.reason = reason;
-        status = "pending";
+        status = "Pending";
         this.employeeId = employee_id;
     }//Reimbursement(float, String, String, int)
 
@@ -80,4 +80,14 @@ public class Reimbursement {
         ids.add(k);
         return k;
     }//generateId()
+    
+    @Override
+    public String toString(){
+        StringBuilder rBuilder = new StringBuilder();
+        rBuilder.append(String.format("Amount: $%.2f | ", amount));
+        rBuilder.append(String.format("Reason: %s | ", reason));
+        rBuilder.append(String.format("Status: %s | ", status));
+        rBuilder.append(String.format("Employee ID: %d", employeeId));
+        return rBuilder.toString();
+    }//toString()
 }//Reimbursement
