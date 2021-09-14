@@ -24,12 +24,4 @@ public class Manager extends Account{
         return i;
     }//generateId()
     
-    @Override
-    public String toString(){
-        StringBuilder mBuilder = new StringBuilder();
-        mBuilder.append(String.format("Username: %s | ", getUsername()));
-        mBuilder.append(String.format("Password: %s | ", getPassword()));
-        mBuilder.append(String.format("Name: %s | Manager", getName()));
-        return mBuilder.toString();
-    }//toString()
 }//Manager

@@ -103,7 +103,7 @@ public class AccountService {
         if (isLoggedIn()){
             if (currentAccount.getId() < 100) {
                 StringBuilder stats = new StringBuilder();
-                List<Reimbursement> reimbursements = reimbursementService.getAll(currentAccount.getId());
+                List<Reimbursement> reimbursements = reimbursementService.getReimbursements(currentAccount.getId());
                 float mean, totalSpent = 0, maxSpent = 0;
                 int biggestSpender = 0;
                 Map<Integer, Float> employeeSpending = new HashMap<>();

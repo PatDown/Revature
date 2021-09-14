@@ -13,6 +13,7 @@ public class Reimbursement {
     private String reason;
     private String status;
     private int employeeId;
+    private String message;
     
     public static List<Integer> ids = new ArrayList<>();
 
@@ -26,6 +27,7 @@ public class Reimbursement {
         this.reason = reason;
         status = "Pending";
         this.employeeId = employee_id;
+        message = "None";
     }//Reimbursement(float, String, String, int)
 
     public int getId(){
@@ -68,6 +70,14 @@ public class Reimbursement {
         this.employeeId = employeeId;
     }//setEmployeeId(int)
 
+    public String getMessage() {
+        return message;
+    }//getMessage()
+
+    public void setMessage(String message) {
+        this.message = message;
+    }//setMessage(String)
+
     private int generateId(){
         int[] i = new int[3];
         StringBuilder idBuilder = new StringBuilder();
@@ -89,6 +99,8 @@ public class Reimbursement {
         rBuilder.append(String.format("Reason: %s | ", reason));
         rBuilder.append(String.format("Status: %s | ", status));
         rBuilder.append(String.format("Employee ID: %d", employeeId));
+        if (!message.equals("None"))
+            rBuilder.append(String.format(" | Message: %s", message));
         return rBuilder.toString();
     }//toString()
 }//Reimbursement

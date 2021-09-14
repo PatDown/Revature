@@ -30,10 +30,12 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
         
         if (rs.next()){
             Reimbursement row = new Reimbursement();
+            row.setId(id);
             row.setAmount(rs.getFloat("amount"));
             row.setReason(rs.getString("reason"));
             row.setStatus(rs.getString("status"));
             row.setEmployeeId(rs.getInt("employee_id"));
+            row.setMessage(rs.getString("message"));
             return row;
         }//if (rs.next())
         else
@@ -53,6 +55,7 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
             row.setReason(rs.getString("reason"));
             row.setStatus(rs.getString("status"));
             row.setEmployeeId(rs.getInt("employee_id"));
+            row.setMessage(rs.getString("message"));
             reimbursements.add(row);
         }//while (rs.next())
         return reimbursements;
@@ -60,23 +63,25 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
 
     @Override
     public void save(Reimbursement r) throws SQLException {
-        String sql = "INSERT INTO requests VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO requests VALUES(?, ?, ?, ?, ?, ?)";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setInt(1, r.getId());
         pstmt.setFloat(2, r.getAmount());
         pstmt.setString(3, r.getReason());
         pstmt.setString(4, r.getStatus());
         pstmt.setInt(5, r.getEmployeeId());
+        pstmt.setString(6, r.getMessage());
         pstmt.executeQuery();
     }//save(Reimbursement)
 
     @Override
     public void update(Reimbursement r, String[] params) throws SQLException {
-        String sql = "UPDATE requests SET status = ? WHERE id = ?";
+        String sql = "UPDATE requests SET status=?, message=? WHERE id = ?";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setString(1, params[0]);
-        pstmt.setInt(2, r.getId());
-        pstmt.executeUpdate();
+        pstmt.setString(2, params[1]);
+        pstmt.setInt(3, r.getId());
+        pstmt.executeQuery();
     }//update(Reimbursement, String[])
 
     @Override

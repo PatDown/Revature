@@ -32,7 +32,7 @@ public class ReimbursementApp {
             path("employee/{id}", () ->{
                 get(AccountController::getAccount);
                 path("requests", () -> {
-                    get(ReimbursementController::getAll);
+                    get(ReimbursementController::getReimbursements);
                     post(ReimbursementController::create);
                     path("{rId}", () -> {
                         get(ReimbursementController::getReimbursement);

@@ -77,6 +77,8 @@ public abstract class Account {
         aBuilder.append(String.format("Username: %s | ", username));
         aBuilder.append(String.format("Password: %s | ", password));
         aBuilder.append(String.format("Name: %s", name));
+        if (id < 100)
+            aBuilder.append(" | Manager");
         return aBuilder.toString();
     }//toString()
 }//Account

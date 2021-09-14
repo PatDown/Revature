@@ -30,14 +30,23 @@ public class ReimbursementController {
     }//getReimbursement(Context)
     
     public static void getAll(Context ctx){
-        int id = Integer.parseInt(ctx.pathParam("id"));
-        List<Reimbursement> rList = rService.getAll(id);
+        List<Reimbursement> rList = rService.getAll();
         
         if (!rList.isEmpty())
             ctx.json(rList);
         else
             ctx.status(HttpCode.NOT_FOUND);
     }//getAll(Context)
+    
+    public static void getReimbursements(Context ctx){
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        List<Reimbursement> rList = rService.getReimbursements(id);
+        
+        if (!rList.isEmpty())
+            ctx.json(rList);
+        else
+            ctx.status(HttpCode.NOT_FOUND);
+    }//getReimbursements(Context)
     
     public static void create(Context ctx){
         int id = Integer.parseInt(ctx.pathParam("id"));
@@ -50,6 +59,6 @@ public class ReimbursementController {
         int id = Integer.parseInt(ctx.pathParam("id"));
         int rId = Integer.parseInt(ctx.pathParam("rId"));
         
-        String status = rService.updateStatus(rId, ctx.body(), id);
+        String status = rService.update(rId, ctx.body(), id);
     }//update(Context)
 }//ReimbursementController
