@@ -30,14 +30,18 @@ public class ReimbursementApp {
                 get(AccountController::login);
             });
             path("employee/{id}", () ->{
-               get(AccountController::getAccount);
-               path("requests", () -> {
-                  get(ReimbursementController::getAll);
-                  post(ReimbursementController::create);
-                  path("{rId}", () -> {
-                     put(ReimbursementController::update);
-                  });
-               });
+                get(AccountController::getAccount);
+                path("requests", () -> {
+                    get(ReimbursementController::getAll);
+                    post(ReimbursementController::create);
+                    path("{rId}", () -> {
+                        get(ReimbursementController::getReimbursement);
+                        put(ReimbursementController::update);
+                    });
+                });
+                path("stats", () -> {
+                   get(AccountController::statistics); 
+                });
             });
         });
         
