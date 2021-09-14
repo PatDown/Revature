@@ -1,7 +1,6 @@
 package com.pdownton.reimbursementapp.controller;
 
 import com.pdownton.reimbursementapp.models.Account;
-import com.pdownton.reimbursementapp.models.Reimbursement;
 import com.pdownton.reimbursementapp.service.AccountService;
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;

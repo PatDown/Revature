@@ -1,7 +1,6 @@
 package com.pdownton.reimbursementapp.repository;
 
 import com.pdownton.reimbursementapp.models.Account;
-import com.pdownton.reimbursementapp.models.Account;
 import com.pdownton.reimbursementapp.models.Employee;
 import com.pdownton.reimbursementapp.models.Manager;
 import java.sql.Connection;

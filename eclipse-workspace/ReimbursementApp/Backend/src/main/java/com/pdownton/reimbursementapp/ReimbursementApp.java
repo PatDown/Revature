@@ -38,10 +38,11 @@ public class ReimbursementApp {
                         get(ReimbursementController::getReimbursement);
                         put(ReimbursementController::update);
                     });
+                    path("stats", () -> {
+                        get(AccountController::statistics); 
+                    });
                 });
-                path("stats", () -> {
-                   get(AccountController::statistics); 
-                });
+                
             });
         });
         

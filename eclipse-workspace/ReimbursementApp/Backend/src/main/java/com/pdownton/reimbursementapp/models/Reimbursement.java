@@ -21,6 +21,7 @@ public class Reimbursement {
     }//Reimbursement()
     
     public Reimbursement(float amount, String reason, int employee_id) {
+        super();
         this.amount = amount;
         this.reason = reason;
         status = "Pending";
