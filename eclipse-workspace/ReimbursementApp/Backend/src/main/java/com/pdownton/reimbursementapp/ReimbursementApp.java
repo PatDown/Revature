@@ -26,23 +26,27 @@ public class ReimbursementApp {
         ReimbursementController.init(conn);
         
         app.routes(() -> {
-            path("login", () -> {
-                get(AccountController::login);
-            });
-            path("employee/{id}", () ->{
-                get(AccountController::getAccount);
-                path("requests", () -> {
-                    get(ReimbursementController::getReimbursements);
-                    post(ReimbursementController::create);
-                    path("{rId}", () -> {
-                        get(ReimbursementController::getReimbursement);
-                        put(ReimbursementController::update);
-                    });
-                    path("stats", () -> {
-                        get(AccountController::statistics); 
+            path("reimbursements", () -> {
+                path("login", () -> {
+                    get(AccountController::login);
+                });
+                path("employee", () -> {
+                    get(AccountController::getAccounts);
+                    path("{id}", () ->{
+                        get(AccountController::getAccount);
+                        path("requests", () -> {
+                            get(ReimbursementController::getReimbursements);
+                            post(ReimbursementController::create);
+                            path("{rId}", () -> {
+                                get(ReimbursementController::getReimbursement);
+                                put(ReimbursementController::update);
+                            });
+                            path("stats", () -> {
+                                get(AccountController::statistics); 
+                            });
+                        });
                     });
                 });
-                
             });
         });
         
