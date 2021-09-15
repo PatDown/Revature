@@ -128,7 +128,7 @@ public class AccountService {
                 mean = totalSpent / reimbursements.size();
 
                 stats.append(String.format("Mean: $%.2f\n", mean));
-                stats.append(String.format("Biggest Spender: %s - $%.2f\n", accounts.get(biggestSpender).getName(), maxSpent));
+                stats.append(String.format("Biggest Spender: %s\n", accounts.get(biggestSpender).getName()));
 
                 return stats.toString();
             } else
