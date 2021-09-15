@@ -93,6 +93,26 @@ public class AccountServiceTest {
         
         assertEquals(expResult, result);
         System.out.println(result);
+        
+        System.out.println(D2 
+                + "\nConditions: Logged in as normal employee.");
+        accountService.setCurrentAccount(7688);
+        
+        expResult = "You are not a manager.";
+        result = accountService.statistics();
+        
+        assertEquals(expResult, result);
+        System.out.println(result);
+        
+        System.out.println(D2 
+                + "\nConditions: Logged in as manager.");
+        accountService.setCurrentAccount(10);
+        
+        expResult = "Mean: $536.28\nBiggest Spender: John Paul Key\n";
+        result = accountService.statistics();
+        
+        assertEquals(expResult, result);
+        System.out.println(result);
     }//testStatistics()
     
 }//AccountServiceTest()
