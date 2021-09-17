@@ -75,16 +75,18 @@ public class AccountService {
         return accountList;
     }//getAccounts()
     
-    public String login(String username, String password){
+    public Account login(String username, String password){
         if (!isLoggedIn()){
-            for (var entry : accounts.entrySet())
+            getAccounts();
+            for (var entry : accounts.entrySet()){
                 if (entry.getValue().getUsername().equals(username) && entry.getValue().getPassword().equals(password)){
                     currentAccount = entry.getValue();
-                    return String.format("Hello %s!", entry.getValue().getName());
+                    return entry.getValue();
                 }//if (entry.getValue().getUsername().equals(username) && entry.getValue().getPassword().equals(password))
-            return "Invalid credentials.";
+            }//for (var entry : accounts.entrySet())
+            return null;
         } else
-            return "Already logged in.";
+            return null;
     }//login(String, String)
     
     public String logout(){

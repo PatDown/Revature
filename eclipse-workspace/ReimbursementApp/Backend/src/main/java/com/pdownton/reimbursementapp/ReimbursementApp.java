@@ -8,6 +8,7 @@ import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 import static io.javalin.apibuilder.ApiBuilder.put;
+import io.javalin.http.staticfiles.Location;
 import java.sql.Connection;
 
 /**
@@ -28,7 +29,7 @@ public class ReimbursementApp {
         app.routes(() -> {
             path("reimbursements", () -> {
                 path("login", () -> {
-                    get(AccountController::login);
+                    post(AccountController::login);
                 });
                 path("employee", () -> {
                     get(AccountController::getAccounts);
@@ -48,6 +49,10 @@ public class ReimbursementApp {
                     });
                 });
             });
+        });
+        
+        app.after(ctx -> {
+            ctx.res.addHeader("Access-Control-Allow-Origin", "*");
         });
         
     }//main(String[])

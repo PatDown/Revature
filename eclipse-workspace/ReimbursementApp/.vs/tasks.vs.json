@@ -1,0 +1,20 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "task-login",
+      "appliesTo": "*/login.html",
+      "type": "launch"
+    },
+    {
+      "taskLabel": "task-requests",
+      "appliesTo": "Frontend/src/pages/requests.html",
+      "type": "launch"
+    },
+    {
+      "taskLabel": "task-login",
+      "appliesTo": "Frontend/src/pages/login.html",
+      "type": "launch"
+    }
+  ]
+}

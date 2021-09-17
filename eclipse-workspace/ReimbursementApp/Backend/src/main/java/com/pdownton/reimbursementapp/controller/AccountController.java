@@ -38,10 +38,14 @@ public class AccountController {
     }//getAccount(Context)
     
     public static void login(Context ctx){
-        String[] credentials = ctx.body().split(",");
-        String message = accountService.login(credentials[0], credentials[1]);
+        Account account = accountService.login(ctx.formParam("username"), ctx.formParam("password"));
         
-        ctx.json(message);
+        if (account != null){
+            ctx.redirect("/requests.html");
+            ctx.req.getSession();
+        } else
+            ctx.status(HttpCode.UNAUTHORIZED);
+        
     }//login(Context)
     
     public static void logout(Context ctx){
