@@ -1,6 +1,6 @@
 
 function getAccounts() {
-    let url = 'http://localhost:3000/employee'
+    let url = 'http://localhost:3000/reimbursements/employee'
     let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function () {

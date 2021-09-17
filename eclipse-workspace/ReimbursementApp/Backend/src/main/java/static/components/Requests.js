@@ -1,7 +1,6 @@
-import Login from 'Login.js'
+let url = 'http://localhost:3000/reimbursements/employee/:id/requests'
 
-function getRequests(tableID) {
-    let url = 'http://localhost:3000/reimbursements/employee/:id/requests'
+function getRequests() {
 
 }
 
@@ -26,6 +25,5 @@ function addNewRequest(tableID) {
 }
 
 window.onload = function () {
-    
-    getRequests('requests-table')
+
 }
