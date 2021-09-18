@@ -1,5 +1,6 @@
 package com.pdownton.reimbursementapp.service;
 
+import com.pdownton.reimbursementapp.models.Account;
 import com.pdownton.reimbursementapp.models.Reimbursement;
 import com.pdownton.reimbursementapp.utils.ConnectionFactory;
 import java.util.List;
@@ -30,12 +31,11 @@ public class AccountServiceTest {
         String password = "pd10";
         accountService.setCurrentAccount(0);
         
-        String expResult = "Hello Patrick Downton!";
-        String result = accountService.login(username, password);
+        Account expResult = AccountService.accounts.get(10);
+        Account result = accountService.login(username, password);
         
         assertEquals(expResult, result);
-        System.out.println(result);
-        
+        System.out.println(result.toString());
         
         System.out.println(D2 
                 +"\nConditions: Invalid login credentials.");
@@ -43,10 +43,9 @@ public class AccountServiceTest {
         username = "pDownton";
         password = "pd09";
         
-        expResult = "Invalid credentials.";
         result = accountService.login(username, password);
-        
-        assertEquals(expResult, result);
+        for (Account a : AccountService.accounts.values())
+            assertNotEquals(a, result);
         System.out.println(result);
     }//testLogin()
 

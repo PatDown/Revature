@@ -41,17 +41,22 @@ public class AccountController {
         Account account = accountService.login(ctx.formParam("username"), ctx.formParam("password"));
         
         if (account != null){
-            ctx.redirect("/requests.html");
-            ctx.req.getSession();
+            ctx.redirect(String.format("/reimbursements/employee/%d/requests", account.getId()));
         } else
-            ctx.status(HttpCode.UNAUTHORIZED);
+            ctx.status(HttpCode.NOT_FOUND);
         
     }//login(Context)
     
     public static void logout(Context ctx){
-        String message = accountService.logout();
-        ctx.json(message);
-        ctx.status(HttpCode.OK);
+        boolean loggedOut = accountService.logout();
+        
+        if (loggedOut){
+            ctx.redirect("reimbursements/login");
+            ctx.status(HttpCode.OK);
+            ctx.json("Logged out");
+        } else
+            ctx.status(HttpCode.EXPECTATION_FAILED);
+        
     }//logout(Context)
     
     public static void statistics(Context ctx){

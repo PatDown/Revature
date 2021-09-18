@@ -75,11 +75,9 @@ public class ReimbursementService {
     }//getAll()
     
     public Reimbursement create(Reimbursement reimbursement){
-        try {
-            reimbursementRepo.save(reimbursement);
-        } catch (SQLException e){
-           e.printStackTrace();
-        }//catch (SQLException)
+        
+        reimbursementRepo.save(reimbursement);
+       
         return reimbursement;
     }//create(Reimbursement)
     

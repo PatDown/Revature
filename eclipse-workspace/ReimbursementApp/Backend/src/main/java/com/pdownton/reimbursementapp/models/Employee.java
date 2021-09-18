@@ -4,6 +4,7 @@ package com.pdownton.reimbursementapp.models;
  *
  * @author Pat Down
  */
+
 public class Employee extends Account{
     
     public Employee(){
