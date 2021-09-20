@@ -2,17 +2,29 @@ package com.pdownton.reimbursementapp.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author Pat Down
  */
+@Table(name="requests")
 public class Reimbursement {
+    @Id
+    @Column
     private int id = generateId();
+    @Column
     private float amount;
+    @Column
     private String reason;
+    @Column
     private String status;
+    @Column(name="employee_id")
     private int employeeId;
+    @Column
     private String message;
     
     public static List<Integer> ids = new ArrayList<>();

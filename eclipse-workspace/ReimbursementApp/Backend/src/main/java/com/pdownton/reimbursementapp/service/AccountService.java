@@ -75,26 +75,26 @@ public class AccountService {
         return accountList;
     }//getAccounts()
     
-    public Account login(String username, String password){
+    public int login(String username, String password){
         if (!isLoggedIn()){
-            getAccounts();
-            for (var entry : accounts.entrySet()){
-                if (entry.getValue().getUsername().equals(username) && entry.getValue().getPassword().equals(password)){
-                    currentAccount = entry.getValue();
-                    return entry.getValue();
-                }//if (entry.getValue().getUsername().equals(username) && entry.getValue().getPassword().equals(password))
-            }//for (var entry : accounts.entrySet())
-            return null;
+            List<Account> accs = getAccounts();
+            for (var acc : accs){
+                if (acc.getUsername().equals(username) && acc.getPassword().equals(password)){
+                    currentAccount = acc;
+                    return acc.getId();
+                }//if (acc.getUsername().equals(username) && acc.getPassword().equals(password))
+            }//for (var acc : accs)
+            return 0;
         } else
-            return null;
+            return 0;
     }//login(String, String)
     
-    public String logout(){
+    public boolean logout(){
         if (isLoggedIn()){
             currentAccount = null;
-            return "Successfully logged out.";
+            return true;
         } else
-            return "Could not log out.";
+            return false;
     }//logout()
     
     private boolean isLoggedIn(){
