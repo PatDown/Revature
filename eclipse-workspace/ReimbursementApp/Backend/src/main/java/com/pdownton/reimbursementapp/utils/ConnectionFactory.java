@@ -24,9 +24,7 @@ private static Connection connection;
                 props.load(connProps);
                 
                 String connString = "jdbc:mariadb://" +
-                        props.getProperty("endpoint") + ":" +
-                        props.getProperty("port") + "/" +
-                        props.getProperty("dbname") + "?user=" +
+                        props.getProperty("url") + "?user=" +
                         props.getProperty("username") + "&password=" +
                         props.getProperty("password");
                 

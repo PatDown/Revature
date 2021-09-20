@@ -2,15 +2,26 @@ package com.pdownton.reimbursementapp.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author Pat Down
  */
+@Entity
+@Table(name="accounts")
 public abstract class Account {
+    @Id
+    @Column
     protected int id;
+    @Column
     private String username;
+    @Column
     private String password;
+    @Column
     private String name;
     
     public static List<Integer> ids = new ArrayList<>();

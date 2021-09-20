@@ -1,12 +1,16 @@
 package com.pdownton.reimbursementapp.repository;
 
 import com.pdownton.reimbursementapp.models.Reimbursement;
+import com.pdownton.reimbursementapp.utils.HibernateSessionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -62,16 +66,25 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
     }//getAll()
 
     @Override
-    public void save(Reimbursement r) throws SQLException {
-        String sql = "INSERT INTO requests VALUES(?, ?, ?, ?, ?, ?)";
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setInt(1, r.getId());
-        pstmt.setFloat(2, r.getAmount());
-        pstmt.setString(3, r.getReason());
-        pstmt.setString(4, r.getStatus());
-        pstmt.setInt(5, r.getEmployeeId());
-        pstmt.setString(6, r.getMessage());
-        pstmt.executeQuery();
+    public void save(Reimbursement r){
+        Session session = null;
+        Transaction tran = null;
+        
+        try {
+            session = HibernateSessionFactory.getSession();
+            tran = session.beginTransaction();
+            session.save(r);
+            tran.commit();
+        } catch(HibernateException e){
+            tran.rollback();
+            e.printStackTrace();
+        } finally {
+            try {
+                session.close();
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
+        }//finally
     }//save(Reimbursement)
 
     @Override
