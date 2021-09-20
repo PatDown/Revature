@@ -38,10 +38,11 @@ public class AccountController {
     }//getAccount(Context)
     
     public static void login(Context ctx){
-        Account account = accountService.login(ctx.formParam("username"), ctx.formParam("password"));
+        int id = accountService.login(ctx.formParam("username"), ctx.formParam("password"));
         
+        Account account = accountService.getAccount(id);
         if (account != null){
-            ctx.redirect(String.format("/reimbursements/employee/%d/requests", account.getId()));
+            ctx.json(id);
         } else
             ctx.status(HttpCode.NOT_FOUND);
         

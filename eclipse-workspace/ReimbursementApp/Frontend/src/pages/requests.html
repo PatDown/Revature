@@ -15,12 +15,12 @@
                         <label>Username</label>
                         <input type="text" placeholder="Username" name="username" />
                     </div>
-                    <div>
+                    <div id="password-input">
                         <label>Password</label>
                         <input type="password" placeholder="Password" name="password" />
                     </div>
                     <div id="button-container">
-                        <input id="submit-button" type="submit" value="Login" />
+                        <input id="login-button" type="submit" value="Login" />
                         <input type="reset" value="Cancel" />
                     </div>
                 </form>
@@ -33,11 +33,12 @@
             <div id="requests">
                 <h2 id="requests-header">Requests</h2>
                 <div id="request-container">
-                    <table id="request-table" style="width:100%">
+                    <table id="request-table">
                         <tr>
                             <th>Request #</th>
                             <th>Amount</th>
                             <th>Reason</th>
+                            <th>Status</th>
                             <th>Message</th>
                         </tr>
                     </table>
@@ -46,21 +47,49 @@
                     <p>No Requests</p>
                 </div>
             </div>
+            <div id="options">
+                <input id="new-requests-button"type="button" value="Create New Request"/>
+                <input id="update-requests-button" type="button" value="Update Requests"/>
+                <input id="statistics-button" type="button" value="Statistics"/>
+                <div id="new-request" hidden>
+                    <h3 style="margin-left: 5px">New Request</h3>
+                    <form id="request-form">
+                        <div id="request-amount">
+                            <label>Request Amount $</label>
+                            <input type="text" placeholder="0.00" required>
+                        </div>
+                        <div id="request-reason">
+                            <label>Reason for request: </label>
+                            <input type="text" required>
+                        </div>
+                        <div class="submit-button-container">
+                            <input type="submit" value="Submit">
+                            <input type="reset" value="Cancel">
+                        </div>
+                    </form>
+                </div>
+                <div id="update-request" hidden>
+                    <h3 style="margin-left: 5px">Update Request</h3>
+                    <form id="update-form">
+                        <div id="update-number">
+                            <label>Request #</label>
+                            <input type="text" required>
+                        </div>
+                        <div id="update-status">
+                            <input type="radio" id="approve" name="new_status" value="Approved">
+                            <label for="approve">Approve</label><br>
+                            <input type="radio" name="new_status" id="deny" value="Denied">
+                            <label for="deny">Deny</label>
+                        </div>
+                        <div class="submit-button-container">
+                            <input type="submit" id="submit-update-button" value="Submit">
+                            <input type="reset" value="Cancel">
+                        </div>
+                    </form>
+                </div>
+                <div id="stats" hidden>
 
-            <div id="new-request">
-                <form id="request-form">
-                    <div id="request-amount">
-                        <label>Request Amount $</label>
-                        <input type="text" placeholder="0.00" required />
-                    </div>
-                    <div id="request-reason">
-                        <label>Reason for request: </label>
-                        <input type="text" required />
-                    </div>
-                    <div id="submit-button-container">
-                        <input type="submit" value="Submit" />
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
         <script src="../components/Requests.js"></script>

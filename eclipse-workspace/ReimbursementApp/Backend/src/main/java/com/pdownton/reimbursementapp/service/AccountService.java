@@ -75,18 +75,18 @@ public class AccountService {
         return accountList;
     }//getAccounts()
     
-    public Account login(String username, String password){
+    public int login(String username, String password){
         if (!isLoggedIn()){
             List<Account> accs = getAccounts();
             for (var acc : accs){
                 if (acc.getUsername().equals(username) && acc.getPassword().equals(password)){
                     currentAccount = acc;
-                    return acc;
+                    return acc.getId();
                 }//if (acc.getUsername().equals(username) && acc.getPassword().equals(password))
             }//for (var acc : accs)
-            return null;
+            return 0;
         } else
-            return null;
+            return 0;
     }//login(String, String)
     
     public boolean logout(){

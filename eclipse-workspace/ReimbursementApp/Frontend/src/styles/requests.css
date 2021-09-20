@@ -3,6 +3,10 @@ body{
     margin:auto;
 }
 
+#button-container {
+    margin-top: 5px;
+}
+
 h1{
     text-align:center;
 }
@@ -11,7 +15,7 @@ h1{
     background-color: lightblue;
     display: grid;
     text-align: center;
-    padding: 1.5em;
+    padding: 2em;
     border-style: solid;
     border-color: black;
     border-width: thick;
@@ -19,38 +23,69 @@ h1{
     margin: auto;
 }
 
-#button-container {
-    margin-top: 5px;
+#options{
+    margin:auto;
+    padding: 1em;
+    width:max-content;
 }
 
-#new-request{
-    margin:auto;
-    
+#password-input{
+    margin-top:5px;
+}
+
+#request-amount {
+    margin: auto;
+    width: inherit;
+}
+
+#request-container {
+    margin: auto;
+}
+
+#request-form {
+    background-color: lightblue;
+    margin: auto;
+    margin-top: 10px;
+    width: max-content;
+    border: 1px solid black;
+    padding: 1em;
 }
 
 #requests-header{
-    margin-left:20px;
+    text-align:center;
 }
 
-#request-container{
+#request-reason{
     margin:auto;
+    width:inherit;
+    margin-top: 5px;
 }
 
-#request-form{
+#request-table {
+    width:90%; 
+    margin:auto;
+    background-color:lightblue;
+    padding:1em;
+}
+
+.submit-button-container{
     margin:auto;
     width:max-content;
-}
-
-#request-amount{
-    margin:auto;
-}
-
-#submit-button-container{
-    margin:auto;
-    width:max-content;
+    margin-top: 5px;
 }
 
 table, th, td{
     border:1px solid black;
     height:max-content;
+    background-color:white;
+    text-align:center;
+}
+
+#update-form {
+    background-color: lightblue;
+    margin: auto;
+    margin-top: 10px;
+    width: max-content;
+    border: 1px solid black;
+    padding: 1em;
 }
