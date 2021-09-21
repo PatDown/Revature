@@ -74,7 +74,8 @@ public class ReimbursementService {
         return rmbsmts;
     }//getAll()
     
-    public Reimbursement create(Reimbursement reimbursement){
+    public Reimbursement create(float amount, String reason, int employeeID){
+        Reimbursement reimbursement = new Reimbursement(amount, reason, employeeID);
         
         reimbursementRepo.save(reimbursement);
        

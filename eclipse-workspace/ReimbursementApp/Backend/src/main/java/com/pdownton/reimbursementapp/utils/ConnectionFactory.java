@@ -23,7 +23,7 @@ private static Connection connection;
                 FileReader connProps = new FileReader("src/main/resources/connection.properties");
                 props.load(connProps);
                 
-                String connString = "jdbc:mariadb://" +
+                String connString = 
                         props.getProperty("url") + "?user=" +
                         props.getProperty("username") + "&password=" +
                         props.getProperty("password");

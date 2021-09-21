@@ -11,8 +11,9 @@ import javax.persistence.Table;
  *
  * @author Pat Down
  */
+@Entity
 @Table(name="requests")
-public class Reimbursement {
+public class Reimbursement{
     @Id
     @Column
     private int id = generateId();
