@@ -11,6 +11,10 @@ h1{
     text-align:center;
 }
 
+input{
+    text-wrap:normal;
+}
+
 #login-form {
     background-color: lightblue;
     display: grid;

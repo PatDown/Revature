@@ -62,6 +62,8 @@ public class AccountController {
     
     public static void statistics(Context ctx){
         String stats = accountService.statistics();
+        
+        ctx.status(HttpCode.OK);
         ctx.json(stats);
     }//statistics(Context)
     

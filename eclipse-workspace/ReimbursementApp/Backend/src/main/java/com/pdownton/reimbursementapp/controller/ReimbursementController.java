@@ -22,10 +22,12 @@ public class ReimbursementController {
     public static void getReimbursement(Context ctx){
         int rId = Integer.parseInt(ctx.pathParam("rId"));
         Reimbursement reimbursement = rService.getReimbursement(rId);
-        if (reimbursement == null)
+        if (reimbursement != null){
+            ctx.json(reimbursement);
+            ctx.status(HttpCode.OK);
+        } else
             ctx.status(HttpCode.NOT_FOUND);
-        else
-            ctx.status(HttpCode.FOUND);
+
         
     }//getReimbursement(Context)
     
@@ -50,15 +52,22 @@ public class ReimbursementController {
     
     public static void create(Context ctx){
         int id = Integer.parseInt(ctx.pathParam("id"));
-        Reimbursement reimbursement = ctx.bodyAsClass(Reimbursement.class);
-        reimbursement.setEmployeeId(id);
-        rService.create(reimbursement);
+        float amount = Float.parseFloat(ctx.formParam("amount"));
+        String reason = ctx.formParam("reason");
+        Reimbursement reimbursement = rService.create(amount, reason, id);
+        
+        ctx.json(reimbursement);
+        ctx.status(HttpCode.OK);
     }//create(Context)
 
     public static void update(Context ctx){
         int id = Integer.parseInt(ctx.pathParam("id"));
         int rId = Integer.parseInt(ctx.pathParam("rId"));
+        String newStatus = ctx.formParam("new_status");
+        String message = ctx.formParam("message");
+        String result = rService.update(rId, newStatus, id, message);
         
-        String status = rService.update(rId, ctx.body(), id);
+        ctx.json(result);        
+        
     }//update(Context)
 }//ReimbursementController

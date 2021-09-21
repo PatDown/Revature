@@ -40,7 +40,7 @@ public class ReimbursementApp {
                             post(ReimbursementController::create);
                             path("{rId}", () -> {
                                 get(ReimbursementController::getReimbursement);
-                                put(ReimbursementController::update);
+                                post(ReimbursementController::update);
                             });
                             path("stats", () -> {
                                 get(AccountController::statistics); 
@@ -52,9 +52,10 @@ public class ReimbursementApp {
         });
         
         app.after(ctx -> {
-            ctx.res.addHeader("Access-Control-Allow-Origin", "*");
+            ctx.res.addHeader("Access-Control-Allow-Origin", "null");
+            ctx.res.addHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, OPTIONS, PUT, PATCH");
+            ctx.res.addHeader("Access-Control-Allow-Headers", "append,delete,entries,foreach,get,has,keys,set,values,Authorization");
         });
-        
     }//main(String[])
     
 }//ReimbursementApp

@@ -78,12 +78,8 @@ public class AccountRepository implements Repository<Account>{
     }//save(Account)
 
     @Override
-    public void update(Account a, String[] params) throws SQLException {
-        String sql = "UPDATE accounts SET ? WHERE id = ?";
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setString(1, params[0]);
-        pstmt.setInt(2, a.getId());
-        pstmt.executeUpdate();
+    public void update(Account as){
+        
     }//update(Account, String[])
 
     @Override

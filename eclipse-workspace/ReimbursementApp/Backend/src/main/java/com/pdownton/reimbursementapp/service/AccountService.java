@@ -105,7 +105,7 @@ public class AccountService {
         if (isLoggedIn()){
             if (currentAccount.getId() < 100) {
                 StringBuilder stats = new StringBuilder();
-                List<Reimbursement> reimbursements = reimbursementService.getReimbursements(currentAccount.getId());
+                List<Reimbursement> reimbursements = reimbursementService.getAll();
                 float mean, totalSpent = 0, maxSpent = 0;
                 int biggestSpender = 0;
                 Map<Integer, Float> employeeSpending = new HashMap<>();
@@ -129,7 +129,7 @@ public class AccountService {
 
                 mean = totalSpent / reimbursements.size();
 
-                stats.append(String.format("Mean: $%.2f\n", mean));
+                stats.append(String.format("Mean: %.2f\n", mean));
                 stats.append(String.format("Biggest Spender: %s\n", accounts.get(biggestSpender).getName()));
 
                 return stats.toString();
