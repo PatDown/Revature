@@ -22,10 +22,12 @@ public class ReimbursementController {
     public static void getReimbursement(Context ctx){
         int rId = Integer.parseInt(ctx.pathParam("rId"));
         Reimbursement reimbursement = rService.getReimbursement(rId);
-        if (reimbursement == null)
+        if (reimbursement != null){
+            ctx.json(reimbursement);
+            ctx.status(HttpCode.OK);
+        } else
             ctx.status(HttpCode.NOT_FOUND);
-        else
-            ctx.status(HttpCode.FOUND);
+
         
     }//getReimbursement(Context)
     
@@ -62,11 +64,10 @@ public class ReimbursementController {
         int id = Integer.parseInt(ctx.pathParam("id"));
         int rId = Integer.parseInt(ctx.pathParam("rId"));
         String newStatus = ctx.formParam("new_status");
-        String result = rService.update(rId, newStatus, id);
-        if (result.contains(newStatus)){
-            ctx.json(result);
-            ctx.status(HttpCode.OK);
-        } else
-            ctx.status(HttpCode.EXPECTATION_FAILED);
+        String message = ctx.formParam("message");
+        String result = rService.update(rId, newStatus, id, message);
+        
+        ctx.json(result);        
+        
     }//update(Context)
 }//ReimbursementController

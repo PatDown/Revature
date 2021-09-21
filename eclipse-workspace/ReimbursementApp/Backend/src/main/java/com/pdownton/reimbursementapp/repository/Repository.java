@@ -13,6 +13,6 @@ public interface Repository<T> {
     List<T> getAll() throws SQLException;
     
     void save(T t) throws SQLException;
-    void update(T t, String[] params) throws SQLException;
+    void update(T t);
     void delete(T t) throws SQLException;
 }//Repository

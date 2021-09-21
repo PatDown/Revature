@@ -51,7 +51,8 @@ statistics_button.addEventListener('click', (event) => {
     }
     let sb = document.getElementById('stats')
     toggleView(sb)
-    getStats()
+    if (!sb.hidden)
+        getStats()
 })
 
 submit_request_button.addEventListener('click', (event) => {
@@ -196,7 +197,6 @@ function addNewRequest() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             let new_request = JSON.parse(xhr.response)
-            console.log(new_request)
             let table = document.getElementById('request-table')
 
             let rowCount = table.rows.length
@@ -226,35 +226,40 @@ function addNewRequest() {
             let element5 = document.createElement('p')
             element5.innerText = new_request.message
             cell5.appendChild(element5)
+
+            console.log('New request created')
         }
     }
     
 }
 
 function updateRequest() {
-    let request_num = document.getElementsByClassName('update-request-input')
-    console.log(request_num[0].value)
+    let input_boxes = document.getElementsByClassName('update-request-input')
     let ele = document.getElementsByName('new-status')
     let new_status
-    for (let i in ele) {
-        if (i.checked)
-            new_status = i.value
+    for (let i = 0; i < ele.length; i++) {
+        if (ele[i].checked)
+            new_status = ele[i].value
     }
 
-    let url = new URL('employee/' + account_id + '/requests/' + request_num[0].value, base_url)
+    let url = new URL('employee/' + account_id + '/requests/' + input_boxes[0].value, base_url)
     let xhr = new XMLHttpRequest()
-    xhr.open('PUT', url.href)
+    xhr.open('POST', url.href)
 
     let data = new FormData()
-    data.append('new_status',new_status)
-
-    xhr.send(data)
+    data.append('new_status', new_status)
+    let message = input_boxes[1].value
+    if (message == null)
+        data.append('message', 'None')
+    else
+        data.append('message', message)
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(JSON.parse(xhr.response))
+            console.log(JSON.stringify(xhr.response))
         }
     }
+    xhr.send(data)
 }
 
 function getStats() {
@@ -263,11 +268,11 @@ function getStats() {
 
     xhr.open('GET', url.href)
 
-    xhr.send()
-
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(JSON.stringify(xhr.response))
+            console.log(xhr.response)
         }
     }
+
+    xhr.send()
 }

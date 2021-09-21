@@ -27,23 +27,37 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
     
     @Override
     public Reimbursement get(int id) throws SQLException {
-        String sql = "SELECT * FROM requests WHERE id = ?";
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setInt(1, id);
-        ResultSet rs = pstmt.executeQuery();
+        Session session = HibernateSessionFactory.getSession();
+        Transaction tran = session.beginTransaction();
+        Reimbursement reimbursement = null;
+        try {
+            reimbursement = session.get(Reimbursement.class, id);
+            tran.commit();
+        } catch (HibernateException e) {
+            tran.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+            return reimbursement;
+        }//finally
         
-        if (rs.next()){
-            Reimbursement row = new Reimbursement();
-            row.setId(id);
-            row.setAmount(rs.getFloat("amount"));
-            row.setReason(rs.getString("reason"));
-            row.setStatus(rs.getString("status"));
-            row.setEmployeeId(rs.getInt("employee_id"));
-            row.setMessage(rs.getString("message"));
-            return row;
-        }//if (rs.next())
-        else
-            throw new UnsupportedOperationException("Not supported yet."); 
+//        String sql = "SELECT * FROM requests WHERE id = ?";
+//        PreparedStatement pstmt = connection.prepareStatement(sql);
+//        pstmt.setInt(1, id);
+//        ResultSet rs = pstmt.executeQuery();
+//        
+//        if (rs.next()){
+//            Reimbursement row = new Reimbursement();
+//            row.setId(id);
+//            row.setAmount(rs.getFloat("amount"));
+//            row.setReason(rs.getString("reason"));
+//            row.setStatus(rs.getString("status"));
+//            row.setEmployeeId(rs.getInt("employee_id"));
+//            row.setMessage(rs.getString("message"));
+//            return row;
+//        }//if (rs.next())
+//        else
+//            throw new UnsupportedOperationException("Not supported yet."); 
     }//get(int)
 
     @Override
@@ -82,13 +96,21 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
     }//save(Reimbursement)
 
     @Override
-    public void update(Reimbursement r, String[] params) throws SQLException {
-        String sql = "UPDATE requests SET status=?, message=? WHERE id = ?";
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setString(1, params[0]);
-        pstmt.setString(2, params[1]);
-        pstmt.setInt(3, r.getId());
-        pstmt.executeQuery();
+    public void update(Reimbursement r){
+        Session session = HibernateSessionFactory.getSession();
+        Transaction tran = session.beginTransaction();
+        
+        try {
+            session.update(r);
+            session.
+            tran.commit();
+        } catch (HibernateException e){
+            tran.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }//finally
+        
     }//update(Reimbursement, String[])
 
     @Override

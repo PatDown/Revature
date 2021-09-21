@@ -4,7 +4,7 @@
     <head>
         <title> Reimbursement Requests</title>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="../styles/requests.css"/>
+        <link rel="stylesheet" href="requests.css"/>
     </head>
     <body>
         <header>
@@ -81,6 +81,10 @@
                             <input type="radio" name="new-status" id="deny" value="Denied">
                             <label for="deny">Deny</label>
                         </div>
+                        <div id="update-message">
+                            <label>Message</label>
+                            <input type="text" class="update-request-input" placeholder="(Optional)" />
+                        </div>
                         <div class="submit-button-container">
                             <input type="submit" id="submit-update-button" value="Submit">
                             <input type="reset" value="Cancel">
@@ -94,7 +98,7 @@
                 </div>
             </div>
         </div>
-        <script src="../components/Requests.js"></script>
+        <script src="Requests.js"></script>
 
     </body>
 </html>
