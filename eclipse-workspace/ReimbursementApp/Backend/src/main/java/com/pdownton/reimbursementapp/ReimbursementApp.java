@@ -8,6 +8,7 @@ import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 import static io.javalin.apibuilder.ApiBuilder.put;
+import io.javalin.http.staticfiles.Location;
 import java.sql.Connection;
 
 /**
@@ -55,6 +56,7 @@ public class ReimbursementApp {
             ctx.res.addHeader("Access-Control-Allow-Origin", "*");
         });
         
+        app._conf.addStaticFiles("/static", Location.CLASSPATH);
     }//main(String[])
     
 }//ReimbursementApp

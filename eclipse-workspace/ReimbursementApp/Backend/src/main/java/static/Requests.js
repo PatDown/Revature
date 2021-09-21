@@ -1,4 +1,4 @@
-
+let base_url = 'http://localhost:3000/reimbursements/'
 let account_id = 0
 let login_div = document.getElementById('login-div')
 let logout_div = document.getElementById('logout-div')
@@ -8,6 +8,8 @@ let logout_button = document.getElementById('logout-button')
 let new_request_button = document.getElementById('new-requests-button')
 let update_requests_button = document.getElementById('update-requests-button')
 let statistics_button = document.getElementById('statistics-button')
+let submit_request_button = document.getElementById('submit-new-request')
+let submit_update_button = document.getElementById('submit-update-button')
 let formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
@@ -49,6 +51,21 @@ statistics_button.addEventListener('click', (event) => {
     }
     let sb = document.getElementById('stats')
     toggleView(sb)
+    getStats()
+})
+
+submit_request_button.addEventListener('click', (event) => {
+    if (event.cancelable) {
+        event.preventDefault()
+    }
+    addNewRequest()
+})
+
+submit_update_button.addEventListener('click', (event) => {
+    if (event.cancelable) {
+        event.preventDefault()
+    }
+    updateRequest()
 })
 
 function toggleView(obj) {
@@ -66,10 +83,10 @@ function resetViews() {
 }
 
 function login() {
-    let url = 'http://localhost:3000/reimbursements/login'
+    let url = new URL('login', base_url)
 
     let xhr = new XMLHttpRequest()
-    xhr.open('POST', url)
+    xhr.open('POST', url.href)
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -81,7 +98,7 @@ function login() {
             getRequests()
         }
     }
-    let input_boxes = document.getElementsByTagName("input")
+    let input_boxes = document.getElementsByClassName("login-class")
 
     let data = new FormData(document.getElementById('login-form'))
     data.append('username', input_boxes[0].value)
@@ -91,10 +108,10 @@ function login() {
 }
 
 function logout() {
-    let url = 'http://localhost:3000/reimbursements/login'
+    let url = new URL('login', base_url)
 
     let xhr = new XMLHttpRequest()
-    xhr.open('GET', url)
+    xhr.open('GET', url.href)
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -109,9 +126,9 @@ function logout() {
 }
 
 function getRequests() {
-    let url = new URL(account_id + '/requests', 'http://localhost:3000/reimbursements/employee/')
-    let xhr = new XMLHttpRequest()
+    let url = new URL('employee/' + account_id + '/requests', base_url)
 
+    let xhr = new XMLHttpRequest()
     xhr.open('GET', url.href)
     xhr.send()
 
@@ -161,37 +178,96 @@ function getRequests() {
     }
 }
 
-function addNewRequest(request) {
-    let input_boxes = document.getElementsByTagName('input')
+function addNewRequest() {
+    let url = new URL('employee/' + account_id + '/requests', base_url)
 
-    let table = document.getElementById('request-table')
+    let xhr = new XMLHttpRequest()
 
-    let rowCount = table.rows.length
-    let row = table.insertRow(rowCount)
+    xhr.open('POST', url.href)
 
-    let cell1 = row.insertCell(0)
-    let element1 = document.createElement('p')
-    element1.innerText = input_boxes[0].value
-    cell1.appendChild(element1)
+    let input_boxes = document.getElementsByClassName('new-request-class')
 
-    let cell2 = row.insertCell(1)
+    let data = new FormData(document.getElementById('request-form'))
+    data.append('amount', input_boxes[0].value)
+    data.append('reason', input_boxes[1].value)
 
-    let cell3 = row.insertCell(2)
+    xhr.send(data)
 
-    let cell4 = row.insertCell(3)
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            let new_request = JSON.parse(xhr.response)
+            console.log(new_request)
+            let table = document.getElementById('request-table')
+
+            let rowCount = table.rows.length
+            let row = table.insertRow(rowCount)
+
+            let cell1 = row.insertCell(0)
+            let element1 = document.createElement('p')
+            element1.innerText = new_request.id
+            cell1.appendChild(element1)
+
+            let cell2 = row.insertCell(1)
+            let element2 = document.createElement('p')
+            element2.innerText = formatter.format(new_request.amount)
+            cell2.appendChild(element2)
+
+            let cell3 = row.insertCell(2)
+            let element3 = document.createElement('p')
+            element3.innerText = new_request.reason
+            cell3.appendChild(element3)
+
+            let cell4 = row.insertCell(3)
+            let element4 = document.createElement('p')
+            element4.innerText = new_request.status
+            cell4.appendChild(element4)
+
+            let cell5 = row.insertCell(4)
+            let element5 = document.createElement('p')
+            element5.innerText = new_request.message
+            cell5.appendChild(element5)
+        }
+    }
+    
+}
+
+function updateRequest() {
+    let request_num = document.getElementsByClassName('update-request-input')
+    console.log(request_num[0].value)
+    let ele = document.getElementsByName('new-status')
+    let new_status
+    for (let i in ele) {
+        if (i.checked)
+            new_status = i.value
+    }
+
+    let url = new URL('employee/' + account_id + '/requests/' + request_num[0].value, base_url)
+    let xhr = new XMLHttpRequest()
+    xhr.open('PUT', url.href)
+
+    let data = new FormData()
+    data.append('new_status',new_status)
+
+    xhr.send(data)
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(JSON.parse(xhr.response))
+        }
+    }
 }
 
 function getStats() {
-    let url = new URL(account_id + '/stats', 'http://localhost:3000/reimbursements/employee/')
+    let url = new URL('employee/' + account_id + '/requests/stats', base_url)
     let xhr = new XMLHttpRequest()
 
-    xhr.open('GET', url)
+    xhr.open('GET', url.href)
 
     xhr.send()
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(JSON.parse(xhr.response))
+            console.log(JSON.stringify(xhr.response))
         }
     }
 }

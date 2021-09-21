@@ -20,15 +20,15 @@ public class HibernateSessionFactory {
             try {
                 FileReader connProps = new FileReader("src/main/resources/connection.properties");
                 props.load(connProps);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-           sessionFactory = new Configuration().configure()
+                sessionFactory = new Configuration().configure()
                    .setProperty("hibernate.connection.url", props.getProperty("url"))
                    .setProperty("hibernate.connection.username", props.getProperty("username"))
                    .setProperty("hibernate.connection.password", props.getProperty("password"))
                    .buildSessionFactory();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }//if (sessionFactory == null)
-        return sessionFactory.openSession();
+        return sessionFactory.getCurrentSession();
     }//getSession()
 }//HibernateSessionFactory

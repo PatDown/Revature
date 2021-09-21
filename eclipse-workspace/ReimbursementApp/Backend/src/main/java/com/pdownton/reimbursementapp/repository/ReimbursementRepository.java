@@ -67,23 +67,17 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
 
     @Override
     public void save(Reimbursement r){
-        Session session = null;
-        Transaction tran = null;
+        Session session = HibernateSessionFactory.getSession();
+        Transaction tran = session.beginTransaction();
         
-        try {
-            session = HibernateSessionFactory.getSession();
-            tran = session.beginTransaction();
+        try { 
             session.save(r);
             tran.commit();
         } catch(HibernateException e){
             tran.rollback();
             e.printStackTrace();
         } finally {
-            try {
-                session.close();
-            } catch (NullPointerException e){
-                e.printStackTrace();
-            }
+            session.close();
         }//finally
     }//save(Reimbursement)
 
