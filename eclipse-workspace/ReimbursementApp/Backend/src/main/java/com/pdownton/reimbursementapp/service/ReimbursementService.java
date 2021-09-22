@@ -2,49 +2,32 @@ package com.pdownton.reimbursementapp.service;
 
 import com.pdownton.reimbursementapp.models.Reimbursement;
 import com.pdownton.reimbursementapp.repository.ReimbursementRepository;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 /**
  *
  * @author Pat Down
  */
 public class ReimbursementService {
-    private ReimbursementRepository reimbursementRepo;
+    private final ReimbursementRepository reimbursementRepo;
     public static Map<Integer, Reimbursement> reimbursements = new HashMap<>();
 
     public ReimbursementService(){
         super();
+        reimbursementRepo = new ReimbursementRepository();
     }//ReimbursementService()
     
-    public ReimbursementService(Connection conn){
-        super();
-        reimbursementRepo = new ReimbursementRepository(conn);
-    }//ReimbursementService(Connection)
-    
     public Reimbursement getReimbursement(int id){
-        Reimbursement reimbursement = null;
-        try {
-            reimbursement = reimbursementRepo.get(id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }//catch (SQLException)
+        Reimbursement reimbursement = reimbursementRepo.get(id);
         
         return reimbursement;
     }//getReimbursement(int)
     
     public List<Reimbursement> getReimbursements(int id){
-        List<Reimbursement> rmbsmts = new ArrayList<>();
-        try {
-            rmbsmts = reimbursementRepo.getAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }//catch (SQLException)
+        List<Reimbursement> rmbsmts = reimbursementRepo.getAll();
         
         for (var r : rmbsmts)
             if (!reimbursements.containsValue(r))
@@ -61,16 +44,10 @@ public class ReimbursementService {
     }//getReimbursements(int)
     
     public List<Reimbursement> getAll(){
-        List<Reimbursement> rmbsmts = new ArrayList<>();
-        try {
-            rmbsmts = reimbursementRepo.getAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }//catch (SQLException)
-        
-        for (var r : rmbsmts)
-            if (!reimbursements.containsValue(r))
-                reimbursements.put(r.getId(), r);
+        List<Reimbursement> rmbsmts = reimbursementRepo.getAll();
+        rmbsmts.stream().filter(r -> (!reimbursements.containsValue(r))).forEachOrdered(r -> {
+            reimbursements.put(r.getId(), r);
+        });
         return rmbsmts;
     }//getAll()
     
@@ -82,31 +59,31 @@ public class ReimbursementService {
         return reimbursement;
     }//create(Reimbursement)
     
-    public String update(int id, String newStatus, int managerId, String message){
+    public Reimbursement update(int id, String newStatus, int managerId, String message){
         Reimbursement r = getReimbursement(id);
-        if (r == null)
-            return "Request does not exist.";
-        if (managerId < 10 || managerId > 99)
-            return "You are not a manager.";
-        if (r.getEmployeeId() == managerId)
-            return "You cannot approve your own request.";
-        if (!r.getStatus().equals("Pending"))
-            return "Cannot update status.";
-        r.setStatus(newStatus);
-        r.setMessage(message);
-        reimbursementRepo.update(r);
-         
-        return String.format("Request %s!", newStatus);
-    }//update(int, String, int)
+        if (r != null){
+            if (managerId < 10 || managerId > 99){
+                r.setStatus("Pending");
+                r.setMessage("You are not a manager.");
+            } else if (r.getEmployeeId() == managerId) {
+                r.setStatus("Pending");
+                r.setMessage("You cannot approve your own request.");
+            } else if (!r.getStatus().equals("Pending")){
+                r.setMessage("Cannot change status");
+            } else {
+                r.setStatus(newStatus);
+                r.setMessage(message);
+            }//else
+             
+            reimbursementRepo.update(r);
+        }
+        return r;
+    }//update(int, String, int, String)
     
     public boolean delete(Reimbursement r){
-        try {
-            reimbursementRepo.delete(r);
-        } catch (SQLException e){
-           e.printStackTrace();
-           return false;
-        }//catch (SQLException)
+        reimbursementRepo.delete(r);
         return true;
     }//delete(Reimbursement)
     
 }//ReimbursementService
+

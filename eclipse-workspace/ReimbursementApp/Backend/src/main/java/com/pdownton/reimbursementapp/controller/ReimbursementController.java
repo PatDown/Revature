@@ -4,7 +4,6 @@ import com.pdownton.reimbursementapp.models.Reimbursement;
 import com.pdownton.reimbursementapp.service.ReimbursementService;
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
-import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -15,19 +14,22 @@ public class ReimbursementController {
 
     private static ReimbursementService rService;
     
-    public static void init(Connection conn) {
-        rService = new ReimbursementService(conn);
-    }//init(Connection)
+    public static void init() {
+        rService = new ReimbursementService();
+    }//init()
 
     public static void getReimbursement(Context ctx){
-        int rId = Integer.parseInt(ctx.pathParam("rId"));
+        int rId = 0;
+        try {
+            rId = Integer.parseInt(ctx.pathParam("rId"));
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
         Reimbursement reimbursement = rService.getReimbursement(rId);
-        if (reimbursement != null){
+        if (reimbursement != null)
             ctx.json(reimbursement);
-            ctx.status(HttpCode.OK);
-        } else
+        else
             ctx.status(HttpCode.NOT_FOUND);
-
         
     }//getReimbursement(Context)
     
@@ -65,9 +67,9 @@ public class ReimbursementController {
         int rId = Integer.parseInt(ctx.pathParam("rId"));
         String newStatus = ctx.formParam("new_status");
         String message = ctx.formParam("message");
-        String result = rService.update(rId, newStatus, id, message);
+        Reimbursement reimbursement = rService.update(rId, newStatus, id, message);
         
-        ctx.json(result);        
+        ctx.json(reimbursement);        
         
     }//update(Context)
 }//ReimbursementController

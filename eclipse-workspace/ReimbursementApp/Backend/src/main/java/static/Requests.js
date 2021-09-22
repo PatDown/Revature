@@ -51,8 +51,7 @@ statistics_button.addEventListener('click', (event) => {
     }
     let sb = document.getElementById('stats')
     toggleView(sb)
-    if (!sb.hidden)
-        getStats()
+    getStats()
 })
 
 submit_request_button.addEventListener('click', (event) => {
@@ -127,7 +126,7 @@ function logout() {
 }
 
 function getRequests() {
-    let url = new URL('employee/' + account_id + '/requests', base_url)
+    let url = new URL(account_id + '/requests', base_url)
 
     let xhr = new XMLHttpRequest()
     xhr.open('GET', url.href)
@@ -142,37 +141,49 @@ function getRequests() {
                 request_container.hidden = true
                 no_requests.hidden = false
             } else {
-
                 let table = document.getElementById('request-table')
+                let request_id = document.getElementsByClassName('request-id')
                 for (let i = 0; i < requests.length; i++) {
                     let myObj = requests[i]
-                    let rowCount = table.rows.length
-                    let row = table.insertRow(rowCount)
+                    let exists = false
+                    for (let j = 0; j < request_id.length; j++) {
+                        if (myObj.id == request_id[j].innerText)
+                            exists = true;
+                    }
 
-                    let cell1 = row.insertCell(0)
-                    let element1 = document.createElement('p')
-                    element1.innerText = myObj.id
-                    cell1.appendChild(element1)
+                    if (!exists) {
 
-                    let cell2 = row.insertCell(1)
-                    let element2 = document.createElement('p')
-                    element2.innerText = formatter.format(myObj.amount)
-                    cell2.appendChild(element2)
+                        let rowCount = table.rows.length
+                        let row = table.insertRow(rowCount)
 
-                    let cell3 = row.insertCell(2)
-                    let element3 = document.createElement('p')
-                    element3.innerText = myObj.reason
-                    cell3.appendChild(element3)
+                        let cell1 = row.insertCell(0)
+                        let element1 = document.createElement('p')
+                        element1.className = 'request-id'
+                        element1.innerText = myObj.id
+                        cell1.appendChild(element1)
 
-                    let cell4 = row.insertCell(3)
-                    let element4 = document.createElement('p')
-                    element4.innerText = myObj.status
-                    cell4.appendChild(element4)
+                        let cell2 = row.insertCell(1)
+                        let element2 = document.createElement('p')
+                        element2.innerText = formatter.format(myObj.amount)
+                        cell2.appendChild(element2)
 
-                    let cell5 = row.insertCell(4)
-                    let element5 = document.createElement('p')
-                    element5.innerText = myObj.message
-                    cell5.appendChild(element5)
+                        let cell3 = row.insertCell(2)
+                        let element3 = document.createElement('p')
+                        element3.innerText = myObj.reason
+                        cell3.appendChild(element3)
+
+                        let cell4 = row.insertCell(3)
+                        let element4 = document.createElement('p')
+                        element4.className = 'status'
+                        element4.innerText = myObj.status
+                        cell4.appendChild(element4)
+
+                        let cell5 = row.insertCell(4)
+                        let element5 = document.createElement('p')
+                        element5.className = 'message'
+                        element5.innerText = myObj.message
+                        cell5.appendChild(element5)
+                    }
                 }
             }
         }
@@ -180,7 +191,7 @@ function getRequests() {
 }
 
 function addNewRequest() {
-    let url = new URL('employee/' + account_id + '/requests', base_url)
+    let url = new URL(account_id + '/requests', base_url)
 
     let xhr = new XMLHttpRequest()
 
@@ -204,6 +215,7 @@ function addNewRequest() {
 
             let cell1 = row.insertCell(0)
             let element1 = document.createElement('p')
+            element1.className = 'request-id'
             element1.innerText = new_request.id
             cell1.appendChild(element1)
 
@@ -219,11 +231,13 @@ function addNewRequest() {
 
             let cell4 = row.insertCell(3)
             let element4 = document.createElement('p')
+            element4.className = 'status'
             element4.innerText = new_request.status
             cell4.appendChild(element4)
 
             let cell5 = row.insertCell(4)
             let element5 = document.createElement('p')
+            element5.className = 'message'
             element5.innerText = new_request.message
             cell5.appendChild(element5)
 
@@ -242,7 +256,7 @@ function updateRequest() {
             new_status = ele[i].value
     }
 
-    let url = new URL('employee/' + account_id + '/requests/' + input_boxes[0].value, base_url)
+    let url = new URL(account_id + '/requests/' + input_boxes[0].value, base_url)
     let xhr = new XMLHttpRequest()
     xhr.open('POST', url.href)
 
@@ -256,21 +270,30 @@ function updateRequest() {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(JSON.stringify(xhr.response))
+            let reimbursement = JSON.parse(xhr.response)
+            let request_ids = document.getElementsByClassName('request-id')
+            let statuses = document.getElementsByClassName('status')
+            let messages = document.getElementsByClassName('message')
+            for (let i = 0; i < request_ids.length; i++) {
+                if (reimbursement.id == request_ids[i].innerText) {
+                    statuses[i].innerText = reimbursement.status
+                    messages[i].innerText = reimbursement.message
+                }
+            }
         }
     }
     xhr.send(data)
 }
 
 function getStats() {
-    let url = new URL('employee/' + account_id + '/requests/stats', base_url)
+    let url = new URL( account_id + '/requests/stats', base_url)
     let xhr = new XMLHttpRequest()
 
     xhr.open('GET', url.href)
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(xhr.response)
+            console.log(JSON.parse(xhr.response))
         }
     }
 

@@ -1,5 +1,6 @@
 package com.pdownton.reimbursementapp.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -13,7 +14,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="requests")
-public class Reimbursement{
+public class Reimbursement implements Serializable{
     @Id
     @Column
     private int id = generateId();

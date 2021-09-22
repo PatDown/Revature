@@ -1,92 +1,108 @@
 package com.pdownton.reimbursementapp.repository;
 
 import com.pdownton.reimbursementapp.models.Account;
-import com.pdownton.reimbursementapp.models.Employee;
-import com.pdownton.reimbursementapp.models.Manager;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.pdownton.reimbursementapp.utils.HibernateSessionFactory;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
  * @author Pat Down
  */
 public class AccountRepository implements Repository<Account>{
-    private final Connection connection;
 
-    public AccountRepository(Connection conn) {
+    public AccountRepository() {
         super();
-        connection = conn;
-    }//EmployeeRepository(Connection)
+    }//AccountRepository()
     
     @Override
-    public Account get(int id) throws SQLException {
-        String sql = "SELECT * FROM accounts WHERE id = ?";
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setInt(1, id);
-        ResultSet rs = pstmt.executeQuery();
+    public Account get(int id){
+        Session session = HibernateSessionFactory.getSession();
+        Transaction tran = session.beginTransaction();
+        Account account = null;
         
-        if (rs.next()){
-            Account row;
-            if (id > 100)
-                row = new Employee();
-            else
-                row = new Manager();
-            row.setId(id);
-            row.setUsername(rs.getString("username"));
-            row.setPassword(rs.getString("password"));
-            row.setName(rs.getString("name"));
-            return row;
-        }//if (rs.next())
-        else
-            return null; 
+        try {
+            account = session.get(Account.class, id);
+            tran.commit();
+        } catch (HibernateException e) {
+            tran.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }//finally
+
+        return account;
     }//get(int)
 
     @Override
-    public List<Account> getAll() throws SQLException {
+    public List<Account> getAll(){
         List<Account> accounts = new ArrayList<>();
-        String sql = "SELECT * FROM accounts";
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        ResultSet rs = pstmt.executeQuery();
-        while (rs.next()){
-            Account row;
-            if (rs.getInt("id") > 100)
-                row = new Employee();
-            else
-                row = new Manager();
-            row.setId(rs.getInt("id"));
-            row.setUsername(rs.getString("username"));
-            row.setPassword(rs.getString("password"));
-            row.setName(rs.getString("name"));
-            accounts.add(row);
-        }//while (rs.next())
+        Session session = HibernateSessionFactory.getSession();
+        Transaction tran = session.beginTransaction();
+        
+        try {
+            accounts = session.createQuery("FROM Account", Account.class).getResultList();
+            tran.commit();
+        } catch (HibernateException e) {
+            tran.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }//finally
         return accounts;
     }//getAll()
 
     @Override
-    public void save(Account a) throws SQLException {
-        String sql = "INSERT INTO accounts VALUES(?, ?, ?, ?)";
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setInt(1, a.getId());
-        pstmt.setString(2, a.getUsername());
-        pstmt.setString(3, a.getPassword());
-        pstmt.setString(4, a.getName());
-        pstmt.executeQuery();
+    public void save(Account a){
+        //No implementation needed
+//        Session session = HibernateSessionFactory.getSession();
+//        Transaction tran = session.beginTransaction();
+//        
+//        try { 
+//            session.save(a);
+//            tran.commit();
+//        } catch(HibernateException e){
+//            tran.rollback();
+//            e.printStackTrace();
+//        } finally {
+//            session.close();
+//        }//finally
     }//save(Account)
 
     @Override
-    public void update(Account as){
-        
-    }//update(Account, String[])
+    public void update(Account a){
+        //No implementation needed
+//        Session session = HibernateSessionFactory.getSession();
+//        Transaction tran = session.beginTransaction();
+//        
+//        try {
+//            session.update(a);
+//            tran.commit();
+//        } catch (HibernateException e){
+//            tran.rollback();
+//            e.printStackTrace();
+//        } finally {
+//            session.close();
+//        }//finally
+    }//update(Account)
 
     @Override
-    public void delete(Account a) throws SQLException {
-        String sql = "DELETE FROM accounts WHERE id = ?";
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setInt(1, a.getId());
-        ResultSet rs = pstmt.executeQuery();
+    public void delete(Account a){
+        //No implementation needed
+//        Session session = HibernateSessionFactory.getSession();
+//        Transaction tran = session.beginTransaction();
+//        
+//        try {
+//            session.delete(a);
+//            tran.commit();
+//        } catch (HibernateException e){
+//            tran.rollback();
+//            e.printStackTrace();
+//        } finally {
+//            session.close();
+//        }//finally
     }//delete(Account)
 }//AccountRepository

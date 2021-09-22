@@ -2,9 +2,8 @@ package com.pdownton.reimbursementapp.service;
 
 import com.pdownton.reimbursementapp.models.Account;
 import com.pdownton.reimbursementapp.models.Reimbursement;
+import com.pdownton.reimbursementapp.models.Stats;
 import com.pdownton.reimbursementapp.repository.AccountRepository;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,20 +14,18 @@ import java.util.Map;
  * @author Pat Down
  */
 public class AccountService {
-    private AccountRepository accountRepo;
-    private ReimbursementService reimbursementService;
+    private final AccountRepository accountRepo;
+    private final ReimbursementService rService;
+    private final StatsService sService;
     public static final Map<Integer, Account> accounts = new HashMap<>();
     private Account currentAccount = null;
     
     public AccountService(){
         super();
+        accountRepo = new AccountRepository();
+        rService = new ReimbursementService();
+        sService = new StatsService();
     }//AccountService()
-    
-    public AccountService(Connection conn){
-        super();
-        accountRepo = new AccountRepository(conn);
-        reimbursementService = new ReimbursementService(conn);
-    }//AccountService(Connection)
     
     public Account getCurrentAccount(){
         return currentAccount;
@@ -39,46 +36,34 @@ public class AccountService {
     }//setCurrentAccount(int)
     
     public Account create(Account account){
-        try {
-            accountRepo.save(account);
-            accounts.put(account.getId(), account);
-        } catch (SQLException e){
-           e.printStackTrace();
-        }//catch (SQLException)
+        accountRepo.save(account);
+        accounts.put(account.getId(), account);
         return account;
     }//create(Account)
     
     public Account getAccount(int id){
-        Account account = null;
         
-        try {
-            account = accountRepo.get(id);
-        } catch (SQLException e){
-           e.printStackTrace();
-        }//catch (SQLException)
+        Account account = accountRepo.get(id);
         
         return account;
     }//getAccount(int)
     
     public List<Account> getAccounts(){
-        List<Account> accountList = new ArrayList<>();
-        try {
-            accountList = accountRepo.getAll();
-        } catch (SQLException e){
-           e.printStackTrace();
-        }//catch (SQLException)
+        List<Account>accountList = accountRepo.getAll();
         
-        for(Account acc : accountList)
-            if (!accounts.containsValue(acc))
-                accounts.put(acc.getId(), acc);
+        accountList.stream().filter(acc -> (!accounts.containsValue(acc))).forEachOrdered(acc -> {
+            accounts.put(acc.getId(), acc);
+        });
+        
+        
         
         return accountList;
     }//getAccounts()
     
     public int login(String username, String password){
         if (!isLoggedIn()){
-            List<Account> accs = getAccounts();
-            for (var acc : accs){
+            getAccounts();
+            for (var acc : accounts.values()){
                 if (acc.getUsername().equals(username) && acc.getPassword().equals(password)){
                     currentAccount = acc;
                     return acc.getId();
@@ -101,41 +86,4 @@ public class AccountService {
         return currentAccount != null;
     }//isLoggedIn()
     
-    public String statistics(){
-        if (isLoggedIn()){
-            if (currentAccount.getId() < 100) {
-                StringBuilder stats = new StringBuilder();
-                List<Reimbursement> reimbursements = reimbursementService.getAll();
-                float mean, totalSpent = 0, maxSpent = 0;
-                int biggestSpender = 0;
-                Map<Integer, Float> employeeSpending = new HashMap<>();
-
-                for (var r : reimbursements){
-                    float amount = r.getAmount();
-                    int employeeId = r.getEmployeeId();
-                    totalSpent += amount;
-
-                    if (employeeSpending.containsKey(employeeId))
-                        employeeSpending.replace(employeeId, employeeSpending.get(employeeId) + amount);
-                    else
-                        employeeSpending.put(employeeId, amount);
-
-                    if (employeeSpending.get(employeeId) > maxSpent){
-                        maxSpent = employeeSpending.get(employeeId);
-                        biggestSpender = employeeId;
-                    }//if (employeeSpending.get(employeeId) > maxSpent)
-
-                }//for (var r : reimbursements)
-
-                mean = totalSpent / reimbursements.size();
-
-                stats.append(String.format("Mean: %.2f\n", mean));
-                stats.append(String.format("Biggest Spender: %s\n", accounts.get(biggestSpender).getName()));
-
-                return stats.toString();
-            } else
-                return "You are not a manager.";
-        } else
-            return "You are not logged in.";
-    }//statistics()
 }//AccountService

@@ -2,9 +2,9 @@ package com.pdownton.reimbursementapp.controller;
 
 import com.pdownton.reimbursementapp.models.Account;
 import com.pdownton.reimbursementapp.service.AccountService;
+import com.pdownton.reimbursementapp.models.Stats;
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
-import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -14,8 +14,8 @@ import java.util.List;
 public class AccountController {
     private static AccountService accountService;
     
-    public static void init(Connection conn){
-        accountService = new AccountService(conn);
+    public static void init(){
+        accountService = new AccountService();
     }//init(Connection)
     
     public static void getAccounts(Context ctx) {
@@ -59,12 +59,5 @@ public class AccountController {
             ctx.status(HttpCode.EXPECTATION_FAILED);
         
     }//logout(Context)
-    
-    public static void statistics(Context ctx){
-        String stats = accountService.statistics();
-        
-        ctx.status(HttpCode.OK);
-        ctx.json(stats);
-    }//statistics(Context)
     
 }//AccountController
