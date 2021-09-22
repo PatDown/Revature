@@ -1,6 +1,5 @@
 package com.pdownton.reimbursementapp.repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -8,11 +7,11 @@ import java.util.List;
  * @author Pat Down
  */
 public interface Repository<T> {
-    T get(int id) throws SQLException;
+    T get(int id);
     
-    List<T> getAll() throws SQLException;
+    List<T> getAll();
     
-    void save(T t) throws SQLException;
+    void save(T t);
     void update(T t);
-    void delete(T t) throws SQLException;
+    void delete(T t);
 }//Repository

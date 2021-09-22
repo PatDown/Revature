@@ -2,13 +2,11 @@ package com.pdownton.reimbursementapp;
 
 import com.pdownton.reimbursementapp.controller.AccountController;
 import com.pdownton.reimbursementapp.controller.ReimbursementController;
-import com.pdownton.reimbursementapp.utils.ConnectionFactory;
+import com.pdownton.reimbursementapp.controller.StatsController;
 import io.javalin.Javalin;
 import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
-import static io.javalin.apibuilder.ApiBuilder.put;
-import java.sql.Connection;
 
 /**
  *
@@ -21,9 +19,9 @@ public class ReimbursementApp {
      */
     public static void main(String[] args) {
         Javalin app = Javalin.create().start(3000);
-        Connection conn = ConnectionFactory.getConnection();
-        AccountController.init(conn);
-        ReimbursementController.init(conn);
+        AccountController.init();
+        ReimbursementController.init();
+        StatsController.init();
         
         app.routes(() -> {
             path("reimbursements", () -> {
@@ -31,20 +29,17 @@ public class ReimbursementApp {
                     post(AccountController::login);
                     get(AccountController::logout);
                 });
-                path("employee", () -> {
-                    get(AccountController::getAccounts);
-                    path("{id}", () ->{
-                        get(AccountController::getAccount);
-                        path("requests", () -> {
-                            get(ReimbursementController::getReimbursements);
-                            post(ReimbursementController::create);
-                            path("{rId}", () -> {
-                                get(ReimbursementController::getReimbursement);
-                                post(ReimbursementController::update);
-                            });
-                            path("stats", () -> {
-                                get(AccountController::statistics); 
-                            });
+                path("{id}", () ->{
+                    get(AccountController::getAccount);
+                    path("requests", () -> {
+                        get(ReimbursementController::getReimbursements);
+                        post(ReimbursementController::create);
+                        path("{rId}", () -> {
+                            get(ReimbursementController::getReimbursement);
+                            post(ReimbursementController::update);
+                        });
+                        path("stats", () -> {
+                            get(StatsController::getStats); 
                         });
                     });
                 });

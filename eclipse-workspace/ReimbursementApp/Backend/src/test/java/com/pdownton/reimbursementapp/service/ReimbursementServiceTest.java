@@ -1,7 +1,6 @@
 package com.pdownton.reimbursementapp.service;
 
 import com.pdownton.reimbursementapp.models.Reimbursement;
-import com.pdownton.reimbursementapp.utils.ConnectionFactory;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Pat Down
  */
 public class ReimbursementServiceTest {
-    public static ReimbursementService rService = new ReimbursementService(ConnectionFactory.getConnection());
     public final String D1 = "=================================================";
     public final String D2 = "-------------------------------------------------";
     

@@ -2,7 +2,6 @@ package com.pdownton.reimbursementapp.service;
 
 import com.pdownton.reimbursementapp.models.Account;
 import com.pdownton.reimbursementapp.models.Reimbursement;
-import com.pdownton.reimbursementapp.utils.ConnectionFactory;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Pat Down
  */
 public class AccountServiceTest {
-    public static AccountService accountService = new AccountService(ConnectionFactory.getConnection());
     public final String D1 = "=================================================";
     public final String D2 = "-------------------------------------------------";
     public AccountServiceTest() {

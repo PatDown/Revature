@@ -13,7 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="accounts")
-public abstract class Account{
+public class Account{
     @Id
     @Column
     protected int id;
