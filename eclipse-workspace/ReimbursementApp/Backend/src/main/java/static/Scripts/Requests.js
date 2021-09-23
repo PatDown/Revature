@@ -81,7 +81,7 @@ function logout() {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200)
-            window.location = './login.html'
+            window.location = '../Pages/login.html'
     }
 
     xhr.send()
@@ -97,6 +97,7 @@ function getRequests() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             let requests = JSON.parse(xhr.response)
+            console.log(requests)
             if (requests.length === 0) {
                 let request_container = document.getElementById('request-container')
                 let no_requests = document.getElementById('no-requests')
@@ -107,6 +108,7 @@ function getRequests() {
                 let request_id = document.getElementsByClassName('request-id')
                 for (let i = 0; i < requests.length; i++) {
                     let myObj = requests[i]
+                    console.log(myObj)
                     let exists = false
                     for (let j = 0; j < request_id.length; j++) {
                         if (myObj.id == request_id[j].innerText)
@@ -126,27 +128,30 @@ function getRequests() {
 
                         let cell2 = row.insertCell(1)
                         let element2 = document.createElement('p')
-                        element2.innerText = formatter.format(myObj.amount)
+                        element2.innerText = myObj.employeeId
                         cell2.appendChild(element2)
 
                         let cell3 = row.insertCell(2)
                         let element3 = document.createElement('p')
-                        element3.innerText = myObj.reason
+                        element3.innerText = formatter.format(myObj.amount)
                         cell3.appendChild(element3)
 
                         let cell4 = row.insertCell(3)
                         let element4 = document.createElement('p')
-                        element4.className = 'status'
-                        element4.innerText = myObj.status
+                        element4.innerText = myObj.reason
                         cell4.appendChild(element4)
 
                         let cell5 = row.insertCell(4)
                         let element5 = document.createElement('p')
-                        element5.className = 'message'
-                        element5.innerText = myObj.message
+                        element5.className = 'status'
+                        element5.innerText = myObj.status
                         cell5.appendChild(element5)
 
-                        
+                        let cell6 = row.insertCell(5)
+                        let element6 = document.createElement('p')
+                        element6.className = 'message'
+                        element6.innerText = myObj.message
+                        cell6.appendChild(element6)
                     }
                 }
             }
@@ -186,7 +191,7 @@ function addNewRequest() {
 
             let cell2 = row.insertCell(1)
             let element2 = document.createElement('p')
-            element2.innerText = getName(new_request.employeeId)
+            element2.innerText = new_request.employeeId
             cell2.appendChild(element2)
 
             let cell3 = row.insertCell(2)
@@ -214,22 +219,6 @@ function addNewRequest() {
             console.log('New request created')
             getStats()
         }
-    }
-}
-
-function getName(id) {
-    let url = new URL(id, base_url)
-    let xhr = new XMLHttpRequest()
-    xhr.open('GET', url.href)
-    xhr.send()
-
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            let name = JSON.stringify(xhr.response)
-            console(name)
-            
-        }
-        
     }
 }
 

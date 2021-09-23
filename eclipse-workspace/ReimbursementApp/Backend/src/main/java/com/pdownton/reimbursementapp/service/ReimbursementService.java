@@ -13,11 +13,12 @@ import java.util.Map;
  */
 public class ReimbursementService {
     private final ReimbursementRepository reimbursementRepo;
-    public static Map<Integer, Reimbursement> reimbursements = new HashMap<>();
+    private final AccountService aService;
 
     public ReimbursementService(){
         super();
         reimbursementRepo = new ReimbursementRepository();
+        aService = new AccountService();
     }//ReimbursementService()
     
     public Reimbursement getReimbursement(int id){
@@ -29,10 +30,6 @@ public class ReimbursementService {
     public List<Reimbursement> getReimbursements(int id){
         List<Reimbursement> rmbsmts = reimbursementRepo.getAll();
         
-        rmbsmts.stream().filter(r -> (!reimbursements.containsValue(r))).forEachOrdered(r -> {
-            reimbursements.put(r.getId(), r);
-        });
-        
         if (id > 100) {
             List<Reimbursement> personal = new ArrayList<>();
             rmbsmts.stream().filter(r -> (r.getEmployeeId() == id)).forEachOrdered(r -> {
@@ -43,12 +40,13 @@ public class ReimbursementService {
             return rmbsmts;
     }//getReimbursements(int)
     
-    public List<Reimbursement> getAll(){
+    public Map<Reimbursement, String> getAll(){
         List<Reimbursement> rmbsmts = reimbursementRepo.getAll();
-        rmbsmts.stream().filter(r -> (!reimbursements.containsValue(r))).forEachOrdered(r -> {
-            reimbursements.put(r.getId(), r);
-        });
-        return rmbsmts;
+        Map<Reimbursement, String> nameMap = new HashMap();
+        for (var r : rmbsmts){
+            nameMap.put(r, aService.getAccount(r.getEmployeeId()).getName());
+        }
+        return nameMap;
     }//getAll()
     
     public Reimbursement create(float amount, String reason, int employeeID){

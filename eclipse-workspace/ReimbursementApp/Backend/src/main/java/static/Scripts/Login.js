@@ -19,7 +19,7 @@ function login() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             account_id = JSON.parse(xhr.response)
             sessionStorage.setItem('id', account_id)
-            window.location = './requests.html'
+            window.location = '../Pages/requests.html'
         }
     }
     let input_boxes = document.getElementsByClassName("login-class")
