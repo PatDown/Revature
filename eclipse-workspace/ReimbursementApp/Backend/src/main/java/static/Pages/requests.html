@@ -8,10 +8,9 @@
     </head>
     <body>
         <header>
-            <div id="logout-div" style="margin-left: 5px; margin-top:5px;">
+            <div id="logout-div">
                 <input id="logout-button" type="button" value="Logout"/>
             </div>
-            <h1 id="greeting"></h1>
         </header>
         <div id="request-div">
             <div id="requests">
@@ -20,6 +19,7 @@
                     <table id="request-table">
                         <tr>
                             <th>Request #</th>
+                            <th>Employee ID</th>
                             <th>Amount</th>
                             <th>Reason</th>
                             <th>Status</th>
@@ -84,7 +84,7 @@
                                 <th>Total Spent</th>
                                 <th>Biggest Spender</th>
                             </tr>
-                            <tr id="stats-values">
+                            <tr>
                                 <td id="mean"></td>
                                 <td id="total-spent"></td>
                                 <td id="biggest-spender"></td>

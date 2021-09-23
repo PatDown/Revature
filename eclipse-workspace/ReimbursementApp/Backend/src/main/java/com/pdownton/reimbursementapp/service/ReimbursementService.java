@@ -13,11 +13,11 @@ import java.util.Map;
  */
 public class ReimbursementService {
     private final ReimbursementRepository reimbursementRepo;
-    public static Map<Integer, Reimbursement> reimbursements = new HashMap<>();
-
+    private final AccountService aService;
     public ReimbursementService(){
         super();
         reimbursementRepo = new ReimbursementRepository();
+        aService = new AccountService();
     }//ReimbursementService()
     
     public Reimbursement getReimbursement(int id){
@@ -28,10 +28,6 @@ public class ReimbursementService {
     
     public List<Reimbursement> getReimbursements(int id){
         List<Reimbursement> rmbsmts = reimbursementRepo.getAll();
-        
-        rmbsmts.stream().filter(r -> (!reimbursements.containsValue(r))).forEachOrdered(r -> {
-            reimbursements.put(r.getId(), r);
-        });
         
         if (id > 100) {
             List<Reimbursement> personal = new ArrayList<>();
@@ -45,19 +41,17 @@ public class ReimbursementService {
     
     public List<Reimbursement> getAll(){
         List<Reimbursement> rmbsmts = reimbursementRepo.getAll();
-        rmbsmts.stream().filter(r -> (!reimbursements.containsValue(r))).forEachOrdered(r -> {
-            reimbursements.put(r.getId(), r);
-        });
+        
         return rmbsmts;
     }//getAll()
     
     public Reimbursement create(float amount, String reason, int employeeID){
         Reimbursement reimbursement = new Reimbursement(amount, reason, employeeID);
-        
+        reimbursement.setEmployeeName(aService.getAccount(employeeID).getName());
         reimbursementRepo.save(reimbursement);
        
         return reimbursement;
-    }//create(Reimbursement)
+    }//create(float, String, int)
     
     public Reimbursement update(int id, String newStatus, int managerId, String message){
         Reimbursement r = getReimbursement(id);
@@ -79,11 +73,6 @@ public class ReimbursementService {
         }
         return r;
     }//update(int, String, int, String)
-    
-    public boolean delete(Reimbursement r){
-        reimbursementRepo.delete(r);
-        return true;
-    }//delete(Reimbursement)
     
 }//ReimbursementService
 
