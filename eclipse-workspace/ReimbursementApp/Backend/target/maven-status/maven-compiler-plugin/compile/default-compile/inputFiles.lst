@@ -1,14 +1,14 @@
 D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\models\Reimbursement.java
+D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\service\StatsService.java
 D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\models\Account.java
 D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\utils\HibernateSessionFactory.java
-D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\models\Manager.java
 D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\service\ReimbursementService.java
-D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\models\Employee.java
+D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\models\Stats.java
 D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\ReimbursementApp.java
+D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\controller\StatsController.java
 D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\repository\AccountRepository.java
 D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\repository\Repository.java
 D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\repository\ReimbursementRepository.java
-D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\utils\ConnectionFactory.java
 D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\controller\ReimbursementController.java
 D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\service\AccountService.java
 D:\Users\pmjdo\Documents\GitHub\Revature\eclipse-workspace\ReimbursementApp\Backend\src\main\java\com\pdownton\reimbursementapp\controller\AccountController.java
