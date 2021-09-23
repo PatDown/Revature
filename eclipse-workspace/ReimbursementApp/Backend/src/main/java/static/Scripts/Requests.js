@@ -1,9 +1,7 @@
 let base_url = 'http://localhost:3000/reimbursements/'
-let account_id = 0
-let login_div = document.getElementById('login-div')
+let account_id
 let logout_div = document.getElementById('logout-div')
 let request_div = document.getElementById('request-div')
-let login_button = document.getElementById('login-button')
 let logout_button = document.getElementById('logout-button')
 let new_request_button = document.getElementById('new-requests-button')
 let update_requests_button = document.getElementById('update-requests-button')
@@ -13,13 +11,6 @@ let submit_update_button = document.getElementById('submit-update-button')
 let formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
-})
-
-login_button.addEventListener('click', (event) => {
-    if (event.cancelable) {
-        event.preventDefault()
-    }
-    login()
 })
 
 logout_button.addEventListener('click', (event) => {
@@ -83,31 +74,6 @@ function resetViews() {
     sb.hidden = true
 }
 
-function login() {
-    let url = new URL('login', base_url)
-
-    let xhr = new XMLHttpRequest()
-    xhr.open('POST', url.href)
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            login_div.hidden = true
-            logout_div.hidden = false
-            request_div.hidden = false
-            resetViews()
-            account_id = JSON.parse(xhr.response)
-            getRequests()
-        }
-    }
-    let input_boxes = document.getElementsByClassName("login-class")
-
-    let data = new FormData(document.getElementById('login-form'))
-    data.append('username', input_boxes[0].value)
-    data.append('password', input_boxes[1].value)
-
-    xhr.send(data)
-}
-
 function logout() {
     let url = new URL('login', base_url)
 
@@ -117,9 +83,7 @@ function logout() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.response)
-            login_div.hidden = false
-            logout_div.hidden = true
-            request_div.hidden = true
+            window.location = "login.html"
         }
     }
 
@@ -307,4 +271,13 @@ function getStats() {
         }
     }
     
+}
+
+window.onload = () => {
+    account_id = sessionStorage.getItem('id')
+    getRequests()
+    if (account_id > 99) {
+        update_requests_button.hidden = true
+        statistics_button.hidden = true
+    }
 }

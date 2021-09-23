@@ -1,0 +1,32 @@
+body {
+    background-color: bisque;
+    margin: auto;
+}
+
+#button-container {
+    margin-top: 5px;
+}
+
+h1 {
+    text-align: center;
+}
+
+input {
+    text-wrap: normal;
+}
+
+#login-form {
+    background-color: lightblue;
+    display: grid;
+    text-align: center;
+    padding: 2em;
+    border-style: solid;
+    border-color: black;
+    border-width: thick;
+    width: max-content;
+    margin: auto;
+}
+
+#password-input {
+    margin-top: 5px;
+}

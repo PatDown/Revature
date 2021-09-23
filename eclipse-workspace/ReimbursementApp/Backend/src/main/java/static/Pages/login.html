@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Login</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../Styles/login.css" />
+    </head>
+    <body>
+        <div id="login-div">
+            <h1>Login</h1>
+            <form id="login-form" action="http://localhost:3000/reimbursements/login">
+                <div>
+                    <label>Username</label>
+                    <input type="text" class="login-class" placeholder="Username" name="username" />
+                </div>
+                <div id="password-input">
+                    <label>Password</label>
+                    <input type="password" class="login-class" placeholder="Password" name="password" />
+                </div>
+                <div id="button-container">
+                    <input id="login-button" type="submit" value="Login" i/>
+                    <input type="reset" value="Cancel" />
+                </div>
+            </form>
+        </div>
+        <script src="../Scripts/Login.js"></script>
+    </body>
+
+</html>
