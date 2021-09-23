@@ -1,6 +1,7 @@
 let base_url = 'http://localhost:3000/reimbursements/'
+let account_id = 0
 let login_button = document.getElementById('login-button')
-let account_id = 0;
+
 login_button.addEventListener('click', (event) => {
     if (event.cancelable) {
         event.preventDefault()
@@ -18,7 +19,7 @@ function login() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             account_id = JSON.parse(xhr.response)
             sessionStorage.setItem('id', account_id)
-            window.location = "requests.html"
+            window.location = './requests.html'
         }
     }
     let input_boxes = document.getElementsByClassName("login-class")

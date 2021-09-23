@@ -1,6 +1,5 @@
 let base_url = 'http://localhost:3000/reimbursements/'
 let account_id
-let logout_div = document.getElementById('logout-div')
 let request_div = document.getElementById('request-div')
 let logout_button = document.getElementById('logout-button')
 let new_request_button = document.getElementById('new-requests-button')
@@ -81,10 +80,8 @@ function logout() {
     xhr.open('GET', url.href)
 
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(xhr.response)
-            window.location = "login.html"
-        }
+        if (xhr.readyState === 4 && xhr.status === 200)
+            window.location = './login.html'
     }
 
     xhr.send()
@@ -209,7 +206,6 @@ function addNewRequest() {
             console.log('New request created')
         }
     }
-    
 }
 
 function updateRequest() {
@@ -270,12 +266,13 @@ function getStats() {
             biggest_spender.innerText = response.biggestSpender
         }
     }
-    
 }
 
 window.onload = () => {
     account_id = sessionStorage.getItem('id')
     getRequests()
+    resetViews()
+
     if (account_id > 99) {
         update_requests_button.hidden = true
         statistics_button.hidden = true
