@@ -81,7 +81,7 @@ function logout() {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200)
-            window.location = '/login.html'
+            window.location = './login.html'
     }
 
     xhr.send()
@@ -269,7 +269,7 @@ function getStats() {
 }
 
 window.onload = () => {
-    account_id = sessionStorage.get('id')
+    account_id = sessionStorage.getItem('id')
     getRequests()
     resetViews()
 
