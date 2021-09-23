@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -28,6 +29,8 @@ public class Reimbursement implements Serializable{
     private int employeeId;
     @Column
     private String message;
+    @Column(name="employee_name")
+    private String employeeName;
     
     public static List<Integer> ids = new ArrayList<>();
 
@@ -91,6 +94,14 @@ public class Reimbursement implements Serializable{
     public void setMessage(String message) {
         this.message = message;
     }//setMessage(String)
+    
+    public String getEmployeeName(){
+        return employeeName;
+    }//getEmployeeName()
+    
+    public void setEmployeeName(String name){
+        employeeName = name;
+    }//setEmployeeName(String)
 
     private int generateId(){
         int[] i = new int[3];

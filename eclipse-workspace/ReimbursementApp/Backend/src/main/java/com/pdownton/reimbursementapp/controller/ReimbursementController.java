@@ -5,7 +5,6 @@ import com.pdownton.reimbursementapp.service.ReimbursementService;
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -35,7 +34,7 @@ public class ReimbursementController {
     }//getReimbursement(Context)
     
     public static void getAll(Context ctx){
-        Map<Reimbursement, String> rList = rService.getAll();
+        List<Reimbursement> rList = rService.getAll();
         
         if (!rList.isEmpty())
             ctx.json(rList);

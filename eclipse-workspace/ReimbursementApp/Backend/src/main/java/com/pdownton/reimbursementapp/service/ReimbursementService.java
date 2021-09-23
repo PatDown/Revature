@@ -14,7 +14,6 @@ import java.util.Map;
 public class ReimbursementService {
     private final ReimbursementRepository reimbursementRepo;
     private final AccountService aService;
-
     public ReimbursementService(){
         super();
         reimbursementRepo = new ReimbursementRepository();
@@ -40,22 +39,19 @@ public class ReimbursementService {
             return rmbsmts;
     }//getReimbursements(int)
     
-    public Map<Reimbursement, String> getAll(){
+    public List<Reimbursement> getAll(){
         List<Reimbursement> rmbsmts = reimbursementRepo.getAll();
-        Map<Reimbursement, String> nameMap = new HashMap();
-        for (var r : rmbsmts){
-            nameMap.put(r, aService.getAccount(r.getEmployeeId()).getName());
-        }
-        return nameMap;
+        
+        return rmbsmts;
     }//getAll()
     
     public Reimbursement create(float amount, String reason, int employeeID){
         Reimbursement reimbursement = new Reimbursement(amount, reason, employeeID);
-        
+        reimbursement.setEmployeeName(aService.getAccount(employeeID).getName());
         reimbursementRepo.save(reimbursement);
        
         return reimbursement;
-    }//create(Reimbursement)
+    }//create(float, String, int)
     
     public Reimbursement update(int id, String newStatus, int managerId, String message){
         Reimbursement r = getReimbursement(id);
@@ -77,11 +73,6 @@ public class ReimbursementService {
         }
         return r;
     }//update(int, String, int, String)
-    
-    public boolean delete(Reimbursement r){
-        reimbursementRepo.delete(r);
-        return true;
-    }//delete(Reimbursement)
     
 }//ReimbursementService
 

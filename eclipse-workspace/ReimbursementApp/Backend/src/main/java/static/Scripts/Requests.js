@@ -97,7 +97,6 @@ function getRequests() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             let requests = JSON.parse(xhr.response)
-            console.log(requests)
             if (requests.length === 0) {
                 let request_container = document.getElementById('request-container')
                 let no_requests = document.getElementById('no-requests')
@@ -108,7 +107,6 @@ function getRequests() {
                 let request_id = document.getElementsByClassName('request-id')
                 for (let i = 0; i < requests.length; i++) {
                     let myObj = requests[i]
-                    console.log(myObj)
                     let exists = false
                     for (let j = 0; j < request_id.length; j++) {
                         if (myObj.id == request_id[j].innerText)
@@ -128,7 +126,7 @@ function getRequests() {
 
                         let cell2 = row.insertCell(1)
                         let element2 = document.createElement('p')
-                        element2.innerText = myObj.employeeId
+                        element2.innerText = myObj.employeeName
                         cell2.appendChild(element2)
 
                         let cell3 = row.insertCell(2)
@@ -191,7 +189,7 @@ function addNewRequest() {
 
             let cell2 = row.insertCell(1)
             let element2 = document.createElement('p')
-            element2.innerText = new_request.employeeId
+            element2.innerText = new_request.employeeName
             cell2.appendChild(element2)
 
             let cell3 = row.insertCell(2)
