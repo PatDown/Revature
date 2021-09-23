@@ -41,8 +41,6 @@ statistics_button.addEventListener('click', (event) => {
     }
     let sb = document.getElementById('stats')
     toggleView(sb)
-    if (!sb.hidden)
-        getStats()
 })
 
 submit_request_button.addEventListener('click', (event) => {
@@ -145,9 +143,12 @@ function getRequests() {
                         element5.className = 'message'
                         element5.innerText = myObj.message
                         cell5.appendChild(element5)
+
+                        
                     }
                 }
             }
+            getStats()
         }
     }
 }
@@ -204,6 +205,7 @@ function addNewRequest() {
             cell5.appendChild(element5)
 
             console.log('New request created')
+            getStats()
         }
     }
 }
@@ -257,7 +259,6 @@ function getStats() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             let response = JSON.parse(xhr.response)
-            console.log(response)
             let mean = document.getElementById('mean')
             mean.innerText = formatter.format(response.mean)
             let total_spent = document.getElementById('total-spent')
