@@ -8,7 +8,7 @@ public class Stats {
     private float mean; 
     private float totalSpent;
     private float maxSpent;
-    private int biggestSpender;
+    private String biggestSpender;
     
     public Stats(){
         super();
@@ -38,13 +38,13 @@ public class Stats {
         this.maxSpent = maxSpent;
     }//setMaxSpent(float)
 
-    public int getBiggestSpender() {
+    public String getBiggestSpender() {
         return biggestSpender;
     }//getBiggestSpender()
 
-    public void setBiggestSpender(int biggestSpender) {
+    public void setBiggestSpender(String biggestSpender) {
         this.biggestSpender = biggestSpender;
-    }//setBiggestSpender(int)
+    }//setBiggestSpender(String)
     
 }//Stats
 

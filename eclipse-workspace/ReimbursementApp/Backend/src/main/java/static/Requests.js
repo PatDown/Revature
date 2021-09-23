@@ -51,7 +51,8 @@ statistics_button.addEventListener('click', (event) => {
     }
     let sb = document.getElementById('stats')
     toggleView(sb)
-    getStats()
+    if (!sb.hidden)
+        getStats()
 })
 
 submit_request_button.addEventListener('click', (event) => {
@@ -286,16 +287,24 @@ function updateRequest() {
 }
 
 function getStats() {
-    let url = new URL( account_id + '/requests/stats', base_url)
+    let url = new URL(account_id + '/stats', base_url)
     let xhr = new XMLHttpRequest()
 
     xhr.open('GET', url.href)
 
+    xhr.send()
+
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(JSON.parse(xhr.response))
+            let response = JSON.parse(xhr.response)
+            console.log(response)
+            let mean = document.getElementById('mean')
+            mean.innerText = formatter.format(response.mean)
+            let total_spent = document.getElementById('total-spent')
+            total_spent.innerText = formatter.format(response.totalSpent)
+            let biggest_spender = document.getElementById('biggest-spender')
+            biggest_spender.innerText = response.biggestSpender
         }
     }
-
-    xhr.send()
+    
 }
