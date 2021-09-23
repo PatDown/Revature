@@ -12,9 +12,11 @@ import java.util.Map;
  */
 public class StatsService {
     private final ReimbursementService rService;
+    private final AccountService aService;
     public StatsService(){
         super();
         rService = new ReimbursementService();
+        aService = new AccountService();
     }//StatsService()
     
     public Stats getStats(int id){
@@ -37,7 +39,7 @@ public class StatsService {
                 stats.setMaxSpent(employeeSpending.get(employeeId));
                 return employeeId;
             }).forEachOrdered(employeeId -> {
-                stats.setBiggestSpender(employeeId);
+                stats.setBiggestSpender(aService.getAccount(employeeId).getName());
             });
 
             stats.setMean(stats.getTotalSpent() / requests.size());

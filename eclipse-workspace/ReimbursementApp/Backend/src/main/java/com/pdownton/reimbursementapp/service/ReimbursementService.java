@@ -29,9 +29,9 @@ public class ReimbursementService {
     public List<Reimbursement> getReimbursements(int id){
         List<Reimbursement> rmbsmts = reimbursementRepo.getAll();
         
-        for (var r : rmbsmts)
-            if (!reimbursements.containsValue(r))
-                reimbursements.put(r.getId(), r);
+        rmbsmts.stream().filter(r -> (!reimbursements.containsValue(r))).forEachOrdered(r -> {
+            reimbursements.put(r.getId(), r);
+        });
         
         if (id > 100) {
             List<Reimbursement> personal = new ArrayList<>();

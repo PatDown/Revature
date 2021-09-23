@@ -72,6 +72,13 @@ input{
     padding:1em;
 }
 
+#stats-table {
+    width: 90%;
+    margin: auto;
+    background-color: lightblue;
+    padding: 1em;
+}
+
 .submit-button-container{
     margin:auto;
     width:max-content;

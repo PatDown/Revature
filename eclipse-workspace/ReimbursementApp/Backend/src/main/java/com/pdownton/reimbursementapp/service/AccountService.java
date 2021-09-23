@@ -15,16 +15,12 @@ import java.util.Map;
  */
 public class AccountService {
     private final AccountRepository accountRepo;
-    private final ReimbursementService rService;
-    private final StatsService sService;
     public static final Map<Integer, Account> accounts = new HashMap<>();
     private Account currentAccount = null;
     
     public AccountService(){
         super();
         accountRepo = new AccountRepository();
-        rService = new ReimbursementService();
-        sService = new StatsService();
     }//AccountService()
     
     public Account getCurrentAccount(){

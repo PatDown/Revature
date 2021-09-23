@@ -38,9 +38,9 @@ public class ReimbursementApp {
                             get(ReimbursementController::getReimbursement);
                             post(ReimbursementController::update);
                         });
-                        path("stats", () -> {
-                            get(StatsController::getStats); 
-                        });
+                    });
+                    path("stats", () -> {
+                        get(StatsController::getStats); 
                     });
                 });
             });
