@@ -32,7 +32,7 @@ public class AccountController {
         Account account = accountService.getAccount(id);
         
         if (account != null)
-            ctx.json(account);
+            ctx.json(account.getName());
         else
             ctx.status(HttpCode.NOT_FOUND);
     }//getAccount(Context)

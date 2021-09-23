@@ -4,22 +4,39 @@
     <head>
         <title> Reimbursement Requests</title>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="../Styles/requests.css"/>
+        <link rel="stylesheet" href="requests.css"/>
     </head>
     <body>
         <header>
-            <div id="logout-div" style="margin-left: 5px; margin-top:5px;">
+            <div id="login-div">
+                <h1>Login</h1>
+                <form id="login-form" action="http://localhost:3000/reimbursements/login">
+                    <div>
+                        <label>Username</label>
+                        <input type="text" class="login-class" placeholder="Username" name="username" />
+                    </div>
+                    <div id="password-input">
+                        <label>Password</label>
+                        <input type="password" class="login-class" placeholder="Password" name="password" />
+                    </div>
+                    <div id="button-container">
+                        <input id="login-button" type="submit" value="Login" />
+                        <input type="reset" value="Cancel" />
+                    </div>
+                </form>
+            </div>
+            <div id="logout-div" hidden>
                 <input id="logout-button" type="button" value="Logout"/>
             </div>
-            <h1 id="greeting"></h1>
         </header>
-        <div id="request-div">
+        <div id="request-div" hidden>
             <div id="requests">
                 <h2 id="requests-header">Requests</h2>
                 <div id="request-container">
                     <table id="request-table">
                         <tr>
                             <th>Request #</th>
+                            <th>Employee Name</th>
                             <th>Amount</th>
                             <th>Reason</th>
                             <th>Status</th>
@@ -78,23 +95,11 @@
                 <div id="stats" hidden>
                     <h3 style="margin-left: 5px">Stats</h3>
                     <div id="stats-message">
-                        <table id="stats-table">
-                            <tr>
-                                <th>Mean</th>
-                                <th>Total Spent</th>
-                                <th>Biggest Spender</th>
-                            </tr>
-                            <tr id="stats-values">
-                                <td id="mean"></td>
-                                <td id="total-spent"></td>
-                                <td id="biggest-spender"></td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
             </div>
         </div>
-        <script src="../Scripts/Requests.js"></script>
+        <script src="Requests.js"></script>
 
     </body>
 </html>

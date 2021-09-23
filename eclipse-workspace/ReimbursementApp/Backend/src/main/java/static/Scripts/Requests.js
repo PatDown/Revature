@@ -69,6 +69,8 @@ function resetViews() {
     urb.hidden = true
     nrb.hidden = true
     sb.hidden = true
+
+    let input_boxes = document.get
 }
 
 function logout() {
@@ -184,29 +186,50 @@ function addNewRequest() {
 
             let cell2 = row.insertCell(1)
             let element2 = document.createElement('p')
-            element2.innerText = formatter.format(new_request.amount)
+            element2.innerText = getName(new_request.employeeId)
             cell2.appendChild(element2)
 
             let cell3 = row.insertCell(2)
             let element3 = document.createElement('p')
-            element3.innerText = new_request.reason
+            element3.innerText = formatter.format(new_request.amount)
             cell3.appendChild(element3)
 
             let cell4 = row.insertCell(3)
             let element4 = document.createElement('p')
-            element4.className = 'status'
-            element4.innerText = new_request.status
+            element4.innerText = new_request.reason
             cell4.appendChild(element4)
 
             let cell5 = row.insertCell(4)
             let element5 = document.createElement('p')
-            element5.className = 'message'
-            element5.innerText = new_request.message
+            element5.className = 'status'
+            element5.innerText = new_request.status
             cell5.appendChild(element5)
+
+            let cell6 = row.insertCell(5)
+            let element6 = document.createElement('p')
+            element6.className = 'message'
+            element6.innerText = new_request.message
+            cell6.appendChild(element6)
 
             console.log('New request created')
             getStats()
         }
+    }
+}
+
+function getName(id) {
+    let url = new URL(id, base_url)
+    let xhr = new XMLHttpRequest()
+    xhr.open('GET', url.href)
+    xhr.send()
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            let name = JSON.stringify(xhr.response)
+            console(name)
+            
+        }
+        
     }
 }
 
