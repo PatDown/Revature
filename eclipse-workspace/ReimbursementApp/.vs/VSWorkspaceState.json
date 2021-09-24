@@ -5,12 +5,11 @@
     "\\Backend\\src",
     "\\Backend\\src\\main",
     "\\Backend\\src\\main\\java",
-    "\\Backend\\src\\main\\java\\com\\pdownton",
     "\\Backend\\src\\main\\java\\static",
-    "\\Frontend",
-    "\\Frontend\\src",
-    "\\Frontend\\src\\components"
+    "\\Backend\\src\\main\\java\\static\\Pages",
+    "\\Backend\\src\\main\\java\\static\\Scripts",
+    "\\Backend\\src\\main\\java\\static\\Styles"
   ],
-  "SelectedNode": "\\Frontend\\src\\components\\Requests.js",
+  "SelectedNode": "\\Backend\\src\\main\\java\\static\\Scripts\\Requests.js",
   "PreviewInSolutionExplorer": false
 }
