@@ -3,9 +3,8 @@ let account_id = 0
 let login_button = document.getElementById('login-button')
 
 login_button.addEventListener('click', (event) => {
-    if (event.cancelable) {
+    if (event.cancelable)
         event.preventDefault()
-    }
     login()
 })
 

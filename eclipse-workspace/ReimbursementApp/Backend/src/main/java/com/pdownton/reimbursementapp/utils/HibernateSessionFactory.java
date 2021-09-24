@@ -27,7 +27,7 @@ public class HibernateSessionFactory {
                    .buildSessionFactory();
             } catch (Exception e){
                 e.printStackTrace();
-            }
+            }//catch (Exception e)
         }//if (sessionFactory == null)
         return sessionFactory.getCurrentSession();
     }//getSession()

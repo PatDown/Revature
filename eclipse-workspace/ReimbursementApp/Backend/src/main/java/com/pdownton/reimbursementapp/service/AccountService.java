@@ -1,13 +1,8 @@
 package com.pdownton.reimbursementapp.service;
 
 import com.pdownton.reimbursementapp.models.Account;
-import com.pdownton.reimbursementapp.models.Reimbursement;
-import com.pdownton.reimbursementapp.models.Stats;
 import com.pdownton.reimbursementapp.repository.AccountRepository;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;//HashMap, List, Map
 
 /**
  *
@@ -38,9 +33,7 @@ public class AccountService {
     }//create(Account)
     
     public Account getAccount(int id){
-        
         Account account = accountRepo.get(id);
-        
         return account;
     }//getAccount(int)
     
@@ -50,9 +43,6 @@ public class AccountService {
         accountList.stream().filter(acc -> (!accounts.containsValue(acc))).forEachOrdered(acc -> {
             accounts.put(acc.getId(), acc);
         });
-        
-        
-        
         return accountList;
     }//getAccounts()
     
@@ -71,11 +61,11 @@ public class AccountService {
     }//login(String, String)
     
     public boolean logout(){
-        if (isLoggedIn()){
+        if (isLoggedIn())
             currentAccount = null;
-            return true;
-        } else
+        else
             return false;
+        return true;
     }//logout()
     
     private boolean isLoggedIn(){
