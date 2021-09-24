@@ -2,9 +2,7 @@ package com.pdownton.reimbursementapp.service;
 
 import com.pdownton.reimbursementapp.models.Reimbursement;
 import com.pdownton.reimbursementapp.models.Stats;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;//HashMap, List, Map
 
 /**
  *
@@ -46,5 +44,5 @@ public class StatsService {
         } else
             stats = null;
         return stats;
-    }//getStats(List<Reimbursement>)
+    }//getStats(int)
 }//StatsService

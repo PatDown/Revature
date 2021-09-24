@@ -4,9 +4,7 @@ import com.pdownton.reimbursementapp.models.Reimbursement;
 import com.pdownton.reimbursementapp.utils.HibernateSessionFactory;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;//HibernateException, Session, Transaction
 
 /**
  *
@@ -32,7 +30,6 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
             e.printStackTrace();
         } finally {
             session.close();
-            
         }//finally
         return reimbursement;
     }//get(int)
@@ -85,7 +82,6 @@ public class ReimbursementRepository implements Repository<Reimbursement> {
         } finally {
             session.close();
         }//finally
-        
     }//update(Reimbursement)
 
     @Override

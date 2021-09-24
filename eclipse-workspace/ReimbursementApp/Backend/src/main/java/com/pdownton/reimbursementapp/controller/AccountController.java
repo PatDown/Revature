@@ -2,7 +2,6 @@ package com.pdownton.reimbursementapp.controller;
 
 import com.pdownton.reimbursementapp.models.Account;
 import com.pdownton.reimbursementapp.service.AccountService;
-import com.pdownton.reimbursementapp.models.Stats;
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
 import java.util.List;
@@ -16,7 +15,7 @@ public class AccountController {
     
     public static void init(){
         accountService = new AccountService();
-    }//init(Connection)
+    }//init()
     
     public static void getAccounts(Context ctx) {
         List<Account> accounts = accountService.getAccounts();
@@ -41,9 +40,9 @@ public class AccountController {
         int id = accountService.login(ctx.formParam("username"), ctx.formParam("password"));
         
         Account account = accountService.getAccount(id);
-        if (account != null){
+        if (account != null)
             ctx.json(id);
-        } else
+        else
             ctx.status(HttpCode.NOT_FOUND);
         
     }//login(Context)

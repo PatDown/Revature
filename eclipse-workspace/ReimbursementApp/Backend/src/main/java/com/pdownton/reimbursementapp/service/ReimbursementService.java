@@ -3,9 +3,7 @@ package com.pdownton.reimbursementapp.service;
 import com.pdownton.reimbursementapp.models.Reimbursement;
 import com.pdownton.reimbursementapp.repository.ReimbursementRepository;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -22,7 +20,6 @@ public class ReimbursementService {
     
     public Reimbursement getReimbursement(int id){
         Reimbursement reimbursement = reimbursementRepo.get(id);
-        
         return reimbursement;
     }//getReimbursement(int)
     
@@ -41,7 +38,6 @@ public class ReimbursementService {
     
     public List<Reimbursement> getAll(){
         List<Reimbursement> rmbsmts = reimbursementRepo.getAll();
-        
         return rmbsmts;
     }//getAll()
     
@@ -62,15 +58,15 @@ public class ReimbursementService {
             } else if (r.getEmployeeId() == managerId) {
                 r.setStatus("Pending");
                 r.setMessage("You cannot approve your own request.");
-            } else if (!r.getStatus().equals("Pending")){
+            } else if (!r.getStatus().equals("Pending"))
                 r.setMessage("Cannot change status");
-            } else {
+            else {
                 r.setStatus(newStatus);
                 r.setMessage(message);
             }//else
              
             reimbursementRepo.update(r);
-        }
+        }//if (r != null)
         return r;
     }//update(int, String, int, String)
     
