@@ -1,13 +1,8 @@
 package com.pdownton.reimbursementapp.models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;//Column, Entity, Id, Table
 
 /**
  *
@@ -15,7 +10,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="requests")
-public class Reimbursement implements Serializable{
+public class Reimbursement {
     @Id
     @Column
     private int id = generateId();
@@ -45,7 +40,7 @@ public class Reimbursement implements Serializable{
         status = "Pending";
         this.employeeId = employee_id;
         message = "None";
-    }//Reimbursement(float, String, String, int)
+    }//Reimbursement(float, String, int)
 
     public int getId(){
         return id;

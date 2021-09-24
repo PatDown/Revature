@@ -13,47 +13,41 @@ let formatter = new Intl.NumberFormat('en-US', {
 })
 
 logout_button.addEventListener('click', (event) => {
-    if (event.cancelable) {
+    if (event.cancelable)
         event.preventDefault()
-    }
     logout()
 })
 
 new_request_button.addEventListener('click', (event) => {
-    if (event.cancelable) {
+    if (event.cancelable)
         event.preventDefault()
-    }
     let nrb = document.getElementById('new-request')
     toggleView(nrb)
 })
 
 update_requests_button.addEventListener('click', (event) => {
-    if (event.cancelable) {
+    if (event.cancelable)
         event.preventDefault()
-    }
     let urb = document.getElementById('update-request')
     toggleView(urb)
 })
 
 statistics_button.addEventListener('click', (event) => {
-    if (event.cancelable) {
+    if (event.cancelable)
         event.preventDefault()
-    }
     let sb = document.getElementById('stats')
     toggleView(sb)
 })
 
 submit_request_button.addEventListener('click', (event) => {
-    if (event.cancelable) {
+    if (event.cancelable)
         event.preventDefault()
-    }
     addNewRequest()
 })
 
 submit_update_button.addEventListener('click', (event) => {
-    if (event.cancelable) {
+    if (event.cancelable)
         event.preventDefault()
-    }
     updateRequest()
 })
 
@@ -69,8 +63,6 @@ function resetViews() {
     urb.hidden = true
     nrb.hidden = true
     sb.hidden = true
-
-    let input_boxes = document.get
 }
 
 function logout() {

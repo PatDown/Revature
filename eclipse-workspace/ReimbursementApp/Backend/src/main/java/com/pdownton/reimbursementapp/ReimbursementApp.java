@@ -1,12 +1,8 @@
 package com.pdownton.reimbursementapp;
 
-import com.pdownton.reimbursementapp.controller.AccountController;
-import com.pdownton.reimbursementapp.controller.ReimbursementController;
-import com.pdownton.reimbursementapp.controller.StatsController;
+import com.pdownton.reimbursementapp.controller.*;//AccountController, ReimbursementController, StatsController
 import io.javalin.Javalin;
-import static io.javalin.apibuilder.ApiBuilder.get;
-import static io.javalin.apibuilder.ApiBuilder.path;
-import static io.javalin.apibuilder.ApiBuilder.post;
+import static io.javalin.apibuilder.ApiBuilder.*;//get, path, post
 
 /**
  *

@@ -19,12 +19,8 @@ public class ReimbursementController {
     }//init()
 
     public static void getReimbursement(Context ctx){
-        int rId = 0;
-        try {
-            rId = Integer.parseInt(ctx.pathParam("rId"));
-        } catch (NumberFormatException e){
-            e.printStackTrace();
-        }
+        int rId = Integer.parseInt(ctx.pathParam("rId"));
+
         Reimbursement reimbursement = rService.getReimbursement(rId);
         if (reimbursement != null)
             ctx.json(reimbursement);
