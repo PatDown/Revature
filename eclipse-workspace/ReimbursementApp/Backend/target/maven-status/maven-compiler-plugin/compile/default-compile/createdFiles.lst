@@ -11,4 +11,5 @@ com\pdownton\reimbursementapp\models\Reimbursement.class
 com\pdownton\reimbursementapp\ReimbursementApp.class
 com\pdownton\reimbursementapp\controller\StatsController.class
 com\pdownton\reimbursementapp\service\ReimbursementService.class
+.netbeans_automatic_build
 com\pdownton\reimbursementapp\utils\HibernateSessionFactory.class

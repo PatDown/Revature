@@ -271,8 +271,26 @@ function getStats() {
     }
 }
 
+function getName() {
+    let url = new URL(account_id, base_url)
+    let xhr = new XMLHttpRequest()
+    xhr.open('GET', url.href)
+
+    xhr.send()
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            let name = xhr.response
+            console.log(name)
+            let greeting = document.getElementsByTagName('h1')
+            greeting[0].innerText = 'Welcome Back, ' + name
+        }
+    }
+}
+
 window.onload = () => {
     account_id = sessionStorage.getItem('id')
+    getName()
     getRequests()
     resetViews()
 
