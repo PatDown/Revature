@@ -40,7 +40,7 @@ public class AccountServiceTest {
     @Test
     public void testGetAccount() {
         System.out.println("getAccount");
-        int id = 0;
+        int id = 10;
         AccountService instance = new AccountService();
         Account expResult = null;
         Account result = instance.getAccount(id);
